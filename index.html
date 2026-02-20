@@ -1526,7 +1526,7 @@
                         <button class="btn-delete" onclick="del(${r.id})">🗑️</button>
                     </div>
                 </div>
-            `).join('');
+            `}).join('');
         }
 
         function del(id) { results = results.filter(r => r.id !== id); save(); render(); stats(); }
