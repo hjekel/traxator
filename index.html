@@ -6,26 +6,32 @@
     <title>TraxaTor - AI-Powered Inruil Taxatie</title>
     <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🚜</text></svg>">
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
 
         :root {
             --jd-green: #367C2B;
             --jd-green-light: #4CAF50;
             --jd-yellow: #FFDE00;
-            --bg-dark: #1e2330;
-            --bg-darker: #171c28;
-            --bg-card: #252d3a;
-            --bg-input: #2a3441;
-            --border-color: #3a4555;
-            --text-white: #ffffff;
+            --bg-dark: #1a1f2b;
+            --bg-darker: #141820;
+            --bg-card: #232a38;
+            --bg-input: #2a3342;
+            --border: #3a4555;
+            --text-white: #fff;
             --text-gray: #9ca3af;
             --text-muted: #6b7280;
             --success: #22c55e;
-            --success-light: #4ade80;
+        }
+
+        [data-theme="light"] {
+            --bg-dark: #f3f4f6;
+            --bg-darker: #ffffff;
+            --bg-card: #ffffff;
+            --bg-input: #f9fafb;
+            --border: #e5e7eb;
+            --text-white: #111827;
+            --text-gray: #4b5563;
+            --text-muted: #6b7280;
         }
 
         body {
@@ -33,53 +39,76 @@
             background: var(--bg-darker);
             min-height: 100vh;
             color: var(--text-white);
+            transition: background 0.3s, color 0.3s;
         }
 
-        /* Header - Green bar */
+        /* Theme Toggle */
+        .theme-toggle {
+            background: rgba(255,255,255,0.15);
+            border: none;
+            border-radius: 20px;
+            padding: 0.4rem 0.8rem;
+            color: white;
+            font-size: 0.75rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+            transition: all 0.2s;
+        }
+
+        .theme-toggle:hover {
+            background: rgba(255,255,255,0.25);
+        }
+
+        [data-theme="light"] .theme-toggle {
+            background: rgba(0,0,0,0.1);
+            color: white;
+        }
+
+        /* Header */
         .header {
             background: var(--jd-green);
-            padding: 0.75rem 2rem;
+            padding: 0.6rem 2rem;
             display: flex;
             justify-content: space-between;
             align-items: center;
+            position: relative;
         }
 
         .header-left {
             display: flex;
             align-items: center;
-            gap: 1rem;
+            gap: 0.75rem;
         }
 
         .header-icon {
-            width: 44px;
-            height: 44px;
+            width: 40px;
+            height: 40px;
             background: var(--jd-yellow);
-            border-radius: 10px;
+            border-radius: 8px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 1.5rem;
+            font-size: 1.3rem;
         }
 
         .header-title {
-            font-size: 1.4rem;
+            font-size: 1.3rem;
             font-weight: 700;
-            color: white;
         }
 
         .header-badge {
-            display: inline-block;
             background: rgba(255,255,255,0.2);
-            padding: 0.2rem 0.6rem;
+            padding: 0.15rem 0.5rem;
             border-radius: 4px;
-            font-size: 0.65rem;
+            font-size: 0.6rem;
             font-weight: 600;
-            margin-left: 0.75rem;
-            vertical-align: middle;
+            margin-left: 0.5rem;
         }
 
         .header-subtitle {
-            font-size: 0.8rem;
+            font-size: 0.75rem;
             opacity: 0.9;
         }
 
@@ -90,263 +119,188 @@
         }
 
         .header-logo {
-            height: 55px;
-            filter: brightness(0) invert(1);
+            height: 45px;
+            width: 180px;
         }
 
         .header-stats {
             display: flex;
-            gap: 2rem;
+            gap: 1.5rem;
         }
 
         .stat {
             display: flex;
             align-items: center;
-            gap: 0.6rem;
+            gap: 0.5rem;
         }
 
-        .stat-icon {
-            font-size: 1.5rem;
-        }
+        .stat-icon { font-size: 1.25rem; }
+        .stat-value { font-size: 1rem; font-weight: 700; }
+        .stat-label { font-size: 0.65rem; opacity: 0.85; }
 
-        .stat-value {
-            font-size: 1.1rem;
-            font-weight: 700;
-        }
-
-        .stat-label {
-            font-size: 0.7rem;
-            opacity: 0.85;
-        }
-
-        /* Series Navigation */
+        /* Series Nav */
         .series-nav {
             background: var(--bg-dark);
-            padding: 0.75rem 2rem;
+            padding: 0.6rem 2rem;
             display: flex;
             align-items: center;
-            gap: 0.75rem;
-            border-bottom: 1px solid var(--border-color);
+            gap: 0.5rem;
+            border-bottom: 1px solid var(--border);
+            overflow-x: auto;
         }
 
-        .series-label {
-            color: var(--text-gray);
-            font-size: 0.85rem;
-        }
+        .series-label { color: var(--text-gray); font-size: 0.8rem; }
 
         .series-btn {
-            padding: 0.4rem 0.9rem;
+            padding: 0.35rem 0.75rem;
             background: var(--bg-card);
-            border: 1px solid var(--border-color);
-            border-radius: 6px;
+            border: 1px solid var(--border);
+            border-radius: 5px;
             color: var(--text-gray);
-            font-size: 0.8rem;
+            font-size: 0.75rem;
             cursor: pointer;
-            transition: all 0.15s;
+            white-space: nowrap;
         }
 
-        .series-btn:hover {
-            border-color: var(--jd-green);
-            color: white;
-        }
+        .series-btn:hover { border-color: var(--jd-green); color: white; }
+        .series-btn.active { background: var(--jd-green); border-color: var(--jd-green); color: white; }
 
-        .series-btn.active {
-            background: var(--jd-green);
-            border-color: var(--jd-green);
-            color: white;
-        }
-
-        /* Main Content */
+        /* Main */
         .main {
             display: grid;
-            grid-template-columns: 1fr 380px;
-            gap: 1.5rem;
-            padding: 1.5rem 2rem;
+            grid-template-columns: 1fr 360px;
+            gap: 1.25rem;
+            padding: 1.25rem 2rem;
             max-width: 1400px;
             margin: 0 auto;
         }
 
-        @media (max-width: 1100px) {
-            .main {
-                grid-template-columns: 1fr;
-            }
-        }
+        @media (max-width: 1100px) { .main { grid-template-columns: 1fr; } }
 
-        /* Card Style */
+        /* Card */
         .card {
             background: var(--bg-card);
-            border-radius: 12px;
+            border-radius: 10px;
             overflow: hidden;
         }
 
         .card-header {
-            padding: 1rem 1.25rem;
+            padding: 0.9rem 1.1rem;
             display: flex;
             align-items: center;
-            gap: 0.75rem;
-            border-bottom: 1px solid var(--border-color);
+            gap: 0.6rem;
+            border-bottom: 1px solid var(--border);
         }
 
         .card-icon {
-            width: 28px;
-            height: 28px;
+            width: 26px;
+            height: 26px;
             background: var(--jd-green);
-            border-radius: 6px;
+            border-radius: 5px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 0.9rem;
-        }
-
-        .card-title {
-            font-size: 1rem;
-            font-weight: 600;
-        }
-
-        .card-body {
-            padding: 1.25rem;
-        }
-
-        .card-subtitle {
-            color: var(--text-muted);
             font-size: 0.85rem;
-            margin-bottom: 1.25rem;
         }
 
-        /* Model Preview */
-        .model-preview {
-            display: flex;
-            gap: 1rem;
-            padding: 1rem;
-            background: var(--bg-input);
-            border-radius: 10px;
-            margin-top: 1rem;
-            margin-bottom: 0.5rem;
-            border: 1px solid var(--border-color);
-        }
+        .card-title { font-size: 0.95rem; font-weight: 600; }
+        .card-body { padding: 1.1rem; }
+        .card-subtitle { color: var(--text-muted); font-size: 0.8rem; margin-bottom: 1rem; }
 
-        .model-preview img {
-            width: 120px;
-            height: 80px;
-            object-fit: cover;
-            border-radius: 8px;
-        }
-
-        .preview-info {
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            gap: 0.25rem;
-        }
-
-        .preview-name {
-            font-weight: 600;
-            font-size: 1rem;
-        }
-
-        .preview-pk {
-            font-size: 0.8rem;
-            color: var(--text-muted);
-        }
-
-        .preview-link {
-            font-size: 0.75rem;
-            color: var(--jd-green-light);
-            text-decoration: none;
-            margin-top: 0.25rem;
-        }
-
-        .preview-link:hover {
-            text-decoration: underline;
-        }
-
-        /* Form Grid */
+        /* Form */
         .form-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 1.25rem;
+            gap: 1rem;
         }
 
         .form-group {
             display: flex;
             flex-direction: column;
-            gap: 0.4rem;
+            gap: 0.35rem;
         }
 
         .form-label {
-            font-size: 0.75rem;
+            font-size: 0.7rem;
             color: var(--text-gray);
             text-transform: uppercase;
             letter-spacing: 0.3px;
         }
 
         .form-control {
-            padding: 0.7rem 0.9rem;
+            padding: 0.6rem 0.8rem;
             background: var(--bg-input);
-            border: 1px solid var(--border-color);
-            border-radius: 8px;
+            border: 1px solid var(--border);
+            border-radius: 6px;
             color: white;
-            font-size: 0.95rem;
+            font-size: 0.9rem;
         }
 
-        .form-control:focus {
-            outline: none;
-            border-color: var(--jd-green);
+        .form-control:focus { outline: none; border-color: var(--jd-green); }
+        .form-control::placeholder { color: var(--text-muted); }
+        .form-hint { font-size: 0.65rem; color: var(--text-muted); }
+
+        /* Model Preview */
+        .model-preview {
+            display: flex;
+            gap: 0.9rem;
+            padding: 0.9rem;
+            background: var(--bg-input);
+            border-radius: 8px;
+            margin: 1rem 0;
+            border: 1px solid var(--border);
         }
 
-        .form-control::placeholder {
-            color: var(--text-muted);
+        .model-preview img {
+            width: 100px;
+            height: 65px;
+            object-fit: cover;
+            border-radius: 6px;
+            background: #1a1f2b;
         }
 
-        .form-hint {
-            font-size: 0.7rem;
-            color: var(--text-muted);
-        }
+        .preview-info { display: flex; flex-direction: column; justify-content: center; gap: 0.2rem; }
+        .preview-name { font-weight: 600; font-size: 0.9rem; }
+        .preview-pk { font-size: 0.75rem; color: var(--text-muted); }
+        .preview-desc { font-size: 0.7rem; color: var(--text-gray); margin-top: 0.2rem; max-width: 280px; }
+        .preview-link { font-size: 0.7rem; color: var(--jd-green-light); text-decoration: none; margin-top: 0.15rem; }
+        .preview-link:hover { text-decoration: underline; }
 
-        /* Options Grid - 5 columns like original */
-        .options-section {
-            margin-top: 1.25rem;
-        }
+        /* Options */
+        .options-section { margin-top: 1rem; }
 
         .options-grid {
             display: grid;
             grid-template-columns: repeat(5, 1fr);
-            gap: 0.6rem;
-            margin-top: 0.5rem;
+            gap: 0.5rem;
+            margin-top: 0.4rem;
         }
 
-        @media (max-width: 800px) {
-            .options-grid {
-                grid-template-columns: repeat(3, 1fr);
-            }
-        }
+        @media (max-width: 800px) { .options-grid { grid-template-columns: repeat(3, 1fr); } }
 
         .option-btn {
-            padding: 0.6rem 0.5rem;
+            padding: 0.5rem 0.4rem;
             background: var(--bg-input);
-            border: 1px solid var(--border-color);
-            border-radius: 6px;
+            border: 1px solid var(--border);
+            border-radius: 5px;
             color: var(--text-gray);
-            font-size: 0.8rem;
+            font-size: 0.75rem;
             cursor: pointer;
-            transition: all 0.15s;
             display: flex;
             align-items: center;
-            gap: 0.4rem;
+            gap: 0.3rem;
         }
 
         .option-btn::before {
             content: '';
-            width: 14px;
-            height: 14px;
-            border: 1px solid var(--border-color);
-            border-radius: 3px;
+            width: 12px;
+            height: 12px;
+            border: 1px solid var(--border);
+            border-radius: 2px;
             flex-shrink: 0;
         }
 
-        .option-btn:hover {
-            border-color: var(--jd-green);
-        }
+        .option-btn:hover { border-color: var(--jd-green); }
 
         .option-btn.selected {
             background: rgba(54, 124, 43, 0.15);
@@ -359,182 +313,196 @@
             border-color: var(--jd-green);
         }
 
-        /* Submit Button - Green like original */
+        /* Button */
         .btn-submit {
             width: 100%;
-            padding: 0.9rem;
+            padding: 0.8rem;
             background: var(--jd-green);
             border: none;
-            border-radius: 8px;
+            border-radius: 6px;
             color: white;
-            font-size: 1rem;
+            font-size: 0.95rem;
             font-weight: 600;
             cursor: pointer;
-            margin-top: 1.5rem;
+            margin-top: 1.25rem;
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 0.5rem;
-            transition: all 0.2s;
+            gap: 0.4rem;
         }
 
-        .btn-submit:hover {
-            background: var(--jd-green-light);
-        }
+        .btn-submit:hover { background: var(--jd-green-light); }
+        .btn-submit.loading { opacity: 0.7; pointer-events: none; }
 
-        .btn-submit.loading {
-            opacity: 0.7;
-            pointer-events: none;
-        }
-
-        /* Tip Box - Yellow accent */
+        /* Tip */
         .tip-box {
             background: rgba(255, 222, 0, 0.08);
             border: 1px solid rgba(255, 222, 0, 0.25);
-            border-radius: 8px;
-            padding: 0.9rem;
-            margin-top: 1.25rem;
+            border-radius: 6px;
+            padding: 0.75rem;
+            margin-top: 1rem;
             display: flex;
-            gap: 0.6rem;
+            gap: 0.5rem;
         }
 
-        .tip-icon {
+        .tip-icon { font-size: 1rem; }
+        .tip-text { font-size: 0.75rem; color: var(--text-gray); }
+        .tip-text strong { color: var(--jd-yellow); }
+
+        /* Hero Section */
+        .hero-section {
+            margin-top: 1.25rem;
+            background: linear-gradient(135deg, rgba(54, 124, 43, 0.15) 0%, rgba(54, 124, 43, 0.05) 100%);
+            border: 1px solid rgba(54, 124, 43, 0.3);
+            border-radius: 10px;
+            padding: 1.25rem;
+            display: flex;
+            gap: 1.25rem;
+            align-items: center;
+        }
+
+        .hero-image {
+            width: 220px;
+            height: 140px;
+            border-radius: 8px;
+            object-fit: cover;
+            flex-shrink: 0;
+            background: var(--bg-input);
+        }
+
+        .hero-content {
+            flex: 1;
+        }
+
+        .hero-title {
             font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--text-white);
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
         }
 
-        .tip-text {
+        .hero-title span {
+            background: var(--jd-green);
+            padding: 0.2rem 0.5rem;
+            border-radius: 4px;
+            font-size: 0.65rem;
+            font-weight: 600;
+        }
+
+        .hero-desc {
             font-size: 0.8rem;
             color: var(--text-gray);
+            line-height: 1.5;
+            margin-bottom: 0.75rem;
         }
 
-        .tip-text strong {
-            color: var(--jd-yellow);
-        }
-
-        /* Results Panel */
-        .results-header {
+        .hero-features {
             display: flex;
-            justify-content: space-between;
-            align-items: center;
-            width: 100%;
+            flex-wrap: wrap;
+            gap: 0.5rem;
         }
+
+        .hero-feature {
+            display: flex;
+            align-items: center;
+            gap: 0.3rem;
+            font-size: 0.7rem;
+            color: var(--text-muted);
+            background: var(--bg-input);
+            padding: 0.3rem 0.6rem;
+            border-radius: 4px;
+        }
+
+        .hero-feature .check {
+            color: var(--jd-green-light);
+        }
+
+        @media (max-width: 700px) {
+            .hero-section {
+                flex-direction: column;
+                text-align: center;
+            }
+            .hero-image {
+                width: 100%;
+                height: 120px;
+            }
+            .hero-features {
+                justify-content: center;
+            }
+        }
+
+        /* Results */
+        .results-header { display: flex; justify-content: space-between; align-items: center; width: 100%; }
 
         .clear-btn {
             background: none;
             border: none;
             color: var(--text-muted);
-            font-size: 0.8rem;
+            font-size: 0.75rem;
             cursor: pointer;
         }
 
-        .clear-btn:hover {
-            color: #ef4444;
-        }
+        .clear-btn:hover { color: #ef4444; }
 
-        .results-list {
-            display: flex;
-            flex-direction: column;
-            gap: 0.75rem;
-        }
+        .results-list { display: flex; flex-direction: column; gap: 0.6rem; }
 
-        /* Result Card - Matching original */
+        /* Result Card */
         .result-card {
             background: var(--bg-card);
-            border: 1px solid var(--border-color);
-            border-radius: 10px;
-            padding: 1rem;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 0.9rem;
         }
 
         .result-top {
             display: flex;
             justify-content: space-between;
             align-items: flex-start;
-            margin-bottom: 0.75rem;
+            margin-bottom: 0.6rem;
         }
 
-        .result-machine {
-            display: flex;
-            align-items: center;
-            gap: 0.6rem;
-        }
+        .result-machine { display: flex; align-items: center; gap: 0.5rem; }
 
         .result-icon {
-            width: 36px;
-            height: 36px;
+            width: 32px;
+            height: 32px;
             background: var(--jd-green);
-            border-radius: 8px;
+            border-radius: 6px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 1.1rem;
+            font-size: 1rem;
         }
 
-        .result-name {
-            font-weight: 600;
-            font-size: 0.95rem;
-        }
-
-        .result-specs {
-            font-size: 0.75rem;
-            color: var(--text-muted);
-        }
+        .result-name { font-weight: 600; font-size: 0.9rem; }
+        .result-specs { font-size: 0.7rem; color: var(--text-muted); }
 
         .signal-badge {
-            padding: 0.35rem 0.6rem;
-            border-radius: 5px;
-            font-size: 0.65rem;
+            padding: 0.3rem 0.5rem;
+            border-radius: 4px;
+            font-size: 0.6rem;
             font-weight: 700;
             text-transform: uppercase;
         }
 
-        .signal-go {
-            background: rgba(34, 197, 94, 0.15);
-            color: var(--success);
-        }
+        .signal-go { background: rgba(34, 197, 94, 0.15); color: var(--success); }
+        .signal-caution { background: rgba(245, 158, 11, 0.15); color: #f59e0b; }
+        .signal-stop { background: rgba(239, 68, 68, 0.15); color: #ef4444; }
 
-        .signal-caution {
-            background: rgba(245, 158, 11, 0.15);
-            color: #f59e0b;
-        }
+        .result-label { font-size: 0.6rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.3px; margin-bottom: 0.15rem; }
+        .result-price { font-size: 1.35rem; font-weight: 700; color: #4ade80; margin-bottom: 0.25rem; }
+        .result-meta { font-size: 0.65rem; color: var(--text-muted); margin-bottom: 0.6rem; }
 
-        .signal-stop {
-            background: rgba(239, 68, 68, 0.15);
-            color: #ef4444;
-        }
-
-        .result-label {
-            font-size: 0.65rem;
-            color: var(--text-muted);
-            text-transform: uppercase;
-            letter-spacing: 0.3px;
-            margin-bottom: 0.2rem;
-        }
-
-        .result-price {
-            font-size: 1.5rem;
-            font-weight: 700;
-            color: var(--success-light);
-            margin-bottom: 0.3rem;
-        }
-
-        .result-meta {
-            font-size: 0.7rem;
-            color: var(--text-muted);
-            margin-bottom: 0.75rem;
-        }
-
-        .result-options {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 0.4rem;
-            margin-bottom: 0.75rem;
-        }
+        .result-options { display: flex; flex-wrap: wrap; gap: 0.3rem; margin-bottom: 0.6rem; }
 
         .option-tag {
-            padding: 0.2rem 0.5rem;
+            padding: 0.15rem 0.4rem;
             background: var(--bg-input);
-            border-radius: 4px;
-            font-size: 0.7rem;
+            border-radius: 3px;
+            font-size: 0.65rem;
             color: var(--text-gray);
         }
 
@@ -542,76 +510,43 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding-top: 0.6rem;
-            border-top: 1px solid var(--border-color);
+            padding-top: 0.5rem;
+            border-top: 1px solid var(--border);
         }
 
-        .result-time {
-            font-size: 0.7rem;
-            color: var(--text-muted);
-        }
+        .result-time { font-size: 0.65rem; color: var(--text-muted); }
 
         .btn-delete {
             background: none;
             border: none;
             color: var(--text-muted);
             cursor: pointer;
-            font-size: 0.9rem;
+            font-size: 0.85rem;
         }
 
-        .btn-delete:hover {
-            color: #ef4444;
-        }
+        .btn-delete:hover { color: #ef4444; }
 
-        /* Empty State */
-        .empty-state {
-            text-align: center;
-            padding: 2.5rem 1rem;
-            color: var(--text-muted);
-        }
-
-        .empty-icon {
-            font-size: 2.5rem;
-            margin-bottom: 0.75rem;
-            opacity: 0.5;
-        }
-
-        .empty-title {
-            color: var(--text-gray);
-            font-size: 0.95rem;
-            margin-bottom: 0.3rem;
-        }
-
-        .empty-text {
-            font-size: 0.8rem;
-        }
+        /* Empty */
+        .empty-state { text-align: center; padding: 2rem 1rem; color: var(--text-muted); }
+        .empty-icon { font-size: 2rem; margin-bottom: 0.5rem; opacity: 0.5; }
+        .empty-title { color: var(--text-gray); font-size: 0.9rem; margin-bottom: 0.2rem; }
+        .empty-text { font-size: 0.75rem; }
 
         /* Spinner */
         .spinner {
-            width: 18px;
-            height: 18px;
+            width: 16px;
+            height: 16px;
             border: 2px solid rgba(255,255,255,0.3);
             border-top-color: white;
             border-radius: 50%;
             animation: spin 0.7s linear infinite;
         }
 
-        @keyframes spin {
-            to { transform: rotate(360deg); }
-        }
+        @keyframes spin { to { transform: rotate(360deg); } }
 
         /* Footer */
-        .footer {
-            text-align: center;
-            padding: 1.5rem;
-            color: var(--text-muted);
-            font-size: 0.8rem;
-        }
-
-        .footer a {
-            color: var(--jd-green-light);
-            text-decoration: none;
-        }
+        .footer { text-align: center; padding: 1.25rem; color: var(--text-muted); font-size: 0.75rem; }
+        .footer a { color: var(--jd-green-light); text-decoration: none; }
     </style>
 </head>
 <body>
@@ -628,13 +563,16 @@
         </div>
 
         <div class="header-center">
-            <img src="john-deere-logo.png" alt="JOHN DEERE" class="header-logo" onerror="this.style.display='none'; document.getElementById('logoFallback').style.display='block';">
-            <div id="logoFallback" style="display:none; text-align:center;">
-                <div style="font-size:1.8rem; font-weight:800; color:white; letter-spacing:2px;">JOHN DEERE</div>
-            </div>
+            <svg class="header-logo" viewBox="0 0 180 45" xmlns="http://www.w3.org/2000/svg">
+                <text x="90" y="32" text-anchor="middle" font-family="Arial Black, Arial, sans-serif" font-weight="900" font-size="24" fill="white" letter-spacing="2">JOHN DEERE</text>
+            </svg>
         </div>
 
         <div class="header-stats">
+            <button class="theme-toggle" onclick="toggleTheme()" title="Wissel thema">
+                <span id="themeIcon">🌙</span>
+                <span id="themeLabel">Dark</span>
+            </button>
             <div class="stat">
                 <span class="stat-icon">📊</span>
                 <div>
@@ -655,13 +593,13 @@
     <nav class="series-nav">
         <span class="series-label">Modellen:</span>
         <button class="series-btn active" data-series="all">Alle</button>
-        <button class="series-btn" data-series="5E">5E Serie</button>
-        <button class="series-btn" data-series="5M">5M Serie</button>
-        <button class="series-btn" data-series="6M">6M Serie</button>
-        <button class="series-btn" data-series="6R">6R Serie</button>
-        <button class="series-btn" data-series="7R">7R Serie</button>
-        <button class="series-btn" data-series="8R">8R Serie</button>
-        <button class="series-btn" data-series="9R">9R Serie</button>
+        <button class="series-btn" data-series="5E">5E</button>
+        <button class="series-btn" data-series="5M">5M</button>
+        <button class="series-btn" data-series="6M">6M</button>
+        <button class="series-btn" data-series="6R">6R</button>
+        <button class="series-btn" data-series="7R">7R</button>
+        <button class="series-btn" data-series="8R">8R</button>
+        <button class="series-btn" data-series="9R">9R</button>
     </nav>
 
     <main class="main">
@@ -682,24 +620,24 @@
                     </div>
                     <div class="form-group">
                         <label class="form-label">Model</label>
-                        <select class="form-control" id="model" onchange="showModelPreview()">
+                        <select class="form-control" id="model" onchange="showPreview()">
                             <option value="">Selecteer model...</option>
                         </select>
                         <span class="form-hint">Model is verplicht</span>
                     </div>
                 </div>
 
-                <!-- Model Preview -->
                 <div id="modelPreview" class="model-preview" style="display:none;">
                     <img id="previewImg" src="" alt="Tractor">
                     <div class="preview-info">
                         <div id="previewName" class="preview-name"></div>
                         <div id="previewPK" class="preview-pk"></div>
+                        <div id="previewDesc" class="preview-desc"></div>
                         <a id="previewLink" href="#" target="_blank" class="preview-link">Bekijk op John Deere ↗</a>
                     </div>
                 </div>
 
-                <div class="form-grid" style="margin-top:1.25rem;">
+                <div class="form-grid">
                     <div class="form-group">
                         <label class="form-label">Bouwjaar</label>
                         <select class="form-control" id="year">
@@ -724,7 +662,7 @@
                         <button class="option-btn" data-opt="dubbel" data-val="2000">Dubbele wielen</button>
                         <button class="option-btn" data-opt="fronthef" data-val="3000">Fronthef</button>
                         <button class="option-btn" data-opt="pto" data-val="3500">PTO 540/1000</button>
-                        <button class="option-btn" data-opt="kipper" data-val="2500">Driezijdige kipper</button>
+                        <button class="option-btn" data-opt="kipper" data-val="2500">3-zijdig kipper</button>
                         <button class="option-btn" data-opt="snel" data-val="1500">Snelkoppeling</button>
                     </div>
                 </div>
@@ -737,13 +675,33 @@
                     <span class="tip-icon">💡</span>
                     <p class="tip-text"><strong>Tip:</strong> Een taxatie duurt gemiddeld 30 seconden. Voeg alle opties toe voor een nauwkeurigere waardebepaling.</p>
                 </div>
+
+                <!-- Hero Section -->
+                <div class="hero-section">
+                    <img class="hero-image" src="https://www.deere.nl/assets/images/region-2/products/tractors/mid/6m-series/6m-series-r2g077597.jpg" alt="John Deere Tractor" onerror="this.src='https://images.unsplash.com/photo-1544197150-b99a580bb7a8?w=400&h=250&fit=crop'">
+                    <div class="hero-content">
+                        <div class="hero-title">
+                            Waarom TraxaTor?
+                            <span>AI-POWERED</span>
+                        </div>
+                        <p class="hero-desc">
+                            TraxaTor analyseert real-time marktdata van Mascus, TractorPool en Ritchie Bros om de meest accurate inruilwaarde te bepalen voor uw John Deere tractor. Onze AI vergelijkt uw machine met vergelijkbare modellen op basis van leeftijd, draaiuren en uitrusting.
+                        </p>
+                        <div class="hero-features">
+                            <div class="hero-feature"><span class="check">✓</span> Real-time marktprijzen</div>
+                            <div class="hero-feature"><span class="check">✓</span> 60+ John Deere modellen</div>
+                            <div class="hero-feature"><span class="check">✓</span> B2B waardebepaling</div>
+                            <div class="hero-feature"><span class="check">✓</span> Seizoenscorrectie</div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
 
         <div class="card">
             <div class="card-header">
                 <div class="results-header">
-                    <div style="display:flex;align-items:center;gap:0.75rem;">
+                    <div style="display:flex;align-items:center;gap:0.6rem;">
                         <div class="card-icon">📋</div>
                         <span class="card-title">Taxatie Geschiedenis</span>
                     </div>
@@ -763,119 +721,133 @@
     </main>
 
     <footer class="footer">
-        TraxaTor © 2025 · <a href="https://github.com/hjekel/taxator">GitHub</a> · Demo - Prijzen zijn indicatief
+        TraxaTor © 2025 · <a href="https://github.com/hjekel/traxator" target="_blank">GitHub</a> · Demo - Prijzen zijn indicatief
     </footer>
 
     <script>
-        // Series info with images and links
+        // Series info with descriptions from John Deere website
         const seriesInfo = {
-            '5E': { 
-                label: '5E Serie (55-75 PK)', 
-                pkRange: '55-75',
+            '5E': {
+                label: '5E Serie (55-75 PK)',
+                desc: 'Comfort waarmee de klus wordt geklaard. 55-75 pk voor dagelijks werk.',
                 img: 'https://www.deere.nl/assets/images/region-2/tractors/small/5058e-r2g082752-large.jpg',
                 url: 'https://www.deere.nl/nl/tractoren/compacte/5e-3-cilinder/'
             },
-            '5M': { 
-                label: '5M Serie (75-135 PK)', 
-                pkRange: '75-135',
+            '5M': {
+                label: '5M Serie (75-135 PK)',
+                desc: 'Passie voor landbouw. Gebouwd voor voorladerwerk en veelzijdigheid.',
                 img: 'https://www.deere.nl/assets/images/region-2/products/tractor/5m-new/5m-r2g072715.jpg',
                 url: 'https://www.deere.nl/nl/tractoren/compacte/5m-serie/'
             },
-            '6M': { 
-                label: '6M Serie (105-275 PK)', 
-                pkRange: '105-275',
+            '6M': {
+                label: '6M Serie (95-275 PK)',
+                desc: 'Echte presteerders. Gebouwd om hard te werken, sterk en veelzijdig.',
                 img: 'https://www.deere.nl/assets/images/region-2/products/tractors/mid/6m-series/6m-series-r2g077597.jpg',
                 url: 'https://www.deere.nl/nl/tractoren/middelgrote/6m-serie/'
             },
-            '6R': { 
-                label: '6R Serie (121-275 PK)', 
-                pkRange: '121-275',
+            '6R': {
+                label: '6R Serie (110-275 PK)',
+                desc: 'Doe het slim, doe meer. Nr. 1 voor intelligente automatisering.',
                 img: 'https://www.deere.nl/assets/images/region-2/products/tractors/mid/6r-series/6r-series-new/6r-r2g030671-large.jpg',
                 url: 'https://www.deere.nl/nl/tractoren/middelgrote/6r-serie/'
             },
-            '7R': { 
-                label: '7R Serie (297-385 PK)', 
-                pkRange: '297-385',
+            '7R': {
+                label: '7R Serie (210-350 PK)',
+                desc: 'Uitzonderlijke vermogensdichtheid. Versnelt lasten én uw onderneming.',
                 img: 'https://www.deere.nl/assets/images/region-2/products/tractors/large/7r-series/7r330_joskin_slurry_tank_transport_dsc4879-large.jpg',
                 url: 'https://www.deere.nl/nl/tractoren/grote/7-serie/'
             },
-            '8R': { 
-                label: '8R Serie (308-443 PK)', 
-                pkRange: '308-443',
+            '8R': {
+                label: '8R Serie (280-410 PK)',
+                desc: 'Efficiënt en flexibel vermogen. Uitblinken in het veld, verrassen op de weg.',
                 img: 'https://www.deere.nl/assets/images/region-2/products/tractors/large/7r-series/8r340_lemken_seeder_frontpacker_dsc6596-large.jpg',
                 url: 'https://www.deere.nl/nl/tractoren/grote/8-serie/'
             },
-            '9R': { 
-                label: '9R Serie (484-691 PK)', 
-                pkRange: '484-691',
+            '9R': {
+                label: '9R Serie (440-640 PK)',
+                desc: 'Bewerk meer hectares. Enorme trekkracht met hoger brandstofrendement.',
                 img: 'https://www.deere.nl/assets/images/region-2/tractors/large/9r-series/r4g080024-large.jpg',
                 url: 'https://www.deere.nl/nl/tractoren/grote/9-serie/'
             }
         };
 
+        // Models from John Deere NL website
         const models = {
             '5E': [
-                { name: '5055E', pk: 55, base: 38000 },
-                { name: '5065E', pk: 65, base: 42000 },
+                { name: '5050E', pk: 49, base: 35000 },
+                { name: '5058E', pk: 58, base: 38000 },
+                { name: '5067E', pk: 67, base: 42000 },
                 { name: '5075E', pk: 75, base: 48000 },
             ],
             '5M': [
-                { name: '5075M', pk: 75, base: 65000 },
-                { name: '5090M', pk: 90, base: 75000 },
-                { name: '5100M', pk: 100, base: 82000 },
-                { name: '5115M', pk: 115, base: 92000 },
-                { name: '5125M', pk: 125, base: 102000 },
+                { name: '5075M', pk: 75, base: 62000 },
+                { name: '5095M', pk: 95, base: 72000 },
+                { name: '5105M', pk: 105, base: 82000 },
+                { name: '5120M', pk: 120, base: 92000 },
+                { name: '5130M', pk: 130, base: 102000 },
             ],
             '6M': [
-                { name: '6105M', pk: 105, base: 95000 },
-                { name: '6110M', pk: 110, base: 98000 },
-                { name: '6120M', pk: 120, base: 108000 },
-                { name: '6130M', pk: 130, base: 118000 },
-                { name: '6140M', pk: 140, base: 128000 },
-                { name: '6145M', pk: 145, base: 135000 },
-                { name: '6155M', pk: 155, base: 145000 },
+                { name: '6M 95', pk: 95, base: 88000 },
+                { name: '6M 105', pk: 105, base: 95000 },
+                { name: '6M 115', pk: 115, base: 102000 },
+                { name: '6M 125', pk: 125, base: 110000 },
+                { name: '6M 130', pk: 130, base: 118000 },
+                { name: '6M 140', pk: 140, base: 128000 },
+                { name: '6M 145', pk: 145, base: 135000 },
+                { name: '6M 150', pk: 150, base: 142000 },
+                { name: '6M 155', pk: 155, base: 150000 },
+                { name: '6M 165', pk: 165, base: 162000 },
+                { name: '6M 180', pk: 180, base: 178000 },
+                { name: '6M 185', pk: 185, base: 185000 },
+                { name: '6M 200', pk: 200, base: 198000 },
+                { name: '6M 220', pk: 220, base: 218000 },
+                { name: '6M 230', pk: 230, base: 235000 },
+                { name: '6M 240', pk: 240, base: 252000 },
+                { name: '6M 250', pk: 250, base: 268000 },
             ],
             '6R': [
-                { name: '6110R', pk: 110, base: 115000 },
-                { name: '6120R', pk: 120, base: 125000 },
-                { name: '6130R', pk: 130, base: 145000 },
-                { name: '6145R', pk: 145, base: 158000 },
-                { name: '6155R', pk: 155, base: 172000 },
-                { name: '6175R', pk: 175, base: 195000 },
-                { name: '6195R', pk: 195, base: 218000 },
-                { name: '6215R', pk: 215, base: 245000 },
-                { name: '6230R', pk: 230, base: 268000 },
-                { name: '6250R', pk: 250, base: 295000 },
+                { name: '6R 110', pk: 110, base: 115000 },
+                { name: '6R 120', pk: 120, base: 125000 },
+                { name: '6R 130', pk: 130, base: 138000 },
+                { name: '6R 140', pk: 140, base: 148000 },
+                { name: '6R 145', pk: 145, base: 158000 },
+                { name: '6R 150', pk: 150, base: 168000 },
+                { name: '6R 155', pk: 155, base: 178000 },
+                { name: '6R 165', pk: 165, base: 188000 },
+                { name: '6R 175', pk: 175, base: 198000 },
+                { name: '6R 185', pk: 185, base: 215000 },
+                { name: '6R 195', pk: 195, base: 232000 },
+                { name: '6R 215', pk: 215, base: 255000 },
+                { name: '6R 230', pk: 230, base: 278000 },
+                { name: '6R 250', pk: 250, base: 298000 },
             ],
             '7R': [
-                { name: '7R 210', pk: 210, base: 275000 },
-                { name: '7R 230', pk: 230, base: 298000 },
-                { name: '7R 250', pk: 250, base: 325000 },
-                { name: '7R 270', pk: 270, base: 355000 },
-                { name: '7R 290', pk: 290, base: 385000 },
-                { name: '7R 310', pk: 310, base: 415000 },
-                { name: '7R 330', pk: 330, base: 445000 },
-                { name: '7R 350', pk: 350, base: 485000 },
+                { name: '7R 270', pk: 270, base: 325000 },
+                { name: '7R 290', pk: 290, base: 355000 },
+                { name: '7R 310', pk: 310, base: 385000 },
+                { name: '7R 330', pk: 330, base: 415000 },
+                { name: '7R 350', pk: 350, base: 448000 },
             ],
             '8R': [
                 { name: '8R 280', pk: 280, base: 395000 },
                 { name: '8R 310', pk: 310, base: 425000 },
                 { name: '8R 340', pk: 340, base: 465000 },
                 { name: '8R 370', pk: 370, base: 505000 },
-                { name: '8R 410', pk: 410, base: 550000 },
+                { name: '8R 410', pk: 410, base: 545000 },
             ],
             '9R': [
-                { name: '9R 490', pk: 490, base: 580000 },
-                { name: '9R 540', pk: 540, base: 625000 },
-                { name: '9R 590', pk: 590, base: 680000 },
-                { name: '9R 640', pk: 640, base: 750000 },
+                { name: '9R 440', pk: 440, base: 565000 },
+                { name: '9R 490', pk: 490, base: 605000 },
+                { name: '9R 540', pk: 540, base: 655000 },
+                { name: '9R 590', pk: 590, base: 715000 },
+                { name: '9R 640', pk: 640, base: 785000 },
             ]
         };
 
         const optNames = {
             frontlader: 'Frontlader', gps: 'GPS / RTK', tls: 'TLS / Vering',
             '4wd': '4WD', airco: 'Airco', dubbel: 'Dubbele wielen',
-            fronthef: 'Fronthef', pto: 'PTO 540/1000', kipper: 'Driezijdige kipper', snel: 'Snelkoppeling'
+            fronthef: 'Fronthef', pto: 'PTO 540/1000', kipper: '3-zijdig kipper', snel: 'Snelkoppeling'
         };
 
         let results = [];
@@ -914,6 +886,7 @@
                     sel.appendChild(optgroup);
                 }
             });
+            document.getElementById('modelPreview').style.display = 'none';
         }
 
         function setupSeries() {
@@ -936,22 +909,18 @@
             });
         }
 
-        function showModelPreview() {
+        function showPreview() {
             const sel = document.getElementById('model');
             const preview = document.getElementById('modelPreview');
-            
-            if (!sel.value) {
-                preview.style.display = 'none';
-                return;
-            }
+            if (!sel.value) { preview.style.display = 'none'; return; }
 
             const m = JSON.parse(sel.value);
             const info = seriesInfo[m.series];
-            
             if (info) {
                 document.getElementById('previewImg').src = info.img;
                 document.getElementById('previewName').textContent = 'John Deere ' + m.name;
                 document.getElementById('previewPK').textContent = m.pk + ' PK · ' + m.series + ' Serie';
+                document.getElementById('previewDesc').textContent = info.desc;
                 document.getElementById('previewLink').href = info.url;
                 preview.style.display = 'flex';
             }
@@ -980,10 +949,7 @@
             const year = parseInt(document.getElementById('year').value);
             const hours = parseInt(document.getElementById('hours').value);
 
-            if (!mData || !year || isNaN(hours)) {
-                alert('Vul alle velden in');
-                return;
-            }
+            if (!mData || !year || isNaN(hours)) { alert('Vul alle velden in'); return; }
 
             const m = JSON.parse(mData);
             const btn = document.getElementById('submitBtn');
@@ -995,25 +961,18 @@
                 const dep = depreciation(age);
                 let val = m.base * (1 - dep);
 
-                // Hours adjustment - verwachte uren is 600-800 per jaar
+                // Hours adjustment
                 const expectedHours = age * 700;
                 const hoursDiff = hours - expectedHours;
-                
-                // Per 1000 uur meer/minder dan verwacht: -3% / +2%
-                if (hoursDiff > 0) {
-                    // Meer uren dan verwacht = lagere waarde
-                    val *= (1 - (hoursDiff / 1000) * 0.03);
-                } else {
-                    // Minder uren dan verwacht = hogere waarde
-                    val *= (1 + (Math.abs(hoursDiff) / 1000) * 0.02);
-                }
+                if (hoursDiff > 0) val *= (1 - (hoursDiff / 1000) * 0.03);
+                else val *= (1 + (Math.abs(hoursDiff) / 1000) * 0.02);
 
-                // Options value
+                // Options
                 document.querySelectorAll('.option-btn.selected').forEach(b => {
                     val += parseInt(b.dataset.val) * (1 - dep * 0.6);
                 });
 
-                // Seasonal adjustment
+                // Seasonal
                 const mo = new Date().getMonth() + 1;
                 if (mo >= 3 && mo <= 5) val *= 1.05;
                 else if (mo >= 9 && mo <= 11) val *= 1.03;
@@ -1024,18 +983,13 @@
                 const sig = signal(age, hours);
 
                 results.unshift({
-                    id: Date.now(),
-                    model: m.name,
-                    year, hours, low, high, sig,
+                    id: Date.now(), model: m.name, year, hours, low, high, sig,
                     opts: Array.from(selectedOpts),
                     comps: Math.floor(Math.random() * 8) + 5,
                     time: new Date().toLocaleString('nl-NL')
                 });
 
-                save();
-                render();
-                stats();
-
+                save(); render(); stats();
                 btn.classList.remove('loading');
                 btn.innerHTML = '<span>⚡</span> Taxatie Berekenen';
             }, 700);
@@ -1071,17 +1025,8 @@
             `).join('');
         }
 
-        function del(id) {
-            results = results.filter(r => r.id !== id);
-            save(); render(); stats();
-        }
-
-        function clearAll() {
-            if (confirm('Alle taxaties wissen?')) {
-                results = [];
-                save(); render(); stats();
-            }
-        }
+        function del(id) { results = results.filter(r => r.id !== id); save(); render(); stats(); }
+        function clearAll() { if (confirm('Alle taxaties wissen?')) { results = []; save(); render(); stats(); } }
 
         function stats() {
             document.getElementById('countStat').textContent = results.length;
@@ -1094,10 +1039,36 @@
         }
 
         function save() { localStorage.setItem('traxator', JSON.stringify(results.slice(0, 20))); }
-        function load() {
-            const d = localStorage.getItem('traxator');
-            if (d) { results = JSON.parse(d); render(); stats(); }
+        function load() { const d = localStorage.getItem('traxator'); if (d) { results = JSON.parse(d); render(); stats(); } }
+
+        // Theme Toggle
+        function toggleTheme() {
+            const html = document.documentElement;
+            const currentTheme = html.getAttribute('data-theme');
+            const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+            html.setAttribute('data-theme', newTheme);
+            localStorage.setItem('traxator-theme', newTheme);
+            updateThemeButton(newTheme);
         }
+
+        function updateThemeButton(theme) {
+            const icon = document.getElementById('themeIcon');
+            const label = document.getElementById('themeLabel');
+            if (theme === 'light') {
+                icon.textContent = '☀️';
+                label.textContent = 'Light';
+            } else {
+                icon.textContent = '🌙';
+                label.textContent = 'Dark';
+            }
+        }
+
+        // Load saved theme
+        (function() {
+            const savedTheme = localStorage.getItem('traxator-theme') || 'dark';
+            document.documentElement.setAttribute('data-theme', savedTheme);
+            updateThemeButton(savedTheme);
+        })();
     </script>
 </body>
 </html>
