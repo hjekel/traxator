@@ -128,6 +128,40 @@
         @media (max-width: 500px) {
             .header-stats { display: none; }
             .header-title { font-size: 1rem; }
+            .header-badge { display: none; }
+            .header-subtitle { display: none; }
+            .header-right { width: 100%; justify-content: center; }
+            .header-controls { flex-wrap: wrap; justify-content: center; }
+        }
+
+        /* Rotate hint for portrait mobile */
+        .rotate-hint {
+            display: none;
+            background: rgba(255, 222, 0, 0.15);
+            border: 1px solid rgba(255, 222, 0, 0.4);
+            border-radius: 6px;
+            padding: 0.5rem 1rem;
+            margin: 0.5rem 1rem;
+            text-align: center;
+            color: var(--jd-yellow);
+            font-size: 0.75rem;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+
+        .rotate-hint .rotate-icon {
+            display: inline-block;
+            animation: rotate-pulse 2s ease-in-out infinite;
+        }
+
+        @keyframes rotate-pulse {
+            0%, 100% { transform: rotate(0deg); }
+            50% { transform: rotate(90deg); }
+        }
+
+        @media (max-width: 600px) and (orientation: portrait) {
+            .rotate-hint { display: flex; }
         }
 
         /* Series Nav */
@@ -664,6 +698,8 @@
                 <button class="ctrl-btn" onclick="setLang('en')" id="langEN" title="English">English</button>
                 <button class="ctrl-btn" onclick="setLang('nl')" id="langNL" title="Nederlands">Nederlands</button>
                 <button class="ctrl-btn" onclick="setLang('fy')" id="langFY" title="Frysk">Frysk</button>
+                <button class="ctrl-btn" onclick="setLang('br')" id="langBR" title="Brabants">Brabants</button>
+                <button class="ctrl-btn" onclick="setLang('gr')" id="langGR" title="Grunnegs">Grunnegs</button>
                 <button class="ctrl-btn" onclick="toggleTheme()" id="themeBtn">🌙</button>
             </div>
             <div class="header-stats" style="display:flex;gap:0.75rem;">
@@ -684,6 +720,12 @@
             </div>
         </div>
     </header>
+
+    <!-- Rotate hint for mobile portrait -->
+    <div class="rotate-hint">
+        <span class="rotate-icon">📱↻</span>
+        <span data-i18n="rotateHint">Rotate your phone for the best experience</span>
+    </div>
 
     <nav class="series-nav">
         <span class="series-label" data-i18n="models">Models:</span>
@@ -900,7 +942,8 @@
                 stopLabel: 'NICHE MARKET',
                 dealerLabel: 'Official dealer in the Netherlands',
                 dealerSlogan: 'Technology of tomorrow, Service of today',
-                dealerBtn: 'Visit Kraakman'
+                dealerBtn: 'Visit Kraakman',
+                rotateHint: 'Rotate your phone for the best experience'
             },
             nl: {
                 badge: 'EXCLUSIEF JOHN DEERE',
@@ -955,7 +998,8 @@
                 stopLabel: 'NICHE MARKT',
                 dealerLabel: 'Officiële dealer in Nederland',
                 dealerSlogan: 'Techniek van morgen, Service van vandaag',
-                dealerBtn: 'Bezoek Kraakman'
+                dealerBtn: 'Bezoek Kraakman',
+                rotateHint: 'Draai je telefoon voor de beste ervaring'
             },
             fy: {
                 badge: 'ALLINICH JOHN DEERE',
@@ -1010,7 +1054,120 @@
                 stopLabel: 'NICHEMERK',
                 dealerLabel: 'Offisjele dealer yn Nederlân',
                 dealerSlogan: 'Technyk fan moarn, Tsjinst fan hjoed',
-                dealerBtn: 'Besykje Kraakman'
+                dealerBtn: 'Besykje Kraakman',
+                rotateHint: 'Draai jo tillefoan foar it bêste resultaat'
+            },
+            br: {
+                badge: 'ALLÉÉN JOHN DEERE',
+                subtitle: 'AI-Powered Inruil Taxaosie',
+                statToday: 'Vandaog',
+                statAvg: 'Gemiddeld',
+                models: 'Modellen:',
+                all: 'Allemoal',
+                newVal: 'Nuuwe Taxaosie',
+                fillDetails: 'Vull de machine details in vur een directe weerdering',
+                brand: 'Merk',
+                model: 'Model',
+                selectModel: 'Kies nen model...',
+                year: 'Bouwjaor',
+                selectYear: 'Kies een jaor...',
+                hours: 'Drèèiuren',
+                hoursHint: 'Verplicht veld (max 50.000)',
+                options: 'Opties & Uutrusting',
+                optLoader: 'Veurlader',
+                optSusp: 'Vansen / Vering',
+                optAC: 'Erko',
+                optDual: 'Dubbele wielen',
+                optFront: 'Veurhef',
+                optTipper: '3-kantigen kieper',
+                optQuick: 'Snelkoppeling',
+                calculate: 'Taxaosie Berekenen',
+                tip: 'Tip:',
+                tipText: 'Nen taxaosie duurt gemiddeld 30 seconden. Doet alle opties derbij vur een beter weerdering.',
+                whyTitle: 'Waorom TraxaTor?',
+                whyDesc: 'TraxaTor analyseert real-time merktdata van Mascus, TractorPool en Ritchie Bros om de beste inruilweerde te bepaolen vur oewen John Deere trekker.',
+                feat1: 'Real-time prijzen',
+                feat2: '60+ modellen',
+                feat3: 'B2B weerdering',
+                feat4: 'Seizoenscorrectie',
+                history: 'Taxaosie Geschiedenis',
+                clearAll: 'Alles weg doen',
+                noResults: 'Nog gin taxaosies',
+                fillForm: 'Vull et formulier in om te beginnen',
+                demo: 'Demo - Prijzen zien indicatief',
+                viewJD: 'Bekiek op John Deere ↗',
+                alertFill: 'Vull alle verplichte velden in (*)',
+                alertHours: 'Uren mot tussen 0 en 50.000 zien',
+                confirmClear: 'Alle taxaosies wegdansen?',
+                valLabel: 'TAXAOSIEWEERDE (B2B)',
+                basedOn: 'Gebaseerd op',
+                machines: 'vergelijkbare machines',
+                go: 'GOON',
+                goLabel: 'POPULAIRE MACHINE',
+                caution: 'OPPASSEN',
+                cautionLabel: 'LET OP',
+                stop: 'HOU OP',
+                stopLabel: 'NICHEMARKT',
+                dealerLabel: 'Officiële dealer in Nederland',
+                dealerSlogan: 'Techniek van morge, Service van vandaog',
+                dealerBtn: 'Bekiek Kraakman',
+                rotateHint: 'Draai oewen mobielke vur de beste ervaring'
+            },
+            gr: {
+                badge: 'ALLENNEG JOHN DEERE',
+                subtitle: 'AI-Powered Inruul Taksaotsie',
+                statToday: 'Vandoag',
+                statAvg: 'Gemiddeld',
+                models: 'Modellen:',
+                all: 'Aalmoal',
+                newVal: 'Nij Taksaotsie',
+                fillDetails: 'Vul de maschien details in veur n direkten weerdebepaoling',
+                brand: 'Merk',
+                model: 'Model',
+                selectModel: 'Kais n model...',
+                year: 'Baauwjoar',
+                selectYear: 'Kais n joar...',
+                hours: 'Drèùren',
+                hoursHint: 'Verplicht veld (max 50.000)',
+                options: 'Opties & Uutrüsting',
+                optLoader: 'Veurlader',
+                optSusp: 'Veren',
+                optAC: 'Airco',
+                optDual: 'Dubbele ronden',
+                optFront: 'Veurhef',
+                optTipper: '3-kanten kieper',
+                optQuick: 'Snelkoppeln',
+                calculate: 'Taksaotsie Berekenen',
+                tip: 'Tip:',
+                tipText: 'n Taksaotsie duurt zo n 30 seconden. Dou alle opties derbie veur n sekuurder weerde.',
+                whyTitle: 'Woarom TraxaTor?',
+                whyDesc: 'TraxaTor analyseert real-time marktdata van Mascus, TractorPool en Ritchie Bros om de beste inruilweerde te bepaolen veur joen John Deere trekker.',
+                feat1: 'Real-time priezen',
+                feat2: '60+ modellen',
+                feat3: 'B2B weerdebepaoling',
+                feat4: 'Seizoenscorreksie',
+                history: 'Taksaotsie Geschiedenis',
+                clearAll: 'Alles votmaaken',
+                noResults: 'Nog gain taksaotsies',
+                fillForm: 'Vul t formulier in om te beginnen',
+                demo: 'Demo - Priezen binnen indicatief',
+                viewJD: 'Bekiek op John Deere ↗',
+                alertFill: 'Vul alle verplichte velden in (*)',
+                alertHours: 'Uren mout tussen 0 en 50.000 wezen',
+                confirmClear: 'Alle taksaotsies votmaaken?',
+                valLabel: 'TAKSAOTSIEWEERDE (B2B)',
+                basedOn: 'Baseert op',
+                machines: 'vergeliekboare maschienen',
+                go: 'GOAN',
+                goLabel: 'POPULAIRE MASCHIEN',
+                caution: 'OPPASSEN',
+                cautionLabel: 'LET OP',
+                stop: 'STOP',
+                stopLabel: 'NICHEMARKT',
+                dealerLabel: 'Officiële dealer in Nederland',
+                dealerSlogan: 'Techniek van mörn, Service van vandoag',
+                dealerBtn: 'Bekiek Kraakman',
+                rotateHint: 'Draai joe tillefoon veur t beste resultaat'
             }
         };
 
