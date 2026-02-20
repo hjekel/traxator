@@ -621,6 +621,17 @@
 
         .result-time { font-size: 0.6rem; color: var(--text-muted); }
 
+        .market-link {
+            color: var(--jd-green-light);
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+
+        .market-link:hover {
+            color: var(--jd-yellow);
+            text-decoration: underline;
+        }
+
         .btn-delete {
             background: none;
             border: none;
@@ -1474,27 +1485,41 @@
         }
 
         // ==================== RESULTS ====================
+        // Helper function to generate market search URLs
+        function getMarketUrls(model) {
+            // Clean model name for URL (e.g., "6R 185" -> "6r-185" or "6r+185")
+            const cleanModel = model.replace(/\s+/g, '-').toLowerCase();
+            const searchModel = model.replace(/\s+/g, '+');
+            return {
+                mascus: `https://www.mascus.nl/landbouw/tractoren/john_deere,${cleanModel},search.html`,
+                tractorpool: `https://www.traktorpool.nl/gebraucht/Traktoren-John-Deere.html?searchterm=${encodeURIComponent('John Deere ' + model)}`,
+                ritchiebros: `https://www.rbauction.nl/cp/equipment?keywords=${encodeURIComponent('John Deere ' + model)}`
+            };
+        }
+
         function render() {
             const el = document.getElementById('results');
             if (!results.length) {
                 el.innerHTML = `<div class="empty-state"><div class="empty-icon">🚜</div><div class="empty-title">${t('noResults')}</div><div class="empty-text">${t('fillForm')}</div></div>`;
                 return;
             }
-            el.innerHTML = results.map(r => `
+            el.innerHTML = results.map(r => {
+                const urls = getMarketUrls(r.model);
+                return `
                 <div class="result-card">
                     <div class="result-top">
                         <div class="result-machine">
                             <div class="result-icon">🚜</div>
                             <div>
                                 <div class="result-name">John Deere ${r.model}</div>
-                                <div class="result-specs">${r.year} · ${r.hours.toLocaleString()} ${currentLang === 'fy' ? 'oeren' : (currentLang === 'nl' ? 'uur' : 'hrs')}</div>
+                                <div class="result-specs">${r.year} · ${r.hours.toLocaleString()} ${currentLang === 'fy' ? 'oeren' : (currentLang === 'nl' || currentLang === 'br' ? 'uur' : (currentLang === 'gr' ? 'uur' : 'hrs'))}</div>
                             </div>
                         </div>
                         <span class="signal-badge ${r.sig.c}">✓ ${r.sig.t} — ${r.sig.l}</span>
                     </div>
                     <div class="result-label">${t('valLabel')}</div>
                     <div class="result-price">€ ${r.low.toLocaleString()} – € ${r.high.toLocaleString()}</div>
-                    <div class="result-meta">✓ ${t('basedOn')} ${r.comps} ${t('machines')} · Mascus · TractorPool · Ritchie Bros</div>
+                    <div class="result-meta">✓ ${t('basedOn')} ${r.comps} ${t('machines')} · <a href="${urls.mascus}" target="_blank" class="market-link">Mascus</a> · <a href="${urls.tractorpool}" target="_blank" class="market-link">TractorPool</a> · <a href="${urls.ritchiebros}" target="_blank" class="market-link">Ritchie Bros</a></div>
                     ${r.opts.length ? `<div class="result-options">${r.opts.map(o => `<span class="option-tag">${optNames[o] || o}</span>`).join('')}</div>` : ''}
                     <div class="result-footer">
                         <span class="result-time">⏱ ${r.time}</span>
