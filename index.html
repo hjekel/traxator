@@ -520,6 +520,123 @@
 
         @keyframes spin { to { transform: rotate(360deg); } }
 
+        /* Dealer Section */
+        .dealer-section {
+            margin-top: 1.25rem;
+            border-radius: 10px;
+            overflow: hidden;
+            border: 1px solid var(--border);
+        }
+
+        .dealer-hero {
+            width: 100%;
+            height: 160px;
+            object-fit: cover;
+            display: block;
+        }
+
+        .dealer-content {
+            background: linear-gradient(135deg, #1a5a1a 0%, #2d7a2d 50%, #367C2B 100%);
+            padding: 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .dealer-info {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .dealer-logo {
+            background: white;
+            padding: 0.5rem 0.75rem;
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .dealer-logo-kr {
+            background: #2d5a27;
+            color: #f5c518;
+            font-weight: 900;
+            font-size: 1.1rem;
+            padding: 0.3rem 0.5rem;
+            border-radius: 4px;
+        }
+
+        .dealer-logo-text {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .dealer-logo-name {
+            font-weight: 800;
+            font-size: 1rem;
+            color: #2d5a27;
+            letter-spacing: -0.5px;
+        }
+
+        .dealer-logo-sub {
+            font-size: 0.45rem;
+            color: #666;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .dealer-text {
+            color: white;
+        }
+
+        .dealer-label {
+            font-size: 0.6rem;
+            opacity: 0.85;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .dealer-title {
+            font-size: 0.95rem;
+            font-weight: 600;
+        }
+
+        .dealer-btn {
+            background: var(--jd-yellow);
+            color: #1a1a1a;
+            padding: 0.6rem 1.25rem;
+            border-radius: 6px;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 0.8rem;
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+            transition: all 0.2s;
+            white-space: nowrap;
+        }
+
+        .dealer-btn:hover {
+            background: #ffe44d;
+            transform: translateY(-1px);
+        }
+
+        @media (max-width: 600px) {
+            .dealer-content {
+                flex-direction: column;
+                text-align: center;
+            }
+            .dealer-info {
+                flex-direction: column;
+            }
+            .dealer-hero {
+                height: 120px;
+            }
+        }
+
         /* Footer */
         .footer { text-align: center; padding: 1rem; color: var(--text-muted); font-size: 0.7rem; }
         .footer a { color: var(--jd-green-light); text-decoration: none; }
@@ -665,6 +782,29 @@
                         </div>
                     </div>
                 </div>
+
+                <!-- Dealer Section -->
+                <div class="dealer-section">
+                    <img class="dealer-hero" src="https://www.deere.nl/assets/images/region-2/products/tractors/large/7r-series/7r330_joskin_slurry_tank_transport_dsc4879-large.jpg" alt="John Deere 6R met Joskin" onerror="this.src='https://images.unsplash.com/photo-1544197150-b99a580bb7a8?w=800&h=300&fit=crop'">
+                    <div class="dealer-content">
+                        <div class="dealer-info">
+                            <div class="dealer-logo">
+                                <div class="dealer-logo-kr">KR</div>
+                                <div class="dealer-logo-text">
+                                    <span class="dealer-logo-name">KRAAKMAN</span>
+                                    <span class="dealer-logo-sub">Landbouw-, Tuin- en Parkmachines</span>
+                                </div>
+                            </div>
+                            <div class="dealer-text">
+                                <div class="dealer-label" data-i18n="dealerLabel">Official dealer in the Netherlands</div>
+                                <div class="dealer-title" data-i18n="dealerSlogan">Technology of tomorrow, Service of today</div>
+                            </div>
+                        </div>
+                        <a href="https://kraakman.com/" target="_blank" class="dealer-btn">
+                            <span data-i18n="dealerBtn">Visit Kraakman</span> →
+                        </a>
+                    </div>
+                </div>
             </div>
         </div>
 
@@ -747,7 +887,10 @@
                 caution: 'CAUTION',
                 cautionLabel: 'ATTENTION',
                 stop: 'STOP',
-                stopLabel: 'NICHE MARKET'
+                stopLabel: 'NICHE MARKET',
+                dealerLabel: 'Official dealer in the Netherlands',
+                dealerSlogan: 'Technology of tomorrow, Service of today',
+                dealerBtn: 'Visit Kraakman'
             },
             nl: {
                 badge: 'EXCLUSIEF JOHN DEERE',
@@ -799,7 +942,10 @@
                 caution: 'LET OP',
                 cautionLabel: 'LET OP',
                 stop: 'STOP',
-                stopLabel: 'NICHE MARKT'
+                stopLabel: 'NICHE MARKT',
+                dealerLabel: 'Officiële dealer in Nederland',
+                dealerSlogan: 'Techniek van morgen, Service van vandaag',
+                dealerBtn: 'Bezoek Kraakman'
             },
             fy: {
                 badge: 'ALLINICH JOHN DEERE',
@@ -851,7 +997,10 @@
                 caution: 'OPSJITTE',
                 cautionLabel: 'LET OP',
                 stop: 'STOP',
-                stopLabel: 'NICHEMERK'
+                stopLabel: 'NICHEMERK',
+                dealerLabel: 'Offisjele dealer yn Nederlân',
+                dealerSlogan: 'Technyk fan moarn, Tsjinst fan hjoed',
+                dealerBtn: 'Besykje Kraakman'
             }
         };
 
