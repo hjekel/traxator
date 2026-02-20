@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>TraxaTor - AI-Powered Inruil Taxatie</title>
-    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🚜</text></svg>">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='12' fill='%23367C2B'/><ellipse cx='50' cy='52' rx='35' ry='30' fill='%23FFDE00'/><path d='M35 65 Q32 58 36 52 Q42 42 56 36 Q70 30 78 40 Q84 48 80 56 L74 52 Q70 46 62 44 Q50 40 42 50 Q36 56 40 62 Z' fill='%23367C2B'/><circle cx='66' cy='44' r='3' fill='%23367C2B'/><path d='M30 62 Q26 66 30 70 L36 66 Q32 62 30 62' fill='%23367C2B'/></svg>">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
 
@@ -195,6 +195,10 @@
             align-items: center;
             justify-content: center;
             font-size: 0.75rem;
+        }
+
+        .card-logo {
+            flex-shrink: 0;
         }
 
         .card-title { font-size: 0.9rem; font-weight: 600; }
@@ -657,9 +661,9 @@
 
         <div class="header-right">
             <div class="header-controls">
-                <button class="ctrl-btn" onclick="setLang('en')" id="langEN" title="English">🇬🇧 EN</button>
-                <button class="ctrl-btn" onclick="setLang('nl')" id="langNL" title="Nederlands">🇳🇱 NL</button>
-                <button class="ctrl-btn" onclick="setLang('fy')" id="langFY" title="Frysk">🐄 FY</button>
+                <button class="ctrl-btn" onclick="setLang('en')" id="langEN" title="English">English</button>
+                <button class="ctrl-btn" onclick="setLang('nl')" id="langNL" title="Nederlands">Nederlands</button>
+                <button class="ctrl-btn" onclick="setLang('fy')" id="langFY" title="Frysk">Frysk</button>
                 <button class="ctrl-btn" onclick="toggleTheme()" id="themeBtn">🌙</button>
             </div>
             <div class="header-stats" style="display:flex;gap:0.75rem;">
@@ -696,7 +700,13 @@
     <main class="main">
         <div class="card">
             <div class="card-header">
-                <div class="card-icon">📝</div>
+                <svg class="card-logo" viewBox="0 0 80 80" width="28" height="28">
+                    <rect width="80" height="80" rx="8" fill="#367C2B"/>
+                    <ellipse cx="40" cy="42" rx="28" ry="24" fill="#FFDE00"/>
+                    <path d="M30 52 Q28 48 30 44 Q34 36 44 32 Q54 28 60 34 Q64 38 62 44 L58 42 Q56 38 50 36 Q42 34 36 40 Q32 44 34 48 Z" fill="#367C2B"/>
+                    <circle cx="52" cy="38" r="2" fill="#367C2B"/>
+                    <path d="M26 50 Q24 52 26 54 L30 52 Q28 50 26 50" fill="#367C2B"/>
+                </svg>
                 <span class="card-title" data-i18n="newVal">New Valuation</span>
             </div>
             <div class="card-body">
