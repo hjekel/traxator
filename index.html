@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>TraxaTor - AI-Powered Inruil Taxatie</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🚜</text></svg>">
     <style>
         * {
             margin: 0;
@@ -627,7 +628,10 @@
         </div>
 
         <div class="header-center">
-            <img src="john-deere-logo.png" alt="John Deere" class="header-logo">
+            <img src="john-deere-logo.png" alt="JOHN DEERE" class="header-logo" onerror="this.style.display='none'; document.getElementById('logoFallback').style.display='block';">
+            <div id="logoFallback" style="display:none; text-align:center;">
+                <div style="font-size:1.8rem; font-weight:800; color:white; letter-spacing:2px;">JOHN DEERE</div>
+            </div>
         </div>
 
         <div class="header-stats">
@@ -991,10 +995,25 @@
                 const dep = depreciation(age);
                 let val = m.base * (1 - dep);
 
+                // Hours adjustment - verwachte uren is 600-800 per jaar
+                const expectedHours = age * 700;
+                const hoursDiff = hours - expectedHours;
+                
+                // Per 1000 uur meer/minder dan verwacht: -3% / +2%
+                if (hoursDiff > 0) {
+                    // Meer uren dan verwacht = lagere waarde
+                    val *= (1 - (hoursDiff / 1000) * 0.03);
+                } else {
+                    // Minder uren dan verwacht = hogere waarde
+                    val *= (1 + (Math.abs(hoursDiff) / 1000) * 0.02);
+                }
+
+                // Options value
                 document.querySelectorAll('.option-btn.selected').forEach(b => {
                     val += parseInt(b.dataset.val) * (1 - dep * 0.6);
                 });
 
+                // Seasonal adjustment
                 const mo = new Date().getMonth() + 1;
                 if (mo >= 3 && mo <= 5) val *= 1.05;
                 else if (mo >= 9 && mo <= 11) val *= 1.03;
