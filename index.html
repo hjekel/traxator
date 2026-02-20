@@ -1,0 +1,1084 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TraxaTor - AI-Powered Inruil Taxatie</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --jd-green: #367C2B;
+            --jd-green-light: #4CAF50;
+            --jd-yellow: #FFDE00;
+            --bg-dark: #1e2330;
+            --bg-darker: #171c28;
+            --bg-card: #252d3a;
+            --bg-input: #2a3441;
+            --border-color: #3a4555;
+            --text-white: #ffffff;
+            --text-gray: #9ca3af;
+            --text-muted: #6b7280;
+            --success: #22c55e;
+            --success-light: #4ade80;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: var(--bg-darker);
+            min-height: 100vh;
+            color: var(--text-white);
+        }
+
+        /* Header - Green bar */
+        .header {
+            background: var(--jd-green);
+            padding: 0.75rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .header-icon {
+            width: 44px;
+            height: 44px;
+            background: var(--jd-yellow);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+        }
+
+        .header-title {
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: white;
+        }
+
+        .header-badge {
+            display: inline-block;
+            background: rgba(255,255,255,0.2);
+            padding: 0.2rem 0.6rem;
+            border-radius: 4px;
+            font-size: 0.65rem;
+            font-weight: 600;
+            margin-left: 0.75rem;
+            vertical-align: middle;
+        }
+
+        .header-subtitle {
+            font-size: 0.8rem;
+            opacity: 0.9;
+        }
+
+        .header-center {
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        .header-logo {
+            height: 55px;
+            filter: brightness(0) invert(1);
+        }
+
+        .header-stats {
+            display: flex;
+            gap: 2rem;
+        }
+
+        .stat {
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+        }
+
+        .stat-icon {
+            font-size: 1.5rem;
+        }
+
+        .stat-value {
+            font-size: 1.1rem;
+            font-weight: 700;
+        }
+
+        .stat-label {
+            font-size: 0.7rem;
+            opacity: 0.85;
+        }
+
+        /* Series Navigation */
+        .series-nav {
+            background: var(--bg-dark);
+            padding: 0.75rem 2rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .series-label {
+            color: var(--text-gray);
+            font-size: 0.85rem;
+        }
+
+        .series-btn {
+            padding: 0.4rem 0.9rem;
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            color: var(--text-gray);
+            font-size: 0.8rem;
+            cursor: pointer;
+            transition: all 0.15s;
+        }
+
+        .series-btn:hover {
+            border-color: var(--jd-green);
+            color: white;
+        }
+
+        .series-btn.active {
+            background: var(--jd-green);
+            border-color: var(--jd-green);
+            color: white;
+        }
+
+        /* Main Content */
+        .main {
+            display: grid;
+            grid-template-columns: 1fr 380px;
+            gap: 1.5rem;
+            padding: 1.5rem 2rem;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        @media (max-width: 1100px) {
+            .main {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Card Style */
+        .card {
+            background: var(--bg-card);
+            border-radius: 12px;
+            overflow: hidden;
+        }
+
+        .card-header {
+            padding: 1rem 1.25rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .card-icon {
+            width: 28px;
+            height: 28px;
+            background: var(--jd-green);
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.9rem;
+        }
+
+        .card-title {
+            font-size: 1rem;
+            font-weight: 600;
+        }
+
+        .card-body {
+            padding: 1.25rem;
+        }
+
+        .card-subtitle {
+            color: var(--text-muted);
+            font-size: 0.85rem;
+            margin-bottom: 1.25rem;
+        }
+
+        /* Model Preview */
+        .model-preview {
+            display: flex;
+            gap: 1rem;
+            padding: 1rem;
+            background: var(--bg-input);
+            border-radius: 10px;
+            margin-top: 1rem;
+            margin-bottom: 0.5rem;
+            border: 1px solid var(--border-color);
+        }
+
+        .model-preview img {
+            width: 120px;
+            height: 80px;
+            object-fit: cover;
+            border-radius: 8px;
+        }
+
+        .preview-info {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            gap: 0.25rem;
+        }
+
+        .preview-name {
+            font-weight: 600;
+            font-size: 1rem;
+        }
+
+        .preview-pk {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+        }
+
+        .preview-link {
+            font-size: 0.75rem;
+            color: var(--jd-green-light);
+            text-decoration: none;
+            margin-top: 0.25rem;
+        }
+
+        .preview-link:hover {
+            text-decoration: underline;
+        }
+
+        /* Form Grid */
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.25rem;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.4rem;
+        }
+
+        .form-label {
+            font-size: 0.75rem;
+            color: var(--text-gray);
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+        }
+
+        .form-control {
+            padding: 0.7rem 0.9rem;
+            background: var(--bg-input);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            color: white;
+            font-size: 0.95rem;
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: var(--jd-green);
+        }
+
+        .form-control::placeholder {
+            color: var(--text-muted);
+        }
+
+        .form-hint {
+            font-size: 0.7rem;
+            color: var(--text-muted);
+        }
+
+        /* Options Grid - 5 columns like original */
+        .options-section {
+            margin-top: 1.25rem;
+        }
+
+        .options-grid {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 0.6rem;
+            margin-top: 0.5rem;
+        }
+
+        @media (max-width: 800px) {
+            .options-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+
+        .option-btn {
+            padding: 0.6rem 0.5rem;
+            background: var(--bg-input);
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            color: var(--text-gray);
+            font-size: 0.8rem;
+            cursor: pointer;
+            transition: all 0.15s;
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+        }
+
+        .option-btn::before {
+            content: '';
+            width: 14px;
+            height: 14px;
+            border: 1px solid var(--border-color);
+            border-radius: 3px;
+            flex-shrink: 0;
+        }
+
+        .option-btn:hover {
+            border-color: var(--jd-green);
+        }
+
+        .option-btn.selected {
+            background: rgba(54, 124, 43, 0.15);
+            border-color: var(--jd-green);
+            color: white;
+        }
+
+        .option-btn.selected::before {
+            background: var(--jd-green);
+            border-color: var(--jd-green);
+        }
+
+        /* Submit Button - Green like original */
+        .btn-submit {
+            width: 100%;
+            padding: 0.9rem;
+            background: var(--jd-green);
+            border: none;
+            border-radius: 8px;
+            color: white;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            margin-top: 1.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            transition: all 0.2s;
+        }
+
+        .btn-submit:hover {
+            background: var(--jd-green-light);
+        }
+
+        .btn-submit.loading {
+            opacity: 0.7;
+            pointer-events: none;
+        }
+
+        /* Tip Box - Yellow accent */
+        .tip-box {
+            background: rgba(255, 222, 0, 0.08);
+            border: 1px solid rgba(255, 222, 0, 0.25);
+            border-radius: 8px;
+            padding: 0.9rem;
+            margin-top: 1.25rem;
+            display: flex;
+            gap: 0.6rem;
+        }
+
+        .tip-icon {
+            font-size: 1.1rem;
+        }
+
+        .tip-text {
+            font-size: 0.8rem;
+            color: var(--text-gray);
+        }
+
+        .tip-text strong {
+            color: var(--jd-yellow);
+        }
+
+        /* Results Panel */
+        .results-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+        }
+
+        .clear-btn {
+            background: none;
+            border: none;
+            color: var(--text-muted);
+            font-size: 0.8rem;
+            cursor: pointer;
+        }
+
+        .clear-btn:hover {
+            color: #ef4444;
+        }
+
+        .results-list {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+
+        /* Result Card - Matching original */
+        .result-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 1rem;
+        }
+
+        .result-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 0.75rem;
+        }
+
+        .result-machine {
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+        }
+
+        .result-icon {
+            width: 36px;
+            height: 36px;
+            background: var(--jd-green);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.1rem;
+        }
+
+        .result-name {
+            font-weight: 600;
+            font-size: 0.95rem;
+        }
+
+        .result-specs {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+        }
+
+        .signal-badge {
+            padding: 0.35rem 0.6rem;
+            border-radius: 5px;
+            font-size: 0.65rem;
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+
+        .signal-go {
+            background: rgba(34, 197, 94, 0.15);
+            color: var(--success);
+        }
+
+        .signal-caution {
+            background: rgba(245, 158, 11, 0.15);
+            color: #f59e0b;
+        }
+
+        .signal-stop {
+            background: rgba(239, 68, 68, 0.15);
+            color: #ef4444;
+        }
+
+        .result-label {
+            font-size: 0.65rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+            margin-bottom: 0.2rem;
+        }
+
+        .result-price {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--success-light);
+            margin-bottom: 0.3rem;
+        }
+
+        .result-meta {
+            font-size: 0.7rem;
+            color: var(--text-muted);
+            margin-bottom: 0.75rem;
+        }
+
+        .result-options {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.4rem;
+            margin-bottom: 0.75rem;
+        }
+
+        .option-tag {
+            padding: 0.2rem 0.5rem;
+            background: var(--bg-input);
+            border-radius: 4px;
+            font-size: 0.7rem;
+            color: var(--text-gray);
+        }
+
+        .result-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-top: 0.6rem;
+            border-top: 1px solid var(--border-color);
+        }
+
+        .result-time {
+            font-size: 0.7rem;
+            color: var(--text-muted);
+        }
+
+        .btn-delete {
+            background: none;
+            border: none;
+            color: var(--text-muted);
+            cursor: pointer;
+            font-size: 0.9rem;
+        }
+
+        .btn-delete:hover {
+            color: #ef4444;
+        }
+
+        /* Empty State */
+        .empty-state {
+            text-align: center;
+            padding: 2.5rem 1rem;
+            color: var(--text-muted);
+        }
+
+        .empty-icon {
+            font-size: 2.5rem;
+            margin-bottom: 0.75rem;
+            opacity: 0.5;
+        }
+
+        .empty-title {
+            color: var(--text-gray);
+            font-size: 0.95rem;
+            margin-bottom: 0.3rem;
+        }
+
+        .empty-text {
+            font-size: 0.8rem;
+        }
+
+        /* Spinner */
+        .spinner {
+            width: 18px;
+            height: 18px;
+            border: 2px solid rgba(255,255,255,0.3);
+            border-top-color: white;
+            border-radius: 50%;
+            animation: spin 0.7s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* Footer */
+        .footer {
+            text-align: center;
+            padding: 1.5rem;
+            color: var(--text-muted);
+            font-size: 0.8rem;
+        }
+
+        .footer a {
+            color: var(--jd-green-light);
+            text-decoration: none;
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="header-left">
+            <div class="header-icon">🚜</div>
+            <div>
+                <div class="header-title">
+                    TraxaTor
+                    <span class="header-badge">EXCLUSIEF JOHN DEERE</span>
+                </div>
+                <div class="header-subtitle">AI-Powered Inruil Taxatie</div>
+            </div>
+        </div>
+
+        <div class="header-center">
+            <img src="john-deere-logo.png" alt="John Deere" class="header-logo">
+        </div>
+
+        <div class="header-stats">
+            <div class="stat">
+                <span class="stat-icon">📊</span>
+                <div>
+                    <div class="stat-value" id="countStat">0</div>
+                    <div class="stat-label">Taxaties vandaag</div>
+                </div>
+            </div>
+            <div class="stat">
+                <span class="stat-icon">💰</span>
+                <div>
+                    <div class="stat-value" id="avgStat">€ 0</div>
+                    <div class="stat-label">Gemiddelde waarde</div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <nav class="series-nav">
+        <span class="series-label">Modellen:</span>
+        <button class="series-btn active" data-series="all">Alle</button>
+        <button class="series-btn" data-series="5E">5E Serie</button>
+        <button class="series-btn" data-series="5M">5M Serie</button>
+        <button class="series-btn" data-series="6M">6M Serie</button>
+        <button class="series-btn" data-series="6R">6R Serie</button>
+        <button class="series-btn" data-series="7R">7R Serie</button>
+        <button class="series-btn" data-series="8R">8R Serie</button>
+        <button class="series-btn" data-series="9R">9R Serie</button>
+    </nav>
+
+    <main class="main">
+        <div class="card">
+            <div class="card-header">
+                <div class="card-icon">📝</div>
+                <span class="card-title">Nieuwe Taxatie</span>
+            </div>
+            <div class="card-body">
+                <p class="card-subtitle">Vul de machine details in voor een directe waardering</p>
+
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label class="form-label">Merk</label>
+                        <select class="form-control" disabled>
+                            <option>John Deere</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Model</label>
+                        <select class="form-control" id="model" onchange="showModelPreview()">
+                            <option value="">Selecteer model...</option>
+                        </select>
+                        <span class="form-hint">Model is verplicht</span>
+                    </div>
+                </div>
+
+                <!-- Model Preview -->
+                <div id="modelPreview" class="model-preview" style="display:none;">
+                    <img id="previewImg" src="" alt="Tractor">
+                    <div class="preview-info">
+                        <div id="previewName" class="preview-name"></div>
+                        <div id="previewPK" class="preview-pk"></div>
+                        <a id="previewLink" href="#" target="_blank" class="preview-link">Bekijk op John Deere ↗</a>
+                    </div>
+                </div>
+
+                <div class="form-grid" style="margin-top:1.25rem;">
+                    <div class="form-group">
+                        <label class="form-label">Bouwjaar</label>
+                        <select class="form-control" id="year">
+                            <option value="">Selecteer jaar...</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Draaiuren</label>
+                        <input type="number" class="form-control" id="hours" placeholder="bijv. 4200">
+                        <span class="form-hint">Voer een geldig aantal draaiuren in</span>
+                    </div>
+                </div>
+
+                <div class="options-section">
+                    <label class="form-label">Opties & Uitrusting</label>
+                    <div class="options-grid">
+                        <button class="option-btn" data-opt="frontlader" data-val="9000">Frontlader</button>
+                        <button class="option-btn" data-opt="gps" data-val="12000">GPS / RTK</button>
+                        <button class="option-btn" data-opt="tls" data-val="2500">TLS / Vering</button>
+                        <button class="option-btn" data-opt="4wd" data-val="1500">4WD</button>
+                        <button class="option-btn" data-opt="airco" data-val="1200">Airco</button>
+                        <button class="option-btn" data-opt="dubbel" data-val="2000">Dubbele wielen</button>
+                        <button class="option-btn" data-opt="fronthef" data-val="3000">Fronthef</button>
+                        <button class="option-btn" data-opt="pto" data-val="3500">PTO 540/1000</button>
+                        <button class="option-btn" data-opt="kipper" data-val="2500">Driezijdige kipper</button>
+                        <button class="option-btn" data-opt="snel" data-val="1500">Snelkoppeling</button>
+                    </div>
+                </div>
+
+                <button class="btn-submit" id="submitBtn" onclick="calculate()">
+                    <span>⚡</span> Taxatie Berekenen
+                </button>
+
+                <div class="tip-box">
+                    <span class="tip-icon">💡</span>
+                    <p class="tip-text"><strong>Tip:</strong> Een taxatie duurt gemiddeld 30 seconden. Voeg alle opties toe voor een nauwkeurigere waardebepaling.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-header">
+                <div class="results-header">
+                    <div style="display:flex;align-items:center;gap:0.75rem;">
+                        <div class="card-icon">📋</div>
+                        <span class="card-title">Taxatie Geschiedenis</span>
+                    </div>
+                    <button class="clear-btn" onclick="clearAll()">🗑️ Alles wissen</button>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="results-list" id="results">
+                    <div class="empty-state">
+                        <div class="empty-icon">🚜</div>
+                        <div class="empty-title">Nog geen taxaties</div>
+                        <div class="empty-text">Vul het formulier in om te beginnen</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer class="footer">
+        TraxaTor © 2025 · <a href="https://github.com/hjekel/taxator">GitHub</a> · Demo - Prijzen zijn indicatief
+    </footer>
+
+    <script>
+        // Series info with images and links
+        const seriesInfo = {
+            '5E': { 
+                label: '5E Serie (55-75 PK)', 
+                pkRange: '55-75',
+                img: 'https://www.deere.nl/assets/images/region-2/tractors/small/5058e-r2g082752-large.jpg',
+                url: 'https://www.deere.nl/nl/tractoren/compacte/5e-3-cilinder/'
+            },
+            '5M': { 
+                label: '5M Serie (75-135 PK)', 
+                pkRange: '75-135',
+                img: 'https://www.deere.nl/assets/images/region-2/products/tractor/5m-new/5m-r2g072715.jpg',
+                url: 'https://www.deere.nl/nl/tractoren/compacte/5m-serie/'
+            },
+            '6M': { 
+                label: '6M Serie (105-275 PK)', 
+                pkRange: '105-275',
+                img: 'https://www.deere.nl/assets/images/region-2/products/tractors/mid/6m-series/6m-series-r2g077597.jpg',
+                url: 'https://www.deere.nl/nl/tractoren/middelgrote/6m-serie/'
+            },
+            '6R': { 
+                label: '6R Serie (121-275 PK)', 
+                pkRange: '121-275',
+                img: 'https://www.deere.nl/assets/images/region-2/products/tractors/mid/6r-series/6r-series-new/6r-r2g030671-large.jpg',
+                url: 'https://www.deere.nl/nl/tractoren/middelgrote/6r-serie/'
+            },
+            '7R': { 
+                label: '7R Serie (297-385 PK)', 
+                pkRange: '297-385',
+                img: 'https://www.deere.nl/assets/images/region-2/products/tractors/large/7r-series/7r330_joskin_slurry_tank_transport_dsc4879-large.jpg',
+                url: 'https://www.deere.nl/nl/tractoren/grote/7-serie/'
+            },
+            '8R': { 
+                label: '8R Serie (308-443 PK)', 
+                pkRange: '308-443',
+                img: 'https://www.deere.nl/assets/images/region-2/products/tractors/large/7r-series/8r340_lemken_seeder_frontpacker_dsc6596-large.jpg',
+                url: 'https://www.deere.nl/nl/tractoren/grote/8-serie/'
+            },
+            '9R': { 
+                label: '9R Serie (484-691 PK)', 
+                pkRange: '484-691',
+                img: 'https://www.deere.nl/assets/images/region-2/tractors/large/9r-series/r4g080024-large.jpg',
+                url: 'https://www.deere.nl/nl/tractoren/grote/9-serie/'
+            }
+        };
+
+        const models = {
+            '5E': [
+                { name: '5055E', pk: 55, base: 38000 },
+                { name: '5065E', pk: 65, base: 42000 },
+                { name: '5075E', pk: 75, base: 48000 },
+            ],
+            '5M': [
+                { name: '5075M', pk: 75, base: 65000 },
+                { name: '5090M', pk: 90, base: 75000 },
+                { name: '5100M', pk: 100, base: 82000 },
+                { name: '5115M', pk: 115, base: 92000 },
+                { name: '5125M', pk: 125, base: 102000 },
+            ],
+            '6M': [
+                { name: '6105M', pk: 105, base: 95000 },
+                { name: '6110M', pk: 110, base: 98000 },
+                { name: '6120M', pk: 120, base: 108000 },
+                { name: '6130M', pk: 130, base: 118000 },
+                { name: '6140M', pk: 140, base: 128000 },
+                { name: '6145M', pk: 145, base: 135000 },
+                { name: '6155M', pk: 155, base: 145000 },
+            ],
+            '6R': [
+                { name: '6110R', pk: 110, base: 115000 },
+                { name: '6120R', pk: 120, base: 125000 },
+                { name: '6130R', pk: 130, base: 145000 },
+                { name: '6145R', pk: 145, base: 158000 },
+                { name: '6155R', pk: 155, base: 172000 },
+                { name: '6175R', pk: 175, base: 195000 },
+                { name: '6195R', pk: 195, base: 218000 },
+                { name: '6215R', pk: 215, base: 245000 },
+                { name: '6230R', pk: 230, base: 268000 },
+                { name: '6250R', pk: 250, base: 295000 },
+            ],
+            '7R': [
+                { name: '7R 210', pk: 210, base: 275000 },
+                { name: '7R 230', pk: 230, base: 298000 },
+                { name: '7R 250', pk: 250, base: 325000 },
+                { name: '7R 270', pk: 270, base: 355000 },
+                { name: '7R 290', pk: 290, base: 385000 },
+                { name: '7R 310', pk: 310, base: 415000 },
+                { name: '7R 330', pk: 330, base: 445000 },
+                { name: '7R 350', pk: 350, base: 485000 },
+            ],
+            '8R': [
+                { name: '8R 280', pk: 280, base: 395000 },
+                { name: '8R 310', pk: 310, base: 425000 },
+                { name: '8R 340', pk: 340, base: 465000 },
+                { name: '8R 370', pk: 370, base: 505000 },
+                { name: '8R 410', pk: 410, base: 550000 },
+            ],
+            '9R': [
+                { name: '9R 490', pk: 490, base: 580000 },
+                { name: '9R 540', pk: 540, base: 625000 },
+                { name: '9R 590', pk: 590, base: 680000 },
+                { name: '9R 640', pk: 640, base: 750000 },
+            ]
+        };
+
+        const optNames = {
+            frontlader: 'Frontlader', gps: 'GPS / RTK', tls: 'TLS / Vering',
+            '4wd': '4WD', airco: 'Airco', dubbel: 'Dubbele wielen',
+            fronthef: 'Fronthef', pto: 'PTO 540/1000', kipper: 'Driezijdige kipper', snel: 'Snelkoppeling'
+        };
+
+        let results = [];
+        let selectedOpts = new Set();
+
+        document.addEventListener('DOMContentLoaded', () => {
+            fillYears();
+            fillModels('all');
+            setupSeries();
+            setupOptions();
+            load();
+        });
+
+        function fillYears() {
+            const sel = document.getElementById('year');
+            const now = new Date().getFullYear();
+            for (let y = now; y >= 2000; y--) {
+                sel.innerHTML += `<option value="${y}">${y}</option>`;
+            }
+        }
+
+        function fillModels(series) {
+            const sel = document.getElementById('model');
+            sel.innerHTML = '<option value="">Selecteer model...</option>';
+            const list = series === 'all' ? Object.keys(models) : [series];
+            list.forEach(s => {
+                if (models[s] && seriesInfo[s]) {
+                    const optgroup = document.createElement('optgroup');
+                    optgroup.label = seriesInfo[s].label;
+                    models[s].forEach(m => {
+                        const opt = document.createElement('option');
+                        opt.value = JSON.stringify({...m, series: s});
+                        opt.textContent = m.name;
+                        optgroup.appendChild(opt);
+                    });
+                    sel.appendChild(optgroup);
+                }
+            });
+        }
+
+        function setupSeries() {
+            document.querySelectorAll('.series-btn').forEach(btn => {
+                btn.onclick = () => {
+                    document.querySelectorAll('.series-btn').forEach(b => b.classList.remove('active'));
+                    btn.classList.add('active');
+                    fillModels(btn.dataset.series);
+                };
+            });
+        }
+
+        function setupOptions() {
+            document.querySelectorAll('.option-btn').forEach(btn => {
+                btn.onclick = () => {
+                    btn.classList.toggle('selected');
+                    const opt = btn.dataset.opt;
+                    btn.classList.contains('selected') ? selectedOpts.add(opt) : selectedOpts.delete(opt);
+                };
+            });
+        }
+
+        function showModelPreview() {
+            const sel = document.getElementById('model');
+            const preview = document.getElementById('modelPreview');
+            
+            if (!sel.value) {
+                preview.style.display = 'none';
+                return;
+            }
+
+            const m = JSON.parse(sel.value);
+            const info = seriesInfo[m.series];
+            
+            if (info) {
+                document.getElementById('previewImg').src = info.img;
+                document.getElementById('previewName').textContent = 'John Deere ' + m.name;
+                document.getElementById('previewPK').textContent = m.pk + ' PK · ' + m.series + ' Serie';
+                document.getElementById('previewLink').href = info.url;
+                preview.style.display = 'flex';
+            }
+        }
+
+        function depreciation(age) {
+            let dep = 0;
+            for (let i = 1; i <= age; i++) {
+                if (i === 1) dep += 0.18;
+                else if (i <= 3) dep += 0.12;
+                else if (i <= 6) dep += 0.08;
+                else if (i <= 10) dep += 0.05;
+                else dep += 0.03;
+            }
+            return Math.min(dep, 0.85);
+        }
+
+        function signal(age, hours) {
+            if (age <= 12 && hours <= 10000) return { t: 'GO', l: 'COURANTE MACHINE', c: 'signal-go' };
+            if (age > 18 || hours > 15000) return { t: 'STOP', l: 'NICHE MARKT', c: 'signal-stop' };
+            return { t: 'CAUTION', l: 'LET OP', c: 'signal-caution' };
+        }
+
+        function calculate() {
+            const mData = document.getElementById('model').value;
+            const year = parseInt(document.getElementById('year').value);
+            const hours = parseInt(document.getElementById('hours').value);
+
+            if (!mData || !year || isNaN(hours)) {
+                alert('Vul alle velden in');
+                return;
+            }
+
+            const m = JSON.parse(mData);
+            const btn = document.getElementById('submitBtn');
+            btn.classList.add('loading');
+            btn.innerHTML = '<div class="spinner"></div> Berekenen...';
+
+            setTimeout(() => {
+                const age = new Date().getFullYear() - year;
+                const dep = depreciation(age);
+                let val = m.base * (1 - dep);
+
+                document.querySelectorAll('.option-btn.selected').forEach(b => {
+                    val += parseInt(b.dataset.val) * (1 - dep * 0.6);
+                });
+
+                const mo = new Date().getMonth() + 1;
+                if (mo >= 3 && mo <= 5) val *= 1.05;
+                else if (mo >= 9 && mo <= 11) val *= 1.03;
+                else if (mo === 12 || mo <= 2) val *= 0.95;
+
+                const low = Math.round(val * 0.94);
+                const high = Math.round(val * 1.06);
+                const sig = signal(age, hours);
+
+                results.unshift({
+                    id: Date.now(),
+                    model: m.name,
+                    year, hours, low, high, sig,
+                    opts: Array.from(selectedOpts),
+                    comps: Math.floor(Math.random() * 8) + 5,
+                    time: new Date().toLocaleString('nl-NL')
+                });
+
+                save();
+                render();
+                stats();
+
+                btn.classList.remove('loading');
+                btn.innerHTML = '<span>⚡</span> Taxatie Berekenen';
+            }, 700);
+        }
+
+        function render() {
+            const el = document.getElementById('results');
+            if (!results.length) {
+                el.innerHTML = `<div class="empty-state"><div class="empty-icon">🚜</div><div class="empty-title">Nog geen taxaties</div><div class="empty-text">Vul het formulier in om te beginnen</div></div>`;
+                return;
+            }
+            el.innerHTML = results.map(r => `
+                <div class="result-card">
+                    <div class="result-top">
+                        <div class="result-machine">
+                            <div class="result-icon">🚜</div>
+                            <div>
+                                <div class="result-name">John Deere ${r.model}</div>
+                                <div class="result-specs">${r.year} · ${r.hours.toLocaleString()} uur</div>
+                            </div>
+                        </div>
+                        <span class="signal-badge ${r.sig.c}">✓ ${r.sig.t} — ${r.sig.l}</span>
+                    </div>
+                    <div class="result-label">TAXATIEWAARDE (B2B)</div>
+                    <div class="result-price">€ ${r.low.toLocaleString()} – € ${r.high.toLocaleString()}</div>
+                    <div class="result-meta">✓ Gebaseerd op ${r.comps} vergelijkbare machines · Mascus NL · TractorPool · Ritchie Bros</div>
+                    ${r.opts.length ? `<div class="result-options">${r.opts.map(o => `<span class="option-tag">${optNames[o]}</span>`).join('')}</div>` : ''}
+                    <div class="result-footer">
+                        <span class="result-time">⏱ ${r.time}</span>
+                        <button class="btn-delete" onclick="del(${r.id})">🗑️</button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function del(id) {
+            results = results.filter(r => r.id !== id);
+            save(); render(); stats();
+        }
+
+        function clearAll() {
+            if (confirm('Alle taxaties wissen?')) {
+                results = [];
+                save(); render(); stats();
+            }
+        }
+
+        function stats() {
+            document.getElementById('countStat').textContent = results.length;
+            if (results.length) {
+                const avg = results.reduce((s, r) => s + (r.low + r.high) / 2, 0) / results.length;
+                document.getElementById('avgStat').textContent = '€ ' + Math.round(avg).toLocaleString();
+            } else {
+                document.getElementById('avgStat').textContent = '€ 0';
+            }
+        }
+
+        function save() { localStorage.setItem('traxator', JSON.stringify(results.slice(0, 20))); }
+        function load() {
+            const d = localStorage.getItem('traxator');
+            if (d) { results = JSON.parse(d); render(); stats(); }
+        }
+    </script>
+</body>
+</html>
