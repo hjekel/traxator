@@ -1487,13 +1487,16 @@
         // ==================== RESULTS ====================
         // Helper function to generate market search URLs
         function getMarketUrls(model) {
-            // Clean model name for URL (e.g., "6R 185" -> "6r-185" or "6r+185")
-            const cleanModel = model.replace(/\s+/g, '-').toLowerCase();
-            const searchModel = model.replace(/\s+/g, '+');
+            // Mascus: model needs to be lowercase with dashes, e.g. "6r-185" or "9r-440"
+            const mascusModel = model.toLowerCase().replace(/\s+/g, '-');
+            // TractorPool: uses category-based URL with manufacturer ID
+            // Ritchie Bros: uses search parameter
+            const searchTerm = encodeURIComponent('John Deere ' + model);
+            
             return {
-                mascus: `https://www.mascus.nl/landbouw/tractoren/john_deere,${cleanModel},search.html`,
-                tractorpool: `https://www.traktorpool.nl/gebraucht/Traktoren-John-Deere.html?searchterm=${encodeURIComponent('John Deere ' + model)}`,
-                ritchiebros: `https://www.rbauction.nl/cp/equipment?keywords=${encodeURIComponent('John Deere ' + model)}`
+                mascus: `https://www.mascus.nl/landbouw/tractoren/john_deere,${mascusModel},search.html`,
+                tractorpool: `https://www.traktorpool.nl/gebruikt/c-John-Deere/85/?searchterm=${searchTerm}`,
+                ritchiebros: `https://www.rbauction.nl/search?keywords=${searchTerm}`
             };
         }
 
