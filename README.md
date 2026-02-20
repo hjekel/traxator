@@ -1,2 +1,2 @@
-# taxator
+# traxator
 AI-Powered Tractor Taxaties
