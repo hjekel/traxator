@@ -985,7 +985,7 @@
     </main>
 
     <footer class="footer">
-        TraxaTor © 2025 · <a href="https://github.com/hjekel/traxator" target="_blank">GitHub</a> · <span data-i18n="demo">Demo - Prices are indicative</span>
+        TraxaTor © 2025 · <a href="https://github.com/hjekel/traxator" target="_blank">GitHub</a> · <span data-i18n="demo">Demo - Prices are indicative</span> · <span style="opacity:0.5">v12</span>
     </footer>
 
     <script>
@@ -1487,16 +1487,15 @@
         // ==================== RESULTS ====================
         // Helper function to generate market search URLs
         function getMarketUrls(model) {
-            // Mascus: model needs to be lowercase with dashes, e.g. "6r-185" or "9r-440"
-            const mascusModel = model.toLowerCase().replace(/\s+/g, '-');
-            // TractorPool: uses category-based URL with manufacturer ID
-            // Ritchie Bros: uses search parameter
+            // Mascus: uses fullText search parameter
             const searchTerm = encodeURIComponent('John Deere ' + model);
+            // TractorPool: direct search on their search page
+            // Ritchie Bros: equipment search with keywords
             
             return {
-                mascus: `https://www.mascus.nl/landbouw/tractoren/john_deere,${mascusModel},search.html`,
-                tractorpool: `https://www.traktorpool.nl/gebruikt/c-John-Deere/85/?searchterm=${searchTerm}`,
-                ritchiebros: `https://www.rbauction.nl/search?keywords=${searchTerm}`
+                mascus: `https://www.mascus.nl/landbouw/tractoren?categories=tractoren&searchText=${searchTerm}`,
+                tractorpool: `https://www.traktorpool.nl/gebruikt/?searchterm=${searchTerm}`,
+                ritchiebros: `https://www.rbauction.nl/cp/equipment?keywords=${searchTerm}`
             };
         }
 
