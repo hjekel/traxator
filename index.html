@@ -1303,6 +1303,43 @@
         [data-theme="light"] .summary-card.warning .summary-label { color: #d97706; }
         [data-theme="light"] .summary-card.ok { background: rgba(34, 197, 94, 0.08); }
         [data-theme="light"] .summary-card.ok .summary-label { color: #16a34a; }
+
+        /* Price Trend Badge */
+        .price-trend {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.3rem;
+            padding: 0.2rem 0.6rem;
+            border-radius: 4px;
+            font-size: 0.65rem;
+            font-weight: 600;
+            margin-bottom: 0.4rem;
+        }
+        .price-trend.down {
+            background: rgba(239, 68, 68, 0.15);
+            color: #ef4444;
+        }
+        .price-trend.up {
+            background: rgba(34, 197, 94, 0.15);
+            color: #22c55e;
+        }
+        .price-trend.stable {
+            background: rgba(156, 163, 175, 0.15);
+            color: #9ca3af;
+        }
+
+        [data-theme="light"] .price-trend.down {
+            background: rgba(239, 68, 68, 0.1);
+            color: #dc2626;
+        }
+        [data-theme="light"] .price-trend.up {
+            background: rgba(34, 197, 94, 0.1);
+            color: #16a34a;
+        }
+        [data-theme="light"] .price-trend.stable {
+            background: rgba(156, 163, 175, 0.1);
+            color: #6b7280;
+        }
     </style>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 </head>
@@ -1690,7 +1727,10 @@
                 manualTips: 'The signal badge (GO/CAUTION/STOP) indicates how the hours relate to average usage. Your last 20 valuations are saved automatically and visible in the history section below.',
                 manualDisclaimer: 'Values are indicative and based on comparable market listings. No rights can be derived from this tool.',
                 upgradeTitle: 'Upgrade Advisor',
-                upgradeIntro: 'Based on your current machine, consider upgrading to a more powerful model:'
+                upgradeIntro: 'Based on your current machine, consider upgrading to a more powerful model:',
+                trendDown: 'Declining',
+                trendUp: 'Rising',
+                trendStable: 'Stable'
             },
             nl: {
                 badge: 'EXCLUSIEF JOHN DEERE',
@@ -1764,7 +1804,10 @@
                 manualTips: 'Het signaal-badge (GO/CAUTION/STOP) geeft aan hoe de uren zich verhouden tot gemiddeld gebruik. Je laatste 20 taxaties worden automatisch opgeslagen en zijn zichtbaar in de geschiedenis hieronder.',
                 manualDisclaimer: 'Waarden zijn indicatief en gebaseerd op vergelijkbare marktadvertenties. Aan deze tool kunnen geen rechten worden ontleend.',
                 upgradeTitle: 'Upgrade Adviseur',
-                upgradeIntro: 'Op basis van uw huidige machine, overweeg een upgrade naar een krachtiger model:'
+                upgradeIntro: 'Op basis van uw huidige machine, overweeg een upgrade naar een krachtiger model:',
+                trendDown: 'Dalend',
+                trendUp: 'Stijgend',
+                trendStable: 'Stabiel'
             },
             fy: {
                 badge: 'ALLINICH JOHN DEERE',
@@ -1838,7 +1881,10 @@
                 manualTips: 'It sinjaal-badge (GO/CAUTION/STOP) jout oan hoe\'t de oeren har ferhâlde ta trochsneed gebrûk. Jo lêste 20 taksaasjes wurde automatysk bewarre en binne sichtber yn de skiednis hjirûnder.',
                 manualDisclaimer: 'Weardes binne yndikatyf en basearre op ferlykbere merkadvertinsjes. Oan dit ark kinne gjin rjochten ûntliend wurde.',
                 upgradeTitle: 'Upgrade Adviseur',
-                upgradeIntro: 'Op basis fan jo hjoeddeiske masine, oerweagje in upgrade nei in kreftiger model:'
+                upgradeIntro: 'Op basis fan jo hjoeddeiske masine, oerweagje in upgrade nei in kreftiger model:',
+                trendDown: 'Delgong',
+                trendUp: 'Stigend',
+                trendStable: 'Stabyl'
             },
             br: {
                 badge: 'ALLÉÉN JOHN DEERE',
@@ -1912,7 +1958,10 @@
                 manualTips: 'Het signaal-badge (GO/CAUTION/STOP) geeft aon hoe de uren zich verhouden tot gemiddeld gebruik. Oewe leste 20 taxaosies worden automatisch opgeslaogen en zien zichtbaar in de geschiedenis hieronder.',
                 manualDisclaimer: 'Weerdes zien indicatief en gebaseerd op vergelijkbare merktadvertenties. Aon deze tool kunnen gin rechten worden ontleend.',
                 upgradeTitle: 'Upgrade Adviseur',
-                upgradeIntro: 'Op basis van oewen huidige machine, overweeg een upgrade naor een krachtiger model:'
+                upgradeIntro: 'Op basis van oewen huidige machine, overweeg een upgrade naor een krachtiger model:',
+                trendDown: 'Daolend',
+                trendUp: 'Stijgend',
+                trendStable: 'Stabiel'
             },
             gr: {
                 badge: 'ALLENNEG JOHN DEERE',
@@ -1986,7 +2035,10 @@
                 manualTips: 'T signaal-badge (GO/CAUTION/STOP) geft aan hoe de oeren zuk verhollen tot gemiddeld gebruik. Joen leste 20 taksaotsies worden automatisch opsloagen en binnen zichtboar in de geschiedenis hieronder.',
                 manualDisclaimer: 'Weerdes binnen indicatief en baseerd op vergeliekboare marktadvertenties. Aan dit tool kinnen gain rechten worden ontleend.',
                 upgradeTitle: 'Upgrade Adviseur',
-                upgradeIntro: 'Op basis van joen huidege maschien, overweeg n upgrade noar n krachteger model:'
+                upgradeIntro: 'Op basis van joen huidege maschien, overweeg n upgrade noar n krachteger model:',
+                trendDown: 'Doalend',
+                trendUp: 'Stiegend',
+                trendStable: 'Stabiel'
             }
         };
 
@@ -2270,13 +2322,16 @@
                     };
                 }
 
+                const trend = getPriceTrend(m.name);
+
                 results.unshift({
                     id: Date.now(), model: m.name, year, hours, low, high, sig,
                     opts: Array.from(selectedOpts),
                     time: new Date().toLocaleString(),
                     hasMarketData: hasMarketData,
                     marketData: marketData,
-                    conditionData: conditionData
+                    conditionData: conditionData,
+                    trend: trend
                 });
 
                 save(); render(); stats();
@@ -2284,6 +2339,18 @@
                 btn.classList.remove('loading');
                 btn.innerHTML = `<span>⚡</span> <span data-i18n="calculate">${t('calculate')}</span>`;
             }, 700);
+        }
+
+        // ==================== PRICE TREND ====================
+        function getPriceTrend(modelName) {
+            const trends = {
+                "6R 155": { direction: "down", percent: "-5%", period: "6 maanden" },
+                "6R 185": { direction: "stable", percent: "0%", period: "6 maanden" },
+                "6M 130": { direction: "down", percent: "-8%", period: "6 maanden" },
+                "7810":   { direction: "up", percent: "+3%", period: "6 maanden" },
+                "6155M":  { direction: "down", percent: "-12%", period: "6 maanden" }
+            };
+            return trends[modelName] || { direction: "stable", percent: "0%", period: "6 maanden" };
         }
 
         // ==================== UPGRADE ADVISOR ====================
@@ -2377,6 +2444,7 @@
                     </div>
                     <div class="result-label">${t('valLabel')}${r.conditionData && r.conditionData.hasAdjustment ? ' (Gecorrigeerde waarde)' : ''}</div>
                     <div class="result-price">€ ${r.low.toLocaleString()} – € ${r.high.toLocaleString()}</div>
+                    ${r.trend ? `<span class="price-trend ${r.trend.direction}">${r.trend.direction === 'down' ? '📉' : r.trend.direction === 'up' ? '📈' : '➡️'} ${r.trend.direction === 'down' ? t('trendDown') : r.trend.direction === 'up' ? t('trendUp') : t('trendStable')} ${r.trend.percent} (${r.trend.period})</span>` : ''}
                     <div class="result-meta">${r.hasMarketData ? '✓ Gebaseerd op ' + r.marketData.count + ' vergelijkbare advertenties' : '✓ Gebaseerd op recente marktadvertenties'} · <a href="${urls.mascus}" target="_blank" class="market-link">Mascus</a> · <a href="${urls.tractorpool}" target="_blank" class="market-link">TractorPool</a> · <a href="${urls.ritchiebros}" target="_blank" class="market-link">Ritchie Bros</a></div>
                     ${r.opts.length ? `<div class="result-options">${r.opts.map(o => `<span class="option-tag">${optNames[o] || o}</span>`).join('')}</div>` : ''}
                     <div class="result-disclaimer">${t('disclaimer')}</div>
