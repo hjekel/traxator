@@ -953,6 +953,69 @@
             background: var(--jd-green-light);
             color: #fff;
         }
+
+        /* Condition Checklist */
+        .condition-section {
+            margin-top: 1rem;
+            padding: 1rem;
+            background: var(--bg-input);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+        }
+        .condition-section h4 {
+            color: var(--jd-green-light);
+            font-size: 0.85rem;
+            margin-bottom: 0.75rem;
+        }
+        .condition-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0.75rem;
+        }
+        @media (max-width: 600px) {
+            .condition-grid { grid-template-columns: 1fr; }
+        }
+        .condition-item {
+            display: flex;
+            flex-direction: column;
+            gap: 0.25rem;
+        }
+        .condition-item label {
+            font-size: 0.75rem;
+            color: var(--text-gray);
+        }
+        .condition-item input[type="range"] {
+            width: 100%;
+            accent-color: var(--jd-green);
+        }
+        .condition-item .range-val {
+            font-size: 0.7rem;
+            color: var(--jd-yellow);
+            font-weight: 600;
+        }
+        .condition-check {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .condition-check input[type="checkbox"] {
+            accent-color: var(--jd-green);
+            width: 16px;
+            height: 16px;
+        }
+        .condition-check label {
+            font-size: 0.75rem;
+            color: var(--text-gray);
+            cursor: pointer;
+        }
+        .condition-item select {
+            background: var(--bg-card);
+            color: var(--text-white);
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            padding: 0.4rem;
+            font-size: 0.8rem;
+        }
     </style>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 </head>
@@ -1083,6 +1146,42 @@
                         <button class="option-btn" data-opt="pto" data-val="3500">PTO 540/1000</button>
                         <button class="option-btn" data-opt="kipper" data-val="2500" data-i18n="optTipper">3-way tipper</button>
                         <button class="option-btn" data-opt="snel" data-val="1500" data-i18n="optQuick">Quick hitch</button>
+                    </div>
+                </div>
+
+
+                <div class="condition-section">
+                    <h4>&#9881;&#65039; Conditie details</h4>
+                    <div class="condition-grid">
+                        <div class="condition-item">
+                            <label>Banden voor: <span class="range-val" id="tiresF-val">80%</span></label>
+                            <input type="range" id="tiresF" min="0" max="100" value="80" oninput="document.getElementById('tiresF-val').textContent=this.value+'%'">
+                        </div>
+                        <div class="condition-item">
+                            <label>Banden achter: <span class="range-val" id="tiresR-val">80%</span></label>
+                            <input type="range" id="tiresR" min="0" max="100" value="80" oninput="document.getElementById('tiresR-val').textContent=this.value+'%'">
+                        </div>
+                        <div class="condition-check">
+                            <input type="checkbox" id="condGPS">
+                            <label for="condGPS">GPS/Precision farming</label>
+                        </div>
+                        <div class="condition-check">
+                            <input type="checkbox" id="condFrontlader">
+                            <label for="condFrontlader">Frontlader aanwezig</label>
+                        </div>
+                        <div class="condition-check">
+                            <input type="checkbox" id="condAirco">
+                            <label for="condAirco">Airco werkend</label>
+                        </div>
+                        <div class="condition-item">
+                            <label>Schade</label>
+                            <select id="condDamage">
+                                <option value="Geen">Geen</option>
+                                <option value="Licht">Licht</option>
+                                <option value="Matig">Matig</option>
+                                <option value="Zwaar">Zwaar</option>
+                            </select>
+                        </div>
                     </div>
                 </div>
 
@@ -1756,6 +1855,35 @@
                 else if (mo >= 9 && mo <= 11) val *= 1.03;
                 else if (mo === 12 || mo <= 2) val *= 0.95;
 
+                // Condition adjustments
+                const tiresF = parseInt(document.getElementById('tiresF').value);
+                const tiresR = parseInt(document.getElementById('tiresR').value);
+                const avgTires = (tiresF + tiresR) / 2;
+                const condGPS = document.getElementById('condGPS').checked;
+                const condFrontlader = document.getElementById('condFrontlader').checked;
+                const condAirco = document.getElementById('condAirco').checked;
+                const condDamage = document.getElementById('condDamage').value;
+
+                let conditionAdjustment = 0;
+                let hasConditionAdj = false;
+
+                if (avgTires < 50) { val -= 2000; conditionAdjustment -= 2000; hasConditionAdj = true; }
+                if (condGPS) { val += 5000; conditionAdjustment += 5000; hasConditionAdj = true; }
+                if (condFrontlader) { val += 8000; conditionAdjustment += 8000; hasConditionAdj = true; }
+                if (condAirco) { val += 1500; conditionAdjustment += 1500; hasConditionAdj = true; }
+                if (condDamage === 'Zwaar') { val *= 0.85; hasConditionAdj = true; }
+
+                const conditionData = {
+                    tiresF: tiresF,
+                    tiresR: tiresR,
+                    gps: condGPS,
+                    frontloader: condFrontlader,
+                    airco: condAirco,
+                    damage: condDamage,
+                    adjustment: conditionAdjustment,
+                    hasAdjustment: hasConditionAdj
+                };
+
                 // ENSURE NO NEGATIVE VALUES
                 val = Math.max(val, 1000);
 
@@ -1785,7 +1913,8 @@
                     opts: Array.from(selectedOpts),
                     time: new Date().toLocaleString(),
                     hasMarketData: hasMarketData,
-                    marketData: marketData
+                    marketData: marketData,
+                    conditionData: conditionData
                 });
 
                 save(); render(); stats();
@@ -1855,7 +1984,7 @@
                         </div>
                         <span class="signal-badge ${r.sig.c}">✓ ${r.sig.t} — ${r.sig.l}</span>
                     </div>
-                    <div class="result-label">${t('valLabel')}</div>
+                    <div class="result-label">${t('valLabel')}${r.conditionData && r.conditionData.hasAdjustment ? ' (Gecorrigeerde waarde)' : ''}</div>
                     <div class="result-price">€ ${r.low.toLocaleString()} – € ${r.high.toLocaleString()}</div>
                     <div class="result-meta">${r.hasMarketData ? '✓ Gebaseerd op ' + r.marketData.count + ' vergelijkbare advertenties' : '✓ Gebaseerd op recente marktadvertenties'} · <a href="${urls.mascus}" target="_blank" class="market-link">Mascus</a> · <a href="${urls.tractorpool}" target="_blank" class="market-link">TractorPool</a> · <a href="${urls.ritchiebros}" target="_blank" class="market-link">Ritchie Bros</a></div>
                     ${r.opts.length ? `<div class="result-options">${r.opts.map(o => `<span class="option-tag">${optNames[o] || o}</span>`).join('')}</div>` : ''}
