@@ -927,6 +927,7 @@
         }
         .listings-more:hover { text-decoration: underline; }
     </style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 </head>
 <body>
     <header class="header">
@@ -1834,10 +1835,109 @@
                     <div class="result-disclaimer">${t('disclaimer')}</div>
                     <div class="result-footer">
                         <span class="result-time">⏱ ${r.time}</span>
+                        <button class="btn-delete" onclick="generatePDF(${r.id})" title="Download PDF">📄</button>
                         <button class="btn-delete" onclick="del(${r.id})">🗑️</button>
                     </div>
                 </div>
             `}).join('');
+        }
+
+        function generatePDF(resultId) {
+            const r = results.find(x => x.id === resultId);
+            if (!r) return;
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF();
+
+            // Green rectangle as Kraakman logo placeholder
+            doc.setFillColor(54, 124, 43);
+            doc.rect(10, 10, 100, 30, 'F');
+            doc.setTextColor(255, 255, 255);
+            doc.setFontSize(22);
+            doc.setFont('helvetica', 'bold');
+            doc.text('KRAAKMAN', 30, 30);
+
+            // Title
+            doc.setTextColor(0, 0, 0);
+            doc.setFontSize(18);
+            doc.text('TAXATIERAPPORT', 10, 55);
+
+            // Date/time
+            doc.setFontSize(10);
+            doc.setFont('helvetica', 'normal');
+            doc.text('Datum: ' + new Date().toLocaleDateString('nl-NL') + ' ' + new Date().toLocaleTimeString('nl-NL'), 10, 65);
+
+            // Model info
+            doc.setFontSize(12);
+            doc.setFont('helvetica', 'bold');
+            doc.text('Machine gegevens', 10, 80);
+            doc.setFont('helvetica', 'normal');
+            doc.setFontSize(11);
+            doc.text('Model: John Deere ' + r.model, 10, 90);
+            doc.text('Bouwjaar: ' + r.year, 10, 98);
+            doc.text('Draaiuren: ' + r.hours.toLocaleString(), 10, 106);
+
+            // Value
+            doc.setFontSize(12);
+            doc.setFont('helvetica', 'bold');
+            doc.text('Geschatte marktwaarde', 10, 122);
+            doc.setFontSize(14);
+            doc.setTextColor(54, 124, 43);
+            doc.text('\u20AC ' + r.low.toLocaleString() + ' - \u20AC ' + r.high.toLocaleString(), 10, 132);
+
+            // Market data info
+            doc.setTextColor(0, 0, 0);
+            doc.setFontSize(10);
+            doc.setFont('helvetica', 'normal');
+            if (r.hasMarketData && r.marketData) {
+                doc.text('Gebaseerd op ' + r.marketData.count + ' vergelijkbare advertenties', 10, 142);
+                if (r.marketData.notes) {
+                    doc.text('Opmerking: ' + r.marketData.notes, 10, 150);
+                }
+            } else {
+                doc.text('Gebaseerd op formule', 10, 142);
+            }
+
+            // Condition data if available
+            let yPos = 160;
+            if (r.conditionData) {
+                doc.setFontSize(12);
+                doc.setFont('helvetica', 'bold');
+                doc.text('Conditie details', 10, yPos);
+                yPos += 10;
+                doc.setFontSize(10);
+                doc.setFont('helvetica', 'normal');
+                doc.text('Banden voor: ' + r.conditionData.tiresF + '%', 10, yPos); yPos += 8;
+                doc.text('Banden achter: ' + r.conditionData.tiresR + '%', 10, yPos); yPos += 8;
+                if (r.conditionData.gps) { doc.text('GPS/Precision farming: Ja', 10, yPos); yPos += 8; }
+                if (r.conditionData.frontloader) { doc.text('Frontlader: Ja', 10, yPos); yPos += 8; }
+                if (r.conditionData.airco) { doc.text('Airco werkend: Ja', 10, yPos); yPos += 8; }
+                if (r.conditionData.damage !== 'Geen') { doc.text('Schade: ' + r.conditionData.damage, 10, yPos); yPos += 8; }
+            }
+
+            // Options
+            if (r.opts && r.opts.length > 0) {
+                yPos += 5;
+                doc.setFontSize(12);
+                doc.setFont('helvetica', 'bold');
+                doc.text('Opties', 10, yPos);
+                yPos += 10;
+                doc.setFontSize(10);
+                doc.setFont('helvetica', 'normal');
+                doc.text(r.opts.map(o => optNames[o] || o).join(', '), 10, yPos);
+                yPos += 10;
+            }
+
+            // Disclaimer
+            yPos = Math.max(yPos + 10, 220);
+            doc.setFontSize(8);
+            doc.setTextColor(128, 128, 128);
+            doc.text('Indicatieve waarde. Geen garantie.', 10, yPos);
+            doc.text('Gegenereerd door TraxaTor v14', 10, yPos + 6);
+
+            // Save
+            const modelClean = r.model.replace(/\s+/g, '_');
+            const datum = new Date().toISOString().slice(0, 10);
+            doc.save('Taxatie_' + modelClean + '_' + datum + '.pdf');
         }
 
         function del(id) { results = results.filter(r => r.id !== id); save(); render(); stats(); }
