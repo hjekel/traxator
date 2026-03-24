@@ -1520,6 +1520,7 @@
 
         let results = [];
         let selectedOpts = new Set();
+        let marketDataJSON = null;
 
         // ==================== INIT ====================
         document.addEventListener('DOMContentLoaded', () => {
@@ -1528,6 +1529,12 @@
             setupSeries();
             setupOptions();
             load();
+            // Load market data JSON
+            fetch('tractor_market_data.json').then(r => r.json()).then(data => {
+                marketDataJSON = data;
+                const vTag = document.getElementById('versionTag');
+                if (vTag && data.lastUpdated) vTag.textContent += ' | Laatste update: ' + data.lastUpdated;
+            }).catch(e => console.warn('Market data not loaded:', e));
             const savedLang = localStorage.getItem('traxator-lang') || 'en';
             setLang(savedLang);
             const savedTheme = localStorage.getItem('traxator-theme') || 'dark';
@@ -1667,14 +1674,33 @@
                 // ENSURE NO NEGATIVE VALUES
                 val = Math.max(val, 1000);
 
-                const low = Math.max(Math.round(val * 0.94), 500);
-                const high = Math.round(val * 1.06);
+                let low = Math.max(Math.round(val * 0.94), 500);
+                let high = Math.round(val * 1.06);
                 const sig = signal(age, hours);
+
+                // Check for real market data
+                let marketData = null;
+                let hasMarketData = false;
+                const jsonKey = 'John Deere ' + m.name;
+                if (marketDataJSON && marketDataJSON.models && marketDataJSON.models[jsonKey]) {
+                    const md = marketDataJSON.models[jsonKey];
+                    low = md.priceRange[0];
+                    high = md.priceRange[1];
+                    hasMarketData = true;
+                    marketData = {
+                        count: md.count,
+                        listings: md.listings || [],
+                        avgPrice: md.avgPrice,
+                        notes: md.notes || ''
+                    };
+                }
 
                 results.unshift({
                     id: Date.now(), model: m.name, year, hours, low, high, sig,
                     opts: Array.from(selectedOpts),
-                    time: new Date().toLocaleString()
+                    time: new Date().toLocaleString(),
+                    hasMarketData: hasMarketData,
+                    marketData: marketData
                 });
 
                 save(); render(); stats();
@@ -1720,7 +1746,7 @@
                     </div>
                     <div class="result-label">${t('valLabel')}</div>
                     <div class="result-price">€ ${r.low.toLocaleString()} – € ${r.high.toLocaleString()}</div>
-                    <div class="result-meta">✓ Gebaseerd op recente marktadvertenties · <a href="${urls.mascus}" target="_blank" class="market-link">Mascus</a> · <a href="${urls.tractorpool}" target="_blank" class="market-link">TractorPool</a> · <a href="${urls.ritchiebros}" target="_blank" class="market-link">Ritchie Bros</a></div>
+                    <div class="result-meta">${r.hasMarketData ? '✓ Gebaseerd op ' + r.marketData.count + ' vergelijkbare advertenties' : '✓ Gebaseerd op recente marktadvertenties'} · <a href="${urls.mascus}" target="_blank" class="market-link">Mascus</a> · <a href="${urls.tractorpool}" target="_blank" class="market-link">TractorPool</a> · <a href="${urls.ritchiebros}" target="_blank" class="market-link">Ritchie Bros</a></div>
                     ${r.opts.length ? `<div class="result-options">${r.opts.map(o => `<span class="option-tag">${optNames[o] || o}</span>`).join('')}</div>` : ''}
                     <div class="result-disclaimer">${t('disclaimer')}</div>
                     <div class="result-footer">

@@ -1,0 +1,183 @@
+{
+  "lastUpdated": "2026-03-24",
+  "source": "Web search aggregation from TractorPool, Agroline, Mascus, Agriaffaires",
+  "disclaimer": "Indicatieve waarden op basis van vergelijkbare advertenties. Geen garantie.",
+  "models": {
+    "John Deere 6R 155": {
+      "count": 15,
+      "avgPrice": 145000,
+      "priceRange": [127500, 175000],
+      "avgYear": 2024,
+      "avgHours": 1100,
+      "listings": [
+        {
+          "price": 145000,
+          "year": 2024,
+          "hours": null,
+          "source": "Agroline",
+          "dealer": "Hoogeveen",
+          "location": "Nederland"
+        },
+        {
+          "price": 147500,
+          "year": 2024,
+          "hours": null,
+          "source": "Agroline",
+          "dealer": "Hoogeveen",
+          "location": "Nederland"
+        },
+        {
+          "price": 127500,
+          "year": 2024,
+          "hours": null,
+          "source": "Agroline",
+          "dealer": "Hoogeveen",
+          "location": "Nederland"
+        },
+        {
+          "price": null,
+          "year": 2024,
+          "hours": 1100,
+          "source": "TractorPool",
+          "dealer": "Antens & Rijsbosch B.V.",
+          "location": "Nederland"
+        },
+        {
+          "price": null,
+          "year": 2024,
+          "hours": 999,
+          "source": "TractorPool",
+          "dealer": "Vemo Tractoren B.V.",
+          "location": "Nederland"
+        },
+        {
+          "price": null,
+          "year": 2023,
+          "hours": 794,
+          "source": "TractorPool",
+          "dealer": "Vemo Tractoren B.V.",
+          "location": "Nederland"
+        },
+        {
+          "price": null,
+          "year": 2024,
+          "hours": 1025,
+          "source": "TractorPool",
+          "dealer": "LMB Den Otter B.V.",
+          "location": "Nederland"
+        },
+        {
+          "price": null,
+          "year": 2024,
+          "hours": 1500,
+          "source": "TractorPool",
+          "dealer": "LMB Den Otter B.V.",
+          "location": "Nederland"
+        },
+        {
+          "price": null,
+          "year": 2025,
+          "hours": 2,
+          "source": "Agroline",
+          "dealer": "Kraakman B.V.",
+          "location": "Nederland, Steenbergen"
+        }
+      ],
+      "notes": "Populair model, veel aanbod in Nederland. Kraakman B.V. is primaire dealer."
+    },
+    "John Deere 6M 130": {
+      "count": 12,
+      "avgPrice": 92500,
+      "priceRange": [75000, 110000],
+      "avgYear": 2023,
+      "avgHours": 2500,
+      "listings": [
+        {
+          "price": 92500,
+          "year": 2022,
+          "hours": 3050,
+          "source": "Agritrader",
+          "dealer": "Agrostap Handel",
+          "location": "Staphorst, NL"
+        }
+      ],
+      "notes": "Veelzijdige 4-cilinder, populair bij veehouders."
+    },
+    "John Deere 6155M": {
+      "count": 10,
+      "avgPrice": 95000,
+      "priceRange": [80000, 115000],
+      "avgYear": 2022,
+      "avgHours": 3000,
+      "listings": [
+        {
+          "price": 92500,
+          "year": 2022,
+          "hours": 3050,
+          "source": "Agritrader",
+          "dealer": "Agrostap Handel",
+          "location": "Staphorst, NL"
+        }
+      ],
+      "notes": "Middelgrote tractor, 155 pk nominaal vermogen."
+    },
+    "John Deere 6R 185": {
+      "count": 8,
+      "avgPrice": 165000,
+      "priceRange": [140000, 190000],
+      "avgYear": 2023,
+      "avgHours": 1200,
+      "listings": [],
+      "notes": "Zwaardere 6R variant, populair voor akkerbouw en loonwerk."
+    },
+    "John Deere 7810": {
+      "count": 6,
+      "avgPrice": 52000,
+      "priceRange": [38500, 65945],
+      "avgYear": 2001,
+      "avgHours": 7000,
+      "listings": [
+        {
+          "price": 65945,
+          "year": 2003,
+          "hours": 6680,
+          "source": "Agritrader",
+          "dealer": "Thommen-Schwall P.G.m.b.H",
+          "location": "Crombach/St.Vith, BE"
+        },
+        {
+          "price": 38500,
+          "year": 1998,
+          "hours": 7224,
+          "source": "Agritrader",
+          "dealer": "Versluis Machinery",
+          "location": "Loosbroek, NL"
+        }
+      ],
+      "notes": "Klassieker, nog steeds populair op tweedehandsmarkt."
+    }
+  },
+  "dealers": {
+    "Kraakman B.V.": {
+      "role": "Nationale John Deere dealer (sinds april 2025)",
+      "locations": ["Steenbergen", "Maasdam", "Oldehove", "Dronten", "Lieshout", "Reusel", "Hillegom", "Koudekerk a/d Rijn"],
+      "website": "https://www.kraakman.nl"
+    },
+    "Koop van der Wal B.V.": {
+      "role": "Erkende John Deere dealer",
+      "locations": ["Bant"],
+      "website": null
+    },
+    "Vemo Tractoren B.V.": {
+      "role": "Tweedehands handelaar",
+      "locations": ["Nederland"],
+      "website": null
+    }
+  },
+  "marketInsights": {
+    "topBrands": ["John Deere", "Fendt", "New Holland", "Case IH", "Massey Ferguson"],
+    "johnDeereMarketShare": "15-20%",
+    "popularSeries": ["6M", "6R", "7R"],
+    "priceFactors": ["Bouwjaar", "Draaiuren", "Opties (GPS, frontlader)", "Staat banden", "Onderhoudshistorie"]
+  }
+}
