@@ -1049,6 +1049,7 @@
         .client-mode .dealer-section { display: none !important; }
         .client-mode .series-nav { display: none !important; }
         .client-mode .rotate-hint { display: none !important; }
+        .client-mode .upgrade-suggestion { display: none !important; }
         body.client-mode { font-size: 1.3em; }
         .client-branding {
             display: none;
@@ -1071,6 +1072,77 @@
             color: var(--text-gray);
             font-size: 0.8rem;
             margin-top: 0.3rem;
+        }
+
+        /* Upgrade Suggestion */
+        .upgrade-suggestion {
+            background: linear-gradient(135deg, rgba(54, 124, 43, 0.15) 0%, rgba(54, 124, 43, 0.05) 100%);
+            border: 1px solid rgba(54, 124, 43, 0.4);
+            border-radius: 10px;
+            padding: 1rem;
+            margin-top: 1rem;
+            display: none;
+        }
+        .upgrade-suggestion.visible { display: block; }
+        .upgrade-header {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 0.75rem;
+        }
+        .upgrade-icon {
+            font-size: 1.3rem;
+        }
+        .upgrade-title {
+            font-size: 0.9rem;
+            font-weight: 700;
+            color: var(--jd-green-light);
+        }
+        .upgrade-target {
+            background: var(--bg-input);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 0.75rem;
+            margin-bottom: 0.75rem;
+        }
+        .upgrade-target .target-model {
+            font-size: 1rem;
+            font-weight: 700;
+            color: var(--text-white);
+            margin-bottom: 0.25rem;
+        }
+        .upgrade-target .target-benefits {
+            font-size: 0.75rem;
+            color: var(--jd-green-light);
+            margin-bottom: 0.25rem;
+        }
+        .upgrade-target .target-cost {
+            font-size: 0.8rem;
+            color: var(--text-gray);
+        }
+        .btn-upgrade {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.3rem;
+            padding: 0.45rem 1rem;
+            background: var(--jd-green);
+            border: none;
+            border-radius: 6px;
+            color: white;
+            font-size: 0.8rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        .btn-upgrade:hover { background: var(--jd-green-light); }
+
+        [data-theme="light"] .upgrade-suggestion {
+            background: linear-gradient(135deg, rgba(54, 124, 43, 0.08) 0%, rgba(54, 124, 43, 0.03) 100%);
+            border-color: rgba(54, 124, 43, 0.25);
+        }
+        [data-theme="light"] .upgrade-target {
+            background: #f9fafb;
+            border-color: #d1d5db;
         }
     </style>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
@@ -1295,6 +1367,8 @@
             </div>
         </div>
 
+        <div id="upgradeSuggestion" class="upgrade-suggestion"></div>
+
         <div id="listingsSection" class="listings-card"></div>
 
         <div class="card">
@@ -1424,7 +1498,9 @@
                 manualStep5: 'Use the market links (Mascus, TractorPool, Ritchie Bros) to compare with real listings.',
                 manualTipsTitle: 'Tips',
                 manualTips: 'The signal badge (GO/CAUTION/STOP) indicates how the hours relate to average usage. Your last 20 valuations are saved automatically and visible in the history section below.',
-                manualDisclaimer: 'Values are indicative and based on comparable market listings. No rights can be derived from this tool.'
+                manualDisclaimer: 'Values are indicative and based on comparable market listings. No rights can be derived from this tool.',
+                upgradeTitle: 'Upgrade Advisor',
+                upgradeIntro: 'Based on your current machine, consider upgrading to a more powerful model:'
             },
             nl: {
                 badge: 'EXCLUSIEF JOHN DEERE',
@@ -1496,7 +1572,9 @@
                 manualStep5: 'Gebruik de marktlinks (Mascus, TractorPool, Ritchie Bros) om te vergelijken met echte advertenties.',
                 manualTipsTitle: 'Tips',
                 manualTips: 'Het signaal-badge (GO/CAUTION/STOP) geeft aan hoe de uren zich verhouden tot gemiddeld gebruik. Je laatste 20 taxaties worden automatisch opgeslagen en zijn zichtbaar in de geschiedenis hieronder.',
-                manualDisclaimer: 'Waarden zijn indicatief en gebaseerd op vergelijkbare marktadvertenties. Aan deze tool kunnen geen rechten worden ontleend.'
+                manualDisclaimer: 'Waarden zijn indicatief en gebaseerd op vergelijkbare marktadvertenties. Aan deze tool kunnen geen rechten worden ontleend.',
+                upgradeTitle: 'Upgrade Adviseur',
+                upgradeIntro: 'Op basis van uw huidige machine, overweeg een upgrade naar een krachtiger model:'
             },
             fy: {
                 badge: 'ALLINICH JOHN DEERE',
@@ -1568,7 +1646,9 @@
                 manualStep5: 'Brûk de merklinks (Mascus, TractorPool, Ritchie Bros) om te fergelykjen mei echte advertinsjes.',
                 manualTipsTitle: 'Tips',
                 manualTips: 'It sinjaal-badge (GO/CAUTION/STOP) jout oan hoe\'t de oeren har ferhâlde ta trochsneed gebrûk. Jo lêste 20 taksaasjes wurde automatysk bewarre en binne sichtber yn de skiednis hjirûnder.',
-                manualDisclaimer: 'Weardes binne yndikatyf en basearre op ferlykbere merkadvertinsjes. Oan dit ark kinne gjin rjochten ûntliend wurde.'
+                manualDisclaimer: 'Weardes binne yndikatyf en basearre op ferlykbere merkadvertinsjes. Oan dit ark kinne gjin rjochten ûntliend wurde.',
+                upgradeTitle: 'Upgrade Adviseur',
+                upgradeIntro: 'Op basis fan jo hjoeddeiske masine, oerweagje in upgrade nei in kreftiger model:'
             },
             br: {
                 badge: 'ALLÉÉN JOHN DEERE',
@@ -1640,7 +1720,9 @@
                 manualStep5: 'Gebruik de merktlinks (Mascus, TractorPool, Ritchie Bros) om te vergelijken mee echte advertenties.',
                 manualTipsTitle: 'Tips',
                 manualTips: 'Het signaal-badge (GO/CAUTION/STOP) geeft aon hoe de uren zich verhouden tot gemiddeld gebruik. Oewe leste 20 taxaosies worden automatisch opgeslaogen en zien zichtbaar in de geschiedenis hieronder.',
-                manualDisclaimer: 'Weerdes zien indicatief en gebaseerd op vergelijkbare merktadvertenties. Aon deze tool kunnen gin rechten worden ontleend.'
+                manualDisclaimer: 'Weerdes zien indicatief en gebaseerd op vergelijkbare merktadvertenties. Aon deze tool kunnen gin rechten worden ontleend.',
+                upgradeTitle: 'Upgrade Adviseur',
+                upgradeIntro: 'Op basis van oewen huidige machine, overweeg een upgrade naor een krachtiger model:'
             },
             gr: {
                 badge: 'ALLENNEG JOHN DEERE',
@@ -1712,7 +1794,9 @@
                 manualStep5: 'Gebruik de marktlinks (Mascus, TractorPool, Ritchie Bros) om te vergelieken mit echte advertenties.',
                 manualTipsTitle: 'Tips',
                 manualTips: 'T signaal-badge (GO/CAUTION/STOP) geft aan hoe de oeren zuk verhollen tot gemiddeld gebruik. Joen leste 20 taksaotsies worden automatisch opsloagen en binnen zichtboar in de geschiedenis hieronder.',
-                manualDisclaimer: 'Weerdes binnen indicatief en baseerd op vergeliekboare marktadvertenties. Aan dit tool kinnen gain rechten worden ontleend.'
+                manualDisclaimer: 'Weerdes binnen indicatief en baseerd op vergeliekboare marktadvertenties. Aan dit tool kinnen gain rechten worden ontleend.',
+                upgradeTitle: 'Upgrade Adviseur',
+                upgradeIntro: 'Op basis van joen huidege maschien, overweeg n upgrade noar n krachteger model:'
             }
         };
 
@@ -1760,6 +1844,35 @@
         };
 
         const optNames = { frontlader: 'Loader', gps: 'GPS/RTK', tls: 'Suspension', '4wd': '4WD', airco: 'A/C', dubbel: 'Duals', fronthef: 'Front hitch', pto: 'PTO', kipper: 'Tipper', snel: 'Quick hitch' };
+
+        const UPGRADE_MATRIX = {
+          "6M 110": { target: "6R 130", extraCost: 45000, benefits: "+20 PK, R-serie comfort" },
+          "6M 120": { target: "6R 140", extraCost: 48000, benefits: "+20 PK, CommandPRO" },
+          "6M 130": { target: "6R 155", extraCost: 50000, benefits: "+25 PK, nieuwer platform" },
+          "6M 140": { target: "6R 165", extraCost: 52000, benefits: "+25 PK, meer vermogen" },
+          "6M 150": { target: "6R 175", extraCost: 55000, benefits: "+25 PK, premium cabine" },
+          "6M 155": { target: "6R 175", extraCost: 50000, benefits: "+20 PK, R-serie voordelen" },
+          "6M 175": { target: "6R 195", extraCost: 55000, benefits: "+20 PK, topklasse" },
+          "6M 195": { target: "6R 215", extraCost: 60000, benefits: "+20 PK, maximaal vermogen" },
+          "6R 110": { target: "6R 130", extraCost: 25000, benefits: "+20 PK" },
+          "6R 120": { target: "6R 140", extraCost: 28000, benefits: "+20 PK" },
+          "6R 130": { target: "6R 155", extraCost: 30000, benefits: "+25 PK" },
+          "6R 140": { target: "6R 165", extraCost: 32000, benefits: "+25 PK" },
+          "6R 150": { target: "6R 175", extraCost: 35000, benefits: "+25 PK" },
+          "6R 155": { target: "6R 185", extraCost: 40000, benefits: "+30 PK, zwaardere taken" },
+          "6R 165": { target: "6R 195", extraCost: 42000, benefits: "+30 PK" },
+          "6R 175": { target: "6R 215", extraCost: 45000, benefits: "+40 PK, topmodel" },
+          "6R 185": { target: "6R 215", extraCost: 40000, benefits: "+30 PK, maximaal" },
+          "6155M":  { target: "6R 155", extraCost: 35000, benefits: "Upgrade naar R-serie" },
+          "7810":   { target: "6R 150", extraCost: 80000, benefits: "Moderne vervanging klassieker" },
+          "7R 270": { target: "7R 290", extraCost: 50000, benefits: "+20 PK" },
+          "7R 290": { target: "7R 310", extraCost: 55000, benefits: "+20 PK" },
+          "7R 310": { target: "7R 330", extraCost: 60000, benefits: "+20 PK, topmodel 7R" },
+          "8R 280": { target: "8R 310", extraCost: 65000, benefits: "+30 PK" },
+          "8R 310": { target: "8R 340", extraCost: 70000, benefits: "+30 PK" },
+          "8R 340": { target: "8R 370", extraCost: 75000, benefits: "+30 PK" },
+          "8R 370": { target: "8R 410", extraCost: 80000, benefits: "+40 PK, topmodel 8R" },
+        };
 
         let results = [];
         let selectedOpts = new Set();
@@ -1981,6 +2094,35 @@
                 btn.classList.remove('loading');
                 btn.innerHTML = `<span>⚡</span> <span data-i18n="calculate">${t('calculate')}</span>`;
             }, 700);
+        }
+
+        // ==================== UPGRADE ADVISOR ====================
+        function showUpgradeSuggestion(modelName, currentValue) {
+            const el = document.getElementById('upgradeSuggestion');
+            if (!el) return;
+            const upgrade = UPGRADE_MATRIX[modelName];
+            if (!upgrade) {
+                el.classList.remove('visible');
+                el.innerHTML = '';
+                return;
+            }
+            const newValue = currentValue + upgrade.extraCost;
+            el.innerHTML = `
+                <div class="upgrade-header">
+                    <span class="upgrade-icon">🚀</span>
+                    <span class="upgrade-title">${t('upgradeTitle')}</span>
+                </div>
+                <p style="font-size:0.75rem;color:var(--text-gray);margin-bottom:0.75rem;">${t('upgradeIntro')}</p>
+                <div class="upgrade-target">
+                    <div class="target-model">John Deere ${upgrade.target}</div>
+                    <div class="target-benefits">✨ ${upgrade.benefits}</div>
+                    <div class="target-cost">Meerprijs: € ${upgrade.extraCost.toLocaleString()} &middot; Nieuwwaarde: € ${newValue.toLocaleString()}</div>
+                </div>
+                <button class="btn-upgrade" onclick="document.getElementById('model').value='';document.getElementById('upgradeSuggestion').classList.remove('visible');">
+                    🔍 Bekijk ${upgrade.target}
+                </button>
+            `;
+            el.classList.add('visible');
         }
 
         // ==================== RESULTS ====================
