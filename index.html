@@ -1144,6 +1144,165 @@
             background: #f9fafb;
             border-color: #d1d5db;
         }
+
+        /* Inventory Dashboard */
+        .dashboard-modal {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.6);
+            z-index: 10000;
+            justify-content: center;
+            align-items: center;
+            backdrop-filter: blur(4px);
+        }
+        .dashboard-modal.active { display: flex; }
+        .dashboard-content {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            max-width: 800px;
+            width: 95%;
+            max-height: 90vh;
+            overflow-y: auto;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.4);
+        }
+        .dashboard-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1.25rem;
+            border-bottom: 1px solid var(--border);
+        }
+        .dashboard-header h2 {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--text-white);
+            margin: 0;
+        }
+        .dashboard-summary {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 0.75rem;
+            padding: 1.25rem;
+        }
+        .summary-card {
+            padding: 1rem;
+            border-radius: 8px;
+            text-align: center;
+        }
+        .summary-card .summary-count {
+            font-size: 1.5rem;
+            font-weight: 800;
+            margin-bottom: 0.25rem;
+        }
+        .summary-card .summary-label {
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        .summary-card.alert {
+            background: rgba(239, 68, 68, 0.15);
+            border: 1px solid rgba(239, 68, 68, 0.3);
+        }
+        .summary-card.alert .summary-count { color: #ef4444; }
+        .summary-card.alert .summary-label { color: #fca5a5; }
+        .summary-card.warning {
+            background: rgba(245, 158, 11, 0.15);
+            border: 1px solid rgba(245, 158, 11, 0.3);
+        }
+        .summary-card.warning .summary-count { color: #f59e0b; }
+        .summary-card.warning .summary-label { color: #fcd34d; }
+        .summary-card.ok {
+            background: rgba(34, 197, 94, 0.15);
+            border: 1px solid rgba(34, 197, 94, 0.3);
+        }
+        .summary-card.ok .summary-count { color: #22c55e; }
+        .summary-card.ok .summary-label { color: #86efac; }
+        .inventory-list {
+            padding: 0 1.25rem;
+        }
+        .inventory-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.75rem;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            margin-bottom: 0.5rem;
+            background: var(--bg-input);
+            gap: 0.75rem;
+        }
+        .inventory-status {
+            padding: 0.2rem 0.6rem;
+            border-radius: 4px;
+            font-size: 0.65rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            white-space: nowrap;
+            flex-shrink: 0;
+        }
+        .inventory-status.alert { background: rgba(239, 68, 68, 0.15); color: #ef4444; }
+        .inventory-status.warning { background: rgba(245, 158, 11, 0.15); color: #f59e0b; }
+        .inventory-status.ok { background: rgba(34, 197, 94, 0.15); color: #22c55e; }
+        .inventory-details {
+            flex: 1;
+            min-width: 0;
+        }
+        .inventory-details .inv-model {
+            font-weight: 600;
+            font-size: 0.85rem;
+            color: var(--text-white);
+        }
+        .inventory-details .inv-meta {
+            font-size: 0.7rem;
+            color: var(--text-gray);
+        }
+        .inventory-price {
+            font-weight: 700;
+            font-size: 0.9rem;
+            color: var(--jd-yellow);
+            white-space: nowrap;
+            flex-shrink: 0;
+        }
+        .dashboard-footer {
+            padding: 1rem 1.25rem;
+            border-top: 1px solid var(--border);
+            font-size: 0.75rem;
+            color: var(--text-gray);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .close-btn {
+            background: none;
+            border: none;
+            color: var(--text-muted);
+            font-size: 1.5rem;
+            cursor: pointer;
+            padding: 0.25rem;
+            line-height: 1;
+        }
+        .close-btn:hover { color: var(--text-white); }
+        @media (max-width: 600px) {
+            .dashboard-summary { grid-template-columns: 1fr; }
+            .inventory-item { flex-wrap: wrap; }
+        }
+
+        [data-theme="light"] .dashboard-content {
+            background: #fff;
+            border-color: #d1d5db;
+        }
+        [data-theme="light"] .inventory-item {
+            background: #f9fafb;
+            border-color: #e5e7eb;
+        }
+        [data-theme="light"] .summary-card.alert { background: rgba(239, 68, 68, 0.08); }
+        [data-theme="light"] .summary-card.alert .summary-label { color: #dc2626; }
+        [data-theme="light"] .summary-card.warning { background: rgba(245, 158, 11, 0.08); }
+        [data-theme="light"] .summary-card.warning .summary-label { color: #d97706; }
+        [data-theme="light"] .summary-card.ok { background: rgba(34, 197, 94, 0.08); }
+        [data-theme="light"] .summary-card.ok .summary-label { color: #16a34a; }
     </style>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 </head>
@@ -1168,6 +1327,7 @@
                 <button class="ctrl-btn" onclick="setLang('br')" id="langBR" title="Brabants">Brabants</button>
                 <button class="ctrl-btn" onclick="setLang('gr')" id="langGR" title="Grunnegs">Grunnegs</button>
                 <button class="ctrl-btn" onclick="toggleTheme()" id="themeBtn">🌙</button>
+                <button class="ctrl-btn" onclick="openInventoryDashboard()" title="Voorraad Dashboard">📊 Voorraad</button>
                 <button class="client-mode-btn" id="clientModeBtn" onclick="toggleClientMode()" title="Klant-modus">👁️ Klant-modus</button>
                 <button class="help-btn" onclick="toggleManual()" title="Manual">📖 <span data-i18n="helpBtn">Manual</span></button>
             </div>
@@ -1418,6 +1578,36 @@
             <p data-i18n="manualTips">The signal badge (GO/CAUTION/STOP) indicates how the hours relate to average usage. Your last 20 valuations are saved automatically and visible in the history section below.</p>
 
             <div class="modal-version" data-i18n="manualDisclaimer">Values are indicative and based on comparable market listings. No rights can be derived from this tool.</div>
+        </div>
+    </div>
+
+    <!-- Inventory Dashboard Modal -->
+    <div class="dashboard-modal" id="inventoryDashboard" onclick="if(event.target===this)closeInventoryDashboard()">
+        <div class="dashboard-content">
+            <div class="dashboard-header">
+                <div style="display:flex;align-items:center;gap:0.5rem;">
+                    <span style="font-size:1.3rem;">📊</span>
+                    <h2>Voorraad Alert Dashboard</h2>
+                </div>
+                <button class="close-btn" onclick="closeInventoryDashboard()">✕</button>
+            </div>
+            <div class="dashboard-summary" id="dashboardSummary"></div>
+            <div style="padding:0 1.25rem;margin-bottom:1rem;">
+                <label style="font-size:0.75rem;color:var(--text-gray);margin-right:0.5rem;">Locatie:</label>
+                <select id="locationFilter" class="form-control" style="display:inline-block;width:auto;min-width:180px;">
+                    <option value="all">Alle locaties</option>
+                    <option value="Steenbergen">Steenbergen</option>
+                    <option value="Maasdam">Maasdam</option>
+                    <option value="Oldehove">Oldehove</option>
+                    <option value="Dronten">Dronten</option>
+                    <option value="Lieshout">Lieshout</option>
+                    <option value="Reusel">Reusel</option>
+                    <option value="Hillegom">Hillegom</option>
+                    <option value="Koudekerk">Koudekerk</option>
+                </select>
+            </div>
+            <div class="inventory-list" id="inventoryList"></div>
+            <div class="dashboard-footer" id="dashboardFooter"></div>
         </div>
     </div>
 
@@ -2318,6 +2508,67 @@
         function save() { localStorage.setItem('traxator', JSON.stringify(results.slice(0, 20))); }
         function load() { const d = localStorage.getItem('traxator'); if (d) { results = JSON.parse(d); render(); stats(); } }
 
+
+        // ==================== INVENTORY DASHBOARD ====================
+        const DEMO_INVENTORY = [
+            { model: "6R 155", year: 2021, hours: 3200, location: "Steenbergen", price: 145000, status: "alert", days: 120, note: "Lang op voorraad" },
+            { model: "6M 130", year: 2019, hours: 5800, location: "Maasdam", price: 78000, status: "warning", days: 65, note: "Prijsdaling markt" },
+            { model: "7R 310", year: 2022, hours: 1800, location: "Oldehove", price: 285000, status: "ok", days: 14, note: "Nieuw binnen" },
+            { model: "8R 340", year: 2020, hours: 4500, location: "Dronten", price: 320000, status: "warning", days: 80, note: "Weinig vraag" },
+            { model: "5075M", year: 2018, hours: 6200, location: "Lieshout", price: 42000, status: "alert", days: 150, note: "Overstock" },
+            { model: "6R 185", year: 2023, hours: 800, location: "Reusel", price: 195000, status: "ok", days: 7, note: "Vers binnen" },
+            { model: "6M 155", year: 2020, hours: 4100, location: "Hillegom", price: 112000, status: "warning", days: 55, note: "Seizoensdruk laag" },
+            { model: "7R 270", year: 2021, hours: 3600, location: "Koudekerk", price: 245000, status: "alert", days: 110, note: "Moet weg" }
+        ];
+
+        function openInventoryDashboard() {
+            document.getElementById('inventoryDashboard').classList.add('active');
+            renderInventory('all');
+        }
+
+        function closeInventoryDashboard() {
+            document.getElementById('inventoryDashboard').classList.remove('active');
+        }
+
+        function renderInventory(locationFilter) {
+            const items = locationFilter === 'all' ? DEMO_INVENTORY : DEMO_INVENTORY.filter(i => i.location === locationFilter);
+            const alertCount = items.filter(i => i.status === 'alert').length;
+            const warningCount = items.filter(i => i.status === 'warning').length;
+            const okCount = items.filter(i => i.status === 'ok').length;
+            const totalValue = items.reduce((s, i) => s + i.price, 0);
+
+            document.getElementById('dashboardSummary').innerHTML = `
+                <div class="summary-card alert">
+                    <div class="summary-count">${alertCount}</div>
+                    <div class="summary-label">🚨 Alert</div>
+                </div>
+                <div class="summary-card warning">
+                    <div class="summary-count">${warningCount}</div>
+                    <div class="summary-label">⚠️ Waarschuwing</div>
+                </div>
+                <div class="summary-card ok">
+                    <div class="summary-count">${okCount}</div>
+                    <div class="summary-label">✅ OK</div>
+                </div>
+            `;
+
+            document.getElementById('inventoryList').innerHTML = items.map(i => `
+                <div class="inventory-item">
+                    <span class="inventory-status ${i.status}">${i.status === 'alert' ? '🚨 Alert' : i.status === 'warning' ? '⚠️ Let op' : '✅ OK'}</span>
+                    <div class="inventory-details">
+                        <div class="inv-model">John Deere ${i.model}</div>
+                        <div class="inv-meta">${i.year} · ${i.hours.toLocaleString()} uur · ${i.location} · ${i.days} dagen · ${i.note}</div>
+                    </div>
+                    <span class="inventory-price">€ ${i.price.toLocaleString()}</span>
+                </div>
+            `).join('');
+
+            document.getElementById('dashboardFooter').innerHTML = `
+                <span>Totaal: ${items.length} machines</span>
+                <span>Waarde: € ${totalValue.toLocaleString()}</span>
+            `;
+        }
+
         // ==================== THEME ====================
         function toggleTheme() {
             const html = document.documentElement;
@@ -2335,7 +2586,14 @@
         document.addEventListener('keydown', e => {
             if (e.key === 'Escape') {
                 document.getElementById('manualModal').classList.remove('active');
+                closeInventoryDashboard();
             }
+        });
+
+        // Inventory location filter
+        document.addEventListener('DOMContentLoaded', () => {
+            const locFilter = document.getElementById('locationFilter');
+            if (locFilter) locFilter.addEventListener('change', (e) => renderInventory(e.target.value));
         });
 
         // ==================== CLIENT MODE ====================
