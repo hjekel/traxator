@@ -926,6 +926,33 @@
             font-weight: 600;
         }
         .listings-more:hover { text-decoration: underline; }
+
+        /* Market Link Buttons */
+        .market-links-row {
+            display: flex;
+            gap: 0.5rem;
+            margin-top: 0.5rem;
+            flex-wrap: wrap;
+        }
+        .market-link-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.3rem;
+            padding: 0.3rem 0.7rem;
+            border: 1px solid var(--jd-green-light);
+            border-radius: 6px;
+            background: transparent;
+            color: var(--jd-green-light);
+            font-size: 0.7rem;
+            font-weight: 600;
+            text-decoration: none;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .market-link-btn:hover {
+            background: var(--jd-green-light);
+            color: #fff;
+        }
     </style>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 </head>
@@ -1837,6 +1864,11 @@
                         <span class="result-time">⏱ ${r.time}</span>
                         <button class="btn-delete" onclick="generatePDF(${r.id})" title="Download PDF">📄</button>
                         <button class="btn-delete" onclick="del(${r.id})">🗑️</button>
+                    </div>
+                    <div class="market-links-row">
+                        <a class="market-link-btn" href="https://www.mascus.nl/landbouw/tractoren/john_deere?q=${encodeURIComponent(r.model)}" target="_blank">🔍 Mascus</a>
+                        <a class="market-link-btn" href="https://www.traktorpool.nl/gebruikt/c-John-Deere/model/${encodeURIComponent(r.model)}/" target="_blank">🔍 TractorPool</a>
+                        <a class="market-link-btn" href="https://www.agritrader.nl/zoeken?q=john+deere+${encodeURIComponent(r.model)}" target="_blank">🔍 Agritrader</a>
                     </div>
                 </div>
             `}).join('');
