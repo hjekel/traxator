@@ -1016,6 +1016,51 @@
             padding: 0.4rem;
             font-size: 0.8rem;
         }
+
+        /* Client Mode */
+        .client-mode-btn {
+            background: none;
+            border: 1px solid var(--border);
+            color: var(--text-white);
+            border-radius: 6px;
+            padding: 0.25rem 0.6rem;
+            cursor: pointer;
+            font-size: 0.75rem;
+            transition: all 0.2s;
+        }
+        .client-mode-btn:hover { background: var(--jd-green); color: #fff; border-color: var(--jd-green); }
+        .client-mode-btn.active { background: var(--jd-green); color: #fff; border-color: var(--jd-green); }
+
+        .client-mode .ctrl-btn[id^="lang"] { display: none !important; }
+        .client-mode #themeBtn { display: none !important; }
+        .client-mode .hero-section { display: none !important; }
+        .client-mode .tip-box { display: none !important; }
+        .client-mode .dealer-section { display: none !important; }
+        .client-mode .series-nav { display: none !important; }
+        .client-mode .rotate-hint { display: none !important; }
+        body.client-mode { font-size: 1.3em; }
+        .client-branding {
+            display: none;
+            text-align: center;
+            padding: 1.5rem 1rem 0.5rem;
+        }
+        .client-mode .client-branding { display: block; }
+        .client-branding-logo {
+            background: #2d5a27;
+            color: #f5c518;
+            font-weight: 900;
+            font-size: 2rem;
+            padding: 0.5rem 1.5rem;
+            border-radius: 8px;
+            display: inline-block;
+            letter-spacing: 2px;
+        }
+        .client-branding-sub {
+            display: block;
+            color: var(--text-gray);
+            font-size: 0.8rem;
+            margin-top: 0.3rem;
+        }
     </style>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 </head>
@@ -1040,6 +1085,7 @@
                 <button class="ctrl-btn" onclick="setLang('br')" id="langBR" title="Brabants">Brabants</button>
                 <button class="ctrl-btn" onclick="setLang('gr')" id="langGR" title="Grunnegs">Grunnegs</button>
                 <button class="ctrl-btn" onclick="toggleTheme()" id="themeBtn">🌙</button>
+                <button class="client-mode-btn" id="clientModeBtn" onclick="toggleClientMode()" title="Klant-modus">👁️ Klant-modus</button>
                 <button class="help-btn" onclick="toggleManual()" title="Manual">📖 <span data-i18n="helpBtn">Manual</span></button>
             </div>
             <div class="header-stats" style="display:flex;gap:0.75rem;">
@@ -1060,6 +1106,8 @@
             </div>
         </div>
     </header>
+
+    <div class="client-branding"><span class="client-branding-logo">KRAAKMAN</span><span class="client-branding-sub">Landbouw-, Tuin- en Parkmachines</span></div>
 
     <!-- Rotate hint for mobile portrait -->
     <div class="rotate-hint">
@@ -2136,6 +2184,24 @@
                 document.getElementById('manualModal').classList.remove('active');
             }
         });
+
+        // ==================== CLIENT MODE ====================
+        function toggleClientMode() {
+            const body = document.body;
+            body.classList.toggle('client-mode');
+            const active = body.classList.contains('client-mode');
+            document.getElementById('clientModeBtn').classList.toggle('active', active);
+            localStorage.setItem('traxator-clientmode', active ? 'true' : 'false');
+        }
+
+        // Restore client mode on load
+        if (localStorage.getItem('traxator-clientmode') === 'true') {
+            document.body.classList.add('client-mode');
+            document.addEventListener('DOMContentLoaded', () => {
+                const btn = document.getElementById('clientModeBtn');
+                if (btn) btn.classList.add('active');
+            });
+        }
     </script>
 </body>
 </html>
