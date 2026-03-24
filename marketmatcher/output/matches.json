@@ -1,0 +1,637 @@
+[
+  {
+    "score": 100,
+    "ad_id": "W-001",
+    "ad_source": "boerenbusiness",
+    "ad_contact": "Akkerbouwer uit Zeewolde",
+    "ad_text": "Gezocht: John Deere 6R 150-185, niet ouder dan 2019, max 3000 uur. Budget 100-140k. Moet GPS en airco hebben. Regio Flevoland.",
+    "item_id": "KR-007",
+    "item_model": "6R 185",
+    "item_year": 2020,
+    "item_price": 125000,
+    "item_hours": 2800,
+    "item_location": "Rutten",
+    "reasons": [
+      "In range 6R 150-185 (+35)",
+      "Prijs EUR 125,000 in budget (+20)",
+      "Uren 2800 <= max 3000 (+15)",
+      "Bouwjaar 2020 >= 2019 (+10)",
+      "Feature: GPS (+5)",
+      "Feature: airco (+5)",
+      "Lang op voorraad: 90 dagen (+10)"
+    ]
+  },
+  {
+    "score": 55,
+    "ad_id": "W-001",
+    "ad_source": "boerenbusiness",
+    "ad_contact": "Akkerbouwer uit Zeewolde",
+    "ad_text": "Gezocht: John Deere 6R 150-185, niet ouder dan 2019, max 3000 uur. Budget 100-140k. Moet GPS en airco hebben. Regio Flevoland.",
+    "item_id": "KR-003",
+    "item_model": "6195R",
+    "item_year": 2020,
+    "item_price": 135000,
+    "item_hours": 2100,
+    "item_location": "Emmeloord",
+    "reasons": [
+      "Prijs EUR 135,000 in budget (+20)",
+      "Uren 2100 <= max 3000 (+15)",
+      "Bouwjaar 2020 >= 2019 (+10)",
+      "Feature: GPS (+5)",
+      "Feature: airco (+5)"
+    ]
+  },
+  {
+    "score": 40,
+    "ad_id": "W-001",
+    "ad_source": "boerenbusiness",
+    "ad_contact": "Akkerbouwer uit Zeewolde",
+    "ad_text": "Gezocht: John Deere 6R 150-185, niet ouder dan 2019, max 3000 uur. Budget 100-140k. Moet GPS en airco hebben. Regio Flevoland.",
+    "item_id": "KR-002",
+    "item_model": "6155R",
+    "item_year": 2019,
+    "item_price": 95000,
+    "item_hours": 3200,
+    "item_location": "Dronten",
+    "reasons": [
+      "Prijs EUR 95,000 dicht bij budget (+10)",
+      "Bouwjaar 2019 >= 2019 (+10)",
+      "Feature: GPS (+5)",
+      "Feature: airco (+5)",
+      "Lang op voorraad: 120 dagen (+10)"
+    ]
+  },
+  {
+    "score": 40,
+    "ad_id": "W-001",
+    "ad_source": "boerenbusiness",
+    "ad_contact": "Akkerbouwer uit Zeewolde",
+    "ad_text": "Gezocht: John Deere 6R 150-185, niet ouder dan 2019, max 3000 uur. Budget 100-140k. Moet GPS en airco hebben. Regio Flevoland.",
+    "item_id": "KR-006",
+    "item_model": "5100E",
+    "item_year": 2023,
+    "item_price": 58000,
+    "item_hours": 320,
+    "item_location": "Nagele",
+    "reasons": [
+      "Prijs EUR 58,000 dicht bij budget (+10)",
+      "Uren 320 <= max 3000 (+15)",
+      "Bouwjaar 2023 >= 2019 (+10)",
+      "Feature: airco (+5)"
+    ]
+  },
+  {
+    "score": 35,
+    "ad_id": "W-001",
+    "ad_source": "boerenbusiness",
+    "ad_contact": "Akkerbouwer uit Zeewolde",
+    "ad_text": "Gezocht: John Deere 6R 150-185, niet ouder dan 2019, max 3000 uur. Budget 100-140k. Moet GPS en airco hebben. Regio Flevoland.",
+    "item_id": "KR-001",
+    "item_model": "6R 250",
+    "item_year": 2021,
+    "item_price": 185000,
+    "item_hours": 1850,
+    "item_location": "Creil",
+    "reasons": [
+      "Uren 1850 <= max 3000 (+15)",
+      "Bouwjaar 2021 >= 2019 (+10)",
+      "Feature: GPS (+5)",
+      "Feature: airco (+5)"
+    ]
+  },
+  {
+    "score": 35,
+    "ad_id": "W-001",
+    "ad_source": "boerenbusiness",
+    "ad_contact": "Akkerbouwer uit Zeewolde",
+    "ad_text": "Gezocht: John Deere 6R 150-185, niet ouder dan 2019, max 3000 uur. Budget 100-140k. Moet GPS en airco hebben. Regio Flevoland.",
+    "item_id": "KR-004",
+    "item_model": "7R 310",
+    "item_year": 2022,
+    "item_price": 245000,
+    "item_hours": 980,
+    "item_location": "Marknesse",
+    "reasons": [
+      "Uren 980 <= max 3000 (+15)",
+      "Bouwjaar 2022 >= 2019 (+10)",
+      "Feature: GPS (+5)",
+      "Feature: airco (+5)"
+    ]
+  },
+  {
+    "score": 35,
+    "ad_id": "W-001",
+    "ad_source": "boerenbusiness",
+    "ad_contact": "Akkerbouwer uit Zeewolde",
+    "ad_text": "Gezocht: John Deere 6R 150-185, niet ouder dan 2019, max 3000 uur. Budget 100-140k. Moet GPS en airco hebben. Regio Flevoland.",
+    "item_id": "KR-008",
+    "item_model": "8R 340",
+    "item_year": 2021,
+    "item_price": 295000,
+    "item_hours": 1500,
+    "item_location": "Tollebeek",
+    "reasons": [
+      "Uren 1500 <= max 3000 (+15)",
+      "Bouwjaar 2021 >= 2019 (+10)",
+      "Feature: GPS (+5)",
+      "Feature: airco (+5)"
+    ]
+  },
+  {
+    "score": 25,
+    "ad_id": "W-001",
+    "ad_source": "boerenbusiness",
+    "ad_contact": "Akkerbouwer uit Zeewolde",
+    "ad_text": "Gezocht: John Deere 6R 150-185, niet ouder dan 2019, max 3000 uur. Budget 100-140k. Moet GPS en airco hebben. Regio Flevoland.",
+    "item_id": "KR-005",
+    "item_model": "6M 200",
+    "item_year": 2018,
+    "item_price": 72000,
+    "item_hours": 4500,
+    "item_location": "Kraggenburg",
+    "reasons": [
+      "Prijs EUR 72,000 dicht bij budget (+10)",
+      "Feature: airco (+5)",
+      "Lang op voorraad: 180 dagen (+10)"
+    ]
+  },
+  {
+    "score": 95,
+    "ad_id": "W-002",
+    "ad_source": "marktplaats",
+    "ad_contact": "Melkveehouder uit Kampen",
+    "ad_text": "Op zoek naar JD 6155R of 6195R, bouwjaar 2018-2021, max 4000 uur. Budget tot 130k. Liefst met CommandPRO en frontloader.",
+    "item_id": "KR-002",
+    "item_model": "6155R",
+    "item_year": 2019,
+    "item_price": 95000,
+    "item_hours": 3200,
+    "item_location": "Dronten",
+    "reasons": [
+      "Exact model: 6155R (+40)",
+      "Prijs EUR 95,000 binnen budget (+20)",
+      "Uren 3200 <= max 4000 (+15)",
+      "Bouwjaar 2019 >= 2018 (+10)",
+      "Lang op voorraad: 120 dagen (+10)"
+    ]
+  },
+  {
+    "score": 80,
+    "ad_id": "W-002",
+    "ad_source": "marktplaats",
+    "ad_contact": "Melkveehouder uit Kampen",
+    "ad_text": "Op zoek naar JD 6155R of 6195R, bouwjaar 2018-2021, max 4000 uur. Budget tot 130k. Liefst met CommandPRO en frontloader.",
+    "item_id": "KR-003",
+    "item_model": "6195R",
+    "item_year": 2020,
+    "item_price": 135000,
+    "item_hours": 2100,
+    "item_location": "Emmeloord",
+    "reasons": [
+      "Exact model: 6195R (+40)",
+      "Prijs EUR 135,000 net boven budget (+10)",
+      "Uren 2100 <= max 4000 (+15)",
+      "Bouwjaar 2020 >= 2018 (+10)",
+      "Feature: CommandPRO (+5)"
+    ]
+  },
+  {
+    "score": 65,
+    "ad_id": "W-002",
+    "ad_source": "marktplaats",
+    "ad_contact": "Melkveehouder uit Kampen",
+    "ad_text": "Op zoek naar JD 6155R of 6195R, bouwjaar 2018-2021, max 4000 uur. Budget tot 130k. Liefst met CommandPRO en frontloader.",
+    "item_id": "KR-007",
+    "item_model": "6R 185",
+    "item_year": 2020,
+    "item_price": 125000,
+    "item_hours": 2800,
+    "item_location": "Rutten",
+    "reasons": [
+      "Prijs EUR 125,000 binnen budget (+20)",
+      "Uren 2800 <= max 4000 (+15)",
+      "Bouwjaar 2020 >= 2018 (+10)",
+      "Feature: frontloader (+5)",
+      "Feature: CommandPRO (+5)",
+      "Lang op voorraad: 90 dagen (+10)"
+    ]
+  },
+  {
+    "score": 45,
+    "ad_id": "W-002",
+    "ad_source": "marktplaats",
+    "ad_contact": "Melkveehouder uit Kampen",
+    "ad_text": "Op zoek naar JD 6155R of 6195R, bouwjaar 2018-2021, max 4000 uur. Budget tot 130k. Liefst met CommandPRO en frontloader.",
+    "item_id": "KR-006",
+    "item_model": "5100E",
+    "item_year": 2023,
+    "item_price": 58000,
+    "item_hours": 320,
+    "item_location": "Nagele",
+    "reasons": [
+      "Prijs EUR 58,000 binnen budget (+20)",
+      "Uren 320 <= max 4000 (+15)",
+      "Bouwjaar 2023 >= 2018 (+10)"
+    ]
+  },
+  {
+    "score": 40,
+    "ad_id": "W-002",
+    "ad_source": "marktplaats",
+    "ad_contact": "Melkveehouder uit Kampen",
+    "ad_text": "Op zoek naar JD 6155R of 6195R, bouwjaar 2018-2021, max 4000 uur. Budget tot 130k. Liefst met CommandPRO en frontloader.",
+    "item_id": "KR-005",
+    "item_model": "6M 200",
+    "item_year": 2018,
+    "item_price": 72000,
+    "item_hours": 4500,
+    "item_location": "Kraggenburg",
+    "reasons": [
+      "Prijs EUR 72,000 binnen budget (+20)",
+      "Bouwjaar 2018 >= 2018 (+10)",
+      "Lang op voorraad: 180 dagen (+10)"
+    ]
+  },
+  {
+    "score": 35,
+    "ad_id": "W-002",
+    "ad_source": "marktplaats",
+    "ad_contact": "Melkveehouder uit Kampen",
+    "ad_text": "Op zoek naar JD 6155R of 6195R, bouwjaar 2018-2021, max 4000 uur. Budget tot 130k. Liefst met CommandPRO en frontloader.",
+    "item_id": "KR-001",
+    "item_model": "6R 250",
+    "item_year": 2021,
+    "item_price": 185000,
+    "item_hours": 1850,
+    "item_location": "Creil",
+    "reasons": [
+      "Uren 1850 <= max 4000 (+15)",
+      "Bouwjaar 2021 >= 2018 (+10)",
+      "Feature: frontloader (+5)",
+      "Feature: CommandPRO (+5)"
+    ]
+  },
+  {
+    "score": 35,
+    "ad_id": "W-002",
+    "ad_source": "marktplaats",
+    "ad_contact": "Melkveehouder uit Kampen",
+    "ad_text": "Op zoek naar JD 6155R of 6195R, bouwjaar 2018-2021, max 4000 uur. Budget tot 130k. Liefst met CommandPRO en frontloader.",
+    "item_id": "KR-004",
+    "item_model": "7R 310",
+    "item_year": 2022,
+    "item_price": 245000,
+    "item_hours": 980,
+    "item_location": "Marknesse",
+    "reasons": [
+      "Uren 980 <= max 4000 (+15)",
+      "Bouwjaar 2022 >= 2018 (+10)",
+      "Feature: frontloader (+5)",
+      "Feature: CommandPRO (+5)"
+    ]
+  },
+  {
+    "score": 30,
+    "ad_id": "W-002",
+    "ad_source": "marktplaats",
+    "ad_contact": "Melkveehouder uit Kampen",
+    "ad_text": "Op zoek naar JD 6155R of 6195R, bouwjaar 2018-2021, max 4000 uur. Budget tot 130k. Liefst met CommandPRO en frontloader.",
+    "item_id": "KR-008",
+    "item_model": "8R 340",
+    "item_year": 2021,
+    "item_price": 295000,
+    "item_hours": 1500,
+    "item_location": "Tollebeek",
+    "reasons": [
+      "Uren 1500 <= max 4000 (+15)",
+      "Bouwjaar 2021 >= 2018 (+10)",
+      "Feature: CommandPRO (+5)"
+    ]
+  },
+  {
+    "score": 95,
+    "ad_id": "W-003",
+    "ad_source": "facebook",
+    "ad_contact": "Loonwerker uit Urk",
+    "ad_text": "Wie heeft er een John Deere 6M serie, 180+ pk? Niet ouder dan 2017, max 5000 uur. Budget 60-80k. Airco is een must.",
+    "item_id": "KR-005",
+    "item_model": "6M 200",
+    "item_year": 2018,
+    "item_price": 72000,
+    "item_hours": 4500,
+    "item_location": "Kraggenburg",
+    "reasons": [
+      "Serie 6M match (+20)",
+      "Vermogen 200pk >= 180pk (+15)",
+      "Prijs EUR 72,000 in budget (+20)",
+      "Uren 4500 <= max 5000 (+15)",
+      "Bouwjaar 2018 >= 2017 (+10)",
+      "Feature: airco (+5)",
+      "Lang op voorraad: 180 dagen (+10)"
+    ]
+  },
+  {
+    "score": 55,
+    "ad_id": "W-003",
+    "ad_source": "facebook",
+    "ad_contact": "Loonwerker uit Urk",
+    "ad_text": "Wie heeft er een John Deere 6M serie, 180+ pk? Niet ouder dan 2017, max 5000 uur. Budget 60-80k. Airco is een must.",
+    "item_id": "KR-007",
+    "item_model": "6R 185",
+    "item_year": 2020,
+    "item_price": 125000,
+    "item_hours": 2800,
+    "item_location": "Rutten",
+    "reasons": [
+      "Vermogen 185pk >= 180pk (+15)",
+      "Uren 2800 <= max 5000 (+15)",
+      "Bouwjaar 2020 >= 2017 (+10)",
+      "Feature: airco (+5)",
+      "Lang op voorraad: 90 dagen (+10)"
+    ]
+  },
+  {
+    "score": 45,
+    "ad_id": "W-003",
+    "ad_source": "facebook",
+    "ad_contact": "Loonwerker uit Urk",
+    "ad_text": "Wie heeft er een John Deere 6M serie, 180+ pk? Niet ouder dan 2017, max 5000 uur. Budget 60-80k. Airco is een must.",
+    "item_id": "KR-001",
+    "item_model": "6R 250",
+    "item_year": 2021,
+    "item_price": 185000,
+    "item_hours": 1850,
+    "item_location": "Creil",
+    "reasons": [
+      "Vermogen 250pk >= 180pk (+15)",
+      "Uren 1850 <= max 5000 (+15)",
+      "Bouwjaar 2021 >= 2017 (+10)",
+      "Feature: airco (+5)"
+    ]
+  },
+  {
+    "score": 45,
+    "ad_id": "W-003",
+    "ad_source": "facebook",
+    "ad_contact": "Loonwerker uit Urk",
+    "ad_text": "Wie heeft er een John Deere 6M serie, 180+ pk? Niet ouder dan 2017, max 5000 uur. Budget 60-80k. Airco is een must.",
+    "item_id": "KR-003",
+    "item_model": "6195R",
+    "item_year": 2020,
+    "item_price": 135000,
+    "item_hours": 2100,
+    "item_location": "Emmeloord",
+    "reasons": [
+      "Vermogen 195pk >= 180pk (+15)",
+      "Uren 2100 <= max 5000 (+15)",
+      "Bouwjaar 2020 >= 2017 (+10)",
+      "Feature: airco (+5)"
+    ]
+  },
+  {
+    "score": 45,
+    "ad_id": "W-003",
+    "ad_source": "facebook",
+    "ad_contact": "Loonwerker uit Urk",
+    "ad_text": "Wie heeft er een John Deere 6M serie, 180+ pk? Niet ouder dan 2017, max 5000 uur. Budget 60-80k. Airco is een must.",
+    "item_id": "KR-004",
+    "item_model": "7R 310",
+    "item_year": 2022,
+    "item_price": 245000,
+    "item_hours": 980,
+    "item_location": "Marknesse",
+    "reasons": [
+      "Vermogen 310pk >= 180pk (+15)",
+      "Uren 980 <= max 5000 (+15)",
+      "Bouwjaar 2022 >= 2017 (+10)",
+      "Feature: airco (+5)"
+    ]
+  },
+  {
+    "score": 45,
+    "ad_id": "W-003",
+    "ad_source": "facebook",
+    "ad_contact": "Loonwerker uit Urk",
+    "ad_text": "Wie heeft er een John Deere 6M serie, 180+ pk? Niet ouder dan 2017, max 5000 uur. Budget 60-80k. Airco is een must.",
+    "item_id": "KR-008",
+    "item_model": "8R 340",
+    "item_year": 2021,
+    "item_price": 295000,
+    "item_hours": 1500,
+    "item_location": "Tollebeek",
+    "reasons": [
+      "Vermogen 340pk >= 180pk (+15)",
+      "Uren 1500 <= max 5000 (+15)",
+      "Bouwjaar 2021 >= 2017 (+10)",
+      "Feature: airco (+5)"
+    ]
+  },
+  {
+    "score": 40,
+    "ad_id": "W-003",
+    "ad_source": "facebook",
+    "ad_contact": "Loonwerker uit Urk",
+    "ad_text": "Wie heeft er een John Deere 6M serie, 180+ pk? Niet ouder dan 2017, max 5000 uur. Budget 60-80k. Airco is een must.",
+    "item_id": "KR-002",
+    "item_model": "6155R",
+    "item_year": 2019,
+    "item_price": 95000,
+    "item_hours": 3200,
+    "item_location": "Dronten",
+    "reasons": [
+      "Uren 3200 <= max 5000 (+15)",
+      "Bouwjaar 2019 >= 2017 (+10)",
+      "Feature: airco (+5)",
+      "Lang op voorraad: 120 dagen (+10)"
+    ]
+  },
+  {
+    "score": 40,
+    "ad_id": "W-003",
+    "ad_source": "facebook",
+    "ad_contact": "Loonwerker uit Urk",
+    "ad_text": "Wie heeft er een John Deere 6M serie, 180+ pk? Niet ouder dan 2017, max 5000 uur. Budget 60-80k. Airco is een must.",
+    "item_id": "KR-006",
+    "item_model": "5100E",
+    "item_year": 2023,
+    "item_price": 58000,
+    "item_hours": 320,
+    "item_location": "Nagele",
+    "reasons": [
+      "Prijs EUR 58,000 dicht bij budget (+10)",
+      "Uren 320 <= max 5000 (+15)",
+      "Bouwjaar 2023 >= 2017 (+10)",
+      "Feature: airco (+5)"
+    ]
+  },
+  {
+    "score": 90,
+    "ad_id": "W-004",
+    "ad_source": "boerenbusiness",
+    "ad_contact": "Groot akkerbouwbedrijf uit Lelystad",
+    "ad_text": "Gevraagd: grote JD trekker, 7R of 8R serie, 280-350 pk. Bouwjaar 2020+, max 2000 uur. Budget 200-300k. AutoTrac en IVT gewenst.",
+    "item_id": "KR-004",
+    "item_model": "7R 310",
+    "item_year": 2022,
+    "item_price": 245000,
+    "item_hours": 980,
+    "item_location": "Marknesse",
+    "reasons": [
+      "Serie 7R match (+20)",
+      "Vermogen 310pk in range 280-350 (+15)",
+      "Prijs EUR 245,000 in budget (+20)",
+      "Uren 980 <= max 2000 (+15)",
+      "Bouwjaar 2022 >= 2020 (+10)",
+      "Feature: AutoTrac (+5)",
+      "Feature: IVT (+5)"
+    ]
+  },
+  {
+    "score": 90,
+    "ad_id": "W-004",
+    "ad_source": "boerenbusiness",
+    "ad_contact": "Groot akkerbouwbedrijf uit Lelystad",
+    "ad_text": "Gevraagd: grote JD trekker, 7R of 8R serie, 280-350 pk. Bouwjaar 2020+, max 2000 uur. Budget 200-300k. AutoTrac en IVT gewenst.",
+    "item_id": "KR-008",
+    "item_model": "8R 340",
+    "item_year": 2021,
+    "item_price": 295000,
+    "item_hours": 1500,
+    "item_location": "Tollebeek",
+    "reasons": [
+      "Serie 8R match (+20)",
+      "Vermogen 340pk in range 280-350 (+15)",
+      "Prijs EUR 295,000 in budget (+20)",
+      "Uren 1500 <= max 2000 (+15)",
+      "Bouwjaar 2021 >= 2020 (+10)",
+      "Feature: AutoTrac (+5)",
+      "Feature: IVT (+5)"
+    ]
+  },
+  {
+    "score": 40,
+    "ad_id": "W-004",
+    "ad_source": "boerenbusiness",
+    "ad_contact": "Groot akkerbouwbedrijf uit Lelystad",
+    "ad_text": "Gevraagd: grote JD trekker, 7R of 8R serie, 280-350 pk. Bouwjaar 2020+, max 2000 uur. Budget 200-300k. AutoTrac en IVT gewenst.",
+    "item_id": "KR-001",
+    "item_model": "6R 250",
+    "item_year": 2021,
+    "item_price": 185000,
+    "item_hours": 1850,
+    "item_location": "Creil",
+    "reasons": [
+      "Prijs EUR 185,000 dicht bij budget (+10)",
+      "Uren 1850 <= max 2000 (+15)",
+      "Bouwjaar 2021 >= 2020 (+10)",
+      "Feature: AutoTrac (+5)"
+    ]
+  },
+  {
+    "score": 35,
+    "ad_id": "W-004",
+    "ad_source": "boerenbusiness",
+    "ad_contact": "Groot akkerbouwbedrijf uit Lelystad",
+    "ad_text": "Gevraagd: grote JD trekker, 7R of 8R serie, 280-350 pk. Bouwjaar 2020+, max 2000 uur. Budget 200-300k. AutoTrac en IVT gewenst.",
+    "item_id": "KR-006",
+    "item_model": "5100E",
+    "item_year": 2023,
+    "item_price": 58000,
+    "item_hours": 320,
+    "item_location": "Nagele",
+    "reasons": [
+      "Prijs EUR 58,000 dicht bij budget (+10)",
+      "Uren 320 <= max 2000 (+15)",
+      "Bouwjaar 2023 >= 2020 (+10)"
+    ]
+  },
+  {
+    "score": 30,
+    "ad_id": "W-004",
+    "ad_source": "boerenbusiness",
+    "ad_contact": "Groot akkerbouwbedrijf uit Lelystad",
+    "ad_text": "Gevraagd: grote JD trekker, 7R of 8R serie, 280-350 pk. Bouwjaar 2020+, max 2000 uur. Budget 200-300k. AutoTrac en IVT gewenst.",
+    "item_id": "KR-007",
+    "item_model": "6R 185",
+    "item_year": 2020,
+    "item_price": 125000,
+    "item_hours": 2800,
+    "item_location": "Rutten",
+    "reasons": [
+      "Prijs EUR 125,000 dicht bij budget (+10)",
+      "Bouwjaar 2020 >= 2020 (+10)",
+      "Lang op voorraad: 90 dagen (+10)"
+    ]
+  },
+  {
+    "score": 25,
+    "ad_id": "W-004",
+    "ad_source": "boerenbusiness",
+    "ad_contact": "Groot akkerbouwbedrijf uit Lelystad",
+    "ad_text": "Gevraagd: grote JD trekker, 7R of 8R serie, 280-350 pk. Bouwjaar 2020+, max 2000 uur. Budget 200-300k. AutoTrac en IVT gewenst.",
+    "item_id": "KR-003",
+    "item_model": "6195R",
+    "item_year": 2020,
+    "item_price": 135000,
+    "item_hours": 2100,
+    "item_location": "Emmeloord",
+    "reasons": [
+      "Prijs EUR 135,000 dicht bij budget (+10)",
+      "Bouwjaar 2020 >= 2020 (+10)",
+      "Feature: AutoTrac (+5)"
+    ]
+  },
+  {
+    "score": 20,
+    "ad_id": "W-004",
+    "ad_source": "boerenbusiness",
+    "ad_contact": "Groot akkerbouwbedrijf uit Lelystad",
+    "ad_text": "Gevraagd: grote JD trekker, 7R of 8R serie, 280-350 pk. Bouwjaar 2020+, max 2000 uur. Budget 200-300k. AutoTrac en IVT gewenst.",
+    "item_id": "KR-002",
+    "item_model": "6155R",
+    "item_year": 2019,
+    "item_price": 95000,
+    "item_hours": 3200,
+    "item_location": "Dronten",
+    "reasons": [
+      "Prijs EUR 95,000 dicht bij budget (+10)",
+      "Lang op voorraad: 120 dagen (+10)"
+    ]
+  },
+  {
+    "score": 20,
+    "ad_id": "W-004",
+    "ad_source": "boerenbusiness",
+    "ad_contact": "Groot akkerbouwbedrijf uit Lelystad",
+    "ad_text": "Gevraagd: grote JD trekker, 7R of 8R serie, 280-350 pk. Bouwjaar 2020+, max 2000 uur. Budget 200-300k. AutoTrac en IVT gewenst.",
+    "item_id": "KR-005",
+    "item_model": "6M 200",
+    "item_year": 2018,
+    "item_price": 72000,
+    "item_hours": 4500,
+    "item_location": "Kraggenburg",
+    "reasons": [
+      "Prijs EUR 72,000 dicht bij budget (+10)",
+      "Lang op voorraad: 180 dagen (+10)"
+    ]
+  },
+  {
+    "score": 70,
+    "ad_id": "W-005",
+    "ad_source": "marktplaats",
+    "ad_contact": "Hobbyboer uit Swifterbant",
+    "ad_text": "Gezocht: kleine John Deere 5E serie, 75-100 pk. Voor erfwerk en licht transport. Max 1000 uur. Budget tot 65k.",
+    "item_id": "KR-006",
+    "item_model": "5100E",
+    "item_year": 2023,
+    "item_price": 58000,
+    "item_hours": 320,
+    "item_location": "Nagele",
+    "reasons": [
+      "Serie 5E match (+20)",
+      "Vermogen 100pk in range 75-100 (+15)",
+      "Prijs EUR 58,000 binnen budget (+20)",
+      "Uren 320 <= max 1000 (+15)"
+    ]
+  }
+]
