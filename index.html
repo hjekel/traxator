@@ -871,6 +871,61 @@
             transition: all 0.2s;
         }
         .help-btn:hover { background: var(--jd-green); color: #fff; border-color: var(--jd-green); }
+
+        /* Listings Section */
+        .listings-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 1.25rem;
+            margin-bottom: 1rem;
+            display: none;
+        }
+        .listings-card.visible { display: block; }
+        .listings-card h3 {
+            color: var(--jd-green-light);
+            font-size: 0.95rem;
+            margin-bottom: 0.75rem;
+        }
+        .listing-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.6rem 0;
+            border-bottom: 1px solid var(--border);
+        }
+        .listing-item:last-child { border-bottom: none; }
+        .listing-price {
+            font-weight: 700;
+            color: var(--jd-yellow);
+            font-size: 0.9rem;
+            min-width: 100px;
+        }
+        .listing-details {
+            flex: 1;
+            margin: 0 0.75rem;
+            font-size: 0.75rem;
+            color: var(--text-gray);
+        }
+        .listing-source {
+            background: var(--bg-input);
+            border: 1px solid var(--border);
+            border-radius: 4px;
+            padding: 0.15rem 0.5rem;
+            font-size: 0.65rem;
+            color: var(--text-muted);
+            white-space: nowrap;
+        }
+        .listings-more {
+            display: block;
+            text-align: center;
+            margin-top: 0.75rem;
+            color: var(--jd-green-light);
+            text-decoration: none;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+        .listings-more:hover { text-decoration: underline; }
     </style>
 </head>
 <body>
@@ -1053,6 +1108,8 @@
                 </div>
             </div>
         </div>
+
+        <div id="listingsSection" class="listings-card"></div>
 
         <div class="card">
             <div class="card-header">
@@ -1704,6 +1761,7 @@
                 });
 
                 save(); render(); stats();
+                showListings(results[0]);
                 btn.classList.remove('loading');
                 btn.innerHTML = `<span>⚡</span> <span data-i18n="calculate">${t('calculate')}</span>`;
             }, 700);
@@ -1722,6 +1780,31 @@
                 tractorpool: `https://www.traktorpool.nl/gebruikt/?searchterm=${searchTerm}`,
                 ritchiebros: `https://www.rbauction.nl/cp/equipment?keywords=${searchTerm}`
             };
+        }
+
+        function showListings(result) {
+            const section = document.getElementById('listingsSection');
+            if (!section) return;
+            if (!result || !result.hasMarketData || !result.marketData || !result.marketData.listings || result.marketData.listings.length === 0) {
+                section.classList.remove('visible');
+                section.innerHTML = '';
+                return;
+            }
+            const listings = result.marketData.listings.slice(0, 5);
+            const model = encodeURIComponent('John Deere ' + result.model);
+            let html = '<h3>\u{1F4CA} Vergelijkbare advertenties</h3>';
+            listings.forEach(l => {
+                const price = l.price ? '\u20AC ' + l.price.toLocaleString() : 'Prijs op aanvraag';
+                const details = (l.year || '?') + (l.hours !== null ? ' \u00B7 ' + l.hours.toLocaleString() + ' uur' : '') + (l.dealer ? ' \u00B7 ' + l.dealer : '') + (l.location ? ', ' + l.location : '');
+                html += '<div class="listing-item">';
+                html += '<span class="listing-price">' + price + '</span>';
+                html += '<span class="listing-details">' + details + '</span>';
+                html += '<span class="listing-source">' + (l.source || '') + '</span>';
+                html += '</div>';
+            });
+            html += '<a class="listings-more" href="https://www.mascus.nl/landbouw/tractoren?searchText=' + model + '" target="_blank">\u{1F50D} Zoek meer op Mascus</a>';
+            section.innerHTML = html;
+            section.classList.add('visible');
         }
 
         function render() {
