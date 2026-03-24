@@ -3,7 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TraxaTor - AI-Powered Inruil Taxatie</title>
+    <meta name="google" content="notranslate">
+    <title>TraxaTor - Marktdata Taxatie Tool</title>
     <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='12' fill='%23367C2B'/><ellipse cx='50' cy='52' rx='35' ry='30' fill='%23FFDE00'/><path d='M35 65 Q32 58 36 52 Q42 42 56 36 Q70 30 78 40 Q84 48 80 56 L74 52 Q70 46 62 44 Q50 40 42 50 Q36 56 40 62 Z' fill='%23367C2B'/><circle cx='66' cy='44' r='3' fill='%23367C2B'/><path d='M30 62 Q26 66 30 70 L36 66 Q32 62 30 62' fill='%23367C2B'/></svg>">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -621,6 +622,13 @@
 
         .result-time { font-size: 0.6rem; color: var(--text-muted); }
 
+        .result-disclaimer {
+            font-size: 0.6rem;
+            color: var(--text-muted);
+            font-style: italic;
+            margin-bottom: 0.5rem;
+        }
+
         .market-link {
             color: var(--jd-green-light);
             text-decoration: none;
@@ -780,6 +788,89 @@
         /* Footer */
         .footer { text-align: center; padding: 1rem; color: var(--text-muted); font-size: 0.7rem; }
         .footer a { color: var(--jd-green-light); text-decoration: none; }
+
+        /* Help Modal */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.6);
+            z-index: 9999;
+            justify-content: center;
+            align-items: center;
+            backdrop-filter: blur(4px);
+        }
+        .modal-overlay.active { display: flex; }
+        .modal-box {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            max-width: 600px;
+            width: 90%;
+            max-height: 80vh;
+            overflow-y: auto;
+            padding: 2rem;
+            position: relative;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.4);
+        }
+        .modal-close {
+            position: absolute;
+            top: 0.75rem;
+            right: 0.75rem;
+            background: none;
+            border: none;
+            color: var(--text-muted);
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+        .modal-close:hover { color: var(--text); }
+        .modal-box h2 {
+            color: var(--jd-green-light);
+            margin-bottom: 1rem;
+            font-size: 1.2rem;
+        }
+        .modal-box h3 {
+            color: var(--jd-yellow);
+            margin: 1rem 0 0.4rem;
+            font-size: 0.95rem;
+        }
+        .modal-box p, .modal-box li {
+            color: var(--text);
+            font-size: 0.8rem;
+            line-height: 1.6;
+        }
+        .modal-box ol { padding-left: 1.2rem; margin-bottom: 0.5rem; }
+        .modal-box .step-num {
+            display: inline-block;
+            background: var(--jd-green);
+            color: #fff;
+            width: 22px;
+            height: 22px;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 22px;
+            font-size: 0.7rem;
+            font-weight: 700;
+            margin-right: 0.4rem;
+        }
+        .modal-version {
+            margin-top: 1.5rem;
+            padding-top: 1rem;
+            border-top: 1px solid var(--border);
+            font-size: 0.65rem;
+            color: var(--text-muted);
+        }
+        .help-btn {
+            background: none;
+            border: 1px solid var(--border);
+            color: var(--text);
+            border-radius: 6px;
+            padding: 0.25rem 0.6rem;
+            cursor: pointer;
+            font-size: 0.75rem;
+            transition: all 0.2s;
+        }
+        .help-btn:hover { background: var(--jd-green); color: #fff; border-color: var(--jd-green); }
     </style>
 </head>
 <body>
@@ -791,7 +882,7 @@
                     TraxaTor
                     <span class="header-badge" data-i18n="badge">EXCLUSIVE JOHN DEERE</span>
                 </div>
-                <div class="header-subtitle" data-i18n="subtitle">AI-Powered Trade-In Valuation</div>
+                <div class="header-subtitle" data-i18n="subtitle">Market Data Valuation Tool</div>
             </div>
         </div>
 
@@ -803,6 +894,7 @@
                 <button class="ctrl-btn" onclick="setLang('br')" id="langBR" title="Brabants">Brabants</button>
                 <button class="ctrl-btn" onclick="setLang('gr')" id="langGR" title="Grunnegs">Grunnegs</button>
                 <button class="ctrl-btn" onclick="toggleTheme()" id="themeBtn">🌙</button>
+                <button class="help-btn" onclick="toggleManual()" title="Manual">📖 <span data-i18n="helpBtn">Manual</span></button>
             </div>
             <div class="header-stats" style="display:flex;gap:0.75rem;">
                 <div class="stat">
@@ -925,11 +1017,11 @@
                     <div class="hero-content">
                         <div class="hero-title">
                             <span data-i18n="whyTitle">Why TraxaTor?</span>
-                            <span>AI-POWERED</span>
+                            <span>MARKTDATA</span>
                         </div>
-                        <p class="hero-desc" data-i18n="whyDesc">TraxaTor analyzes real-time market data from Mascus, TractorPool and Ritchie Bros to determine the most accurate trade-in value for your John Deere tractor.</p>
+                        <p class="hero-desc" data-i18n="whyDesc">TraxaTor analyses market prices from Mascus, TractorPool and Ritchie Bros to determine an indicative trade-in value for your John Deere tractor.</p>
                         <div class="hero-features">
-                            <div class="hero-feature"><span class="check">✓</span> <span data-i18n="feat1">Real-time prices</span></div>
+                            <div class="hero-feature"><span class="check">✓</span> <span data-i18n="feat1">Market prices</span></div>
                             <div class="hero-feature"><span class="check">✓</span> <span data-i18n="feat2">60+ models</span></div>
                             <div class="hero-feature"><span class="check">✓</span> <span data-i18n="feat3">B2B valuation</span></div>
                             <div class="hero-feature"><span class="check">✓</span> <span data-i18n="feat4">Seasonal adjustment</span></div>
@@ -984,8 +1076,36 @@
         </div>
     </main>
 
+    <!-- Help Manual Modal -->
+    <div class="modal-overlay" id="manualModal" onclick="if(event.target===this)toggleManual()">
+        <div class="modal-box">
+            <button class="modal-close" onclick="toggleManual()">✕</button>
+            <h2>📖 <span data-i18n="manualTitle">How to use TraxaTor</span></h2>
+
+            <h3><span class="step-num">1</span> <span data-i18n="manualStep1Title">Select a model</span></h3>
+            <p data-i18n="manualStep1">Choose a series and then your specific John Deere model from the dropdown menus.</p>
+
+            <h3><span class="step-num">2</span> <span data-i18n="manualStep2Title">Enter details</span></h3>
+            <p data-i18n="manualStep2">Fill in the year of manufacture and the number of operating hours.</p>
+
+            <h3><span class="step-num">3</span> <span data-i18n="manualStep3Title">Select options</span></h3>
+            <p data-i18n="manualStep3">Click on any factory options that apply to your tractor. Options affect the estimated value.</p>
+
+            <h3><span class="step-num">4</span> <span data-i18n="manualStep4Title">Calculate</span></h3>
+            <p data-i18n="manualStep4">Press the Calculate button to see the estimated trade-in range. You will get a low and high estimate.</p>
+
+            <h3><span class="step-num">5</span> <span data-i18n="manualStep5Title">Compare on the market</span></h3>
+            <p data-i18n="manualStep5">Use the market links (Mascus, TractorPool, Ritchie Bros) to compare with real listings.</p>
+
+            <h3>💡 <span data-i18n="manualTipsTitle">Tips</span></h3>
+            <p data-i18n="manualTips">The signal badge (GO/CAUTION/STOP) indicates how the hours relate to average usage. Your last 20 valuations are saved automatically and visible in the history section below.</p>
+
+            <div class="modal-version" data-i18n="manualDisclaimer">Values are indicative and based on comparable market listings. No rights can be derived from this tool.</div>
+        </div>
+    </div>
+
     <footer class="footer">
-        TraxaTor © 2025 · <a href="https://github.com/hjekel/traxator" target="_blank">GitHub</a> · <span data-i18n="demo">Demo - Prices are indicative</span> · <span style="opacity:0.5">v12</span>
+        TraxaTor © 2025 · <a href="https://github.com/hjekel/traxator" target="_blank">GitHub</a> · <span data-i18n="demo">Demo - Prices are indicative</span> · <span style="opacity:0.5" id="versionTag">v13 · 2025-03-24</span>
     </footer>
 
     <script>
@@ -993,7 +1113,7 @@
         const i18n = {
             en: {
                 badge: 'EXCLUSIVE JOHN DEERE',
-                subtitle: 'AI-Powered Trade-In Valuation',
+                subtitle: 'Market Data Valuation Tool',
                 statToday: 'Today',
                 statAvg: 'Average',
                 models: 'Models:',
@@ -1019,8 +1139,8 @@
                 tip: 'Tip:',
                 tipText: 'A valuation takes about 30 seconds. Add all options for a more accurate estimate.',
                 whyTitle: 'Why TraxaTor?',
-                whyDesc: 'TraxaTor analyzes real-time market data from Mascus, TractorPool and Ritchie Bros to determine the most accurate trade-in value for your John Deere tractor.',
-                feat1: 'Real-time prices',
+                whyDesc: 'TraxaTor analyses market prices from Mascus, TractorPool and Ritchie Bros to determine an indicative trade-in value for your John Deere tractor.',
+                feat1: 'Market prices',
                 feat2: '60+ models',
                 feat3: 'B2B valuation',
                 feat4: 'Seasonal adjustment',
@@ -1045,11 +1165,27 @@
                 dealerLabel: 'Official dealer in the Netherlands',
                 dealerSlogan: 'Technology of tomorrow, Service of today',
                 dealerBtn: 'Visit Kraakman',
-                rotateHint: 'Rotate your phone for the best experience'
+                rotateHint: 'Rotate your phone for the best experience',
+                disclaimer: 'Indicative value based on comparable listings. No guarantee.',
+                helpBtn: 'Manual',
+                manualTitle: 'How to use TraxaTor',
+                manualStep1Title: 'Select a model',
+                manualStep1: 'Choose a series and then your specific John Deere model from the dropdown menus.',
+                manualStep2Title: 'Enter details',
+                manualStep2: 'Fill in the year of manufacture and the number of operating hours.',
+                manualStep3Title: 'Select options',
+                manualStep3: 'Click on any factory options that apply to your tractor. Options affect the estimated value.',
+                manualStep4Title: 'Calculate',
+                manualStep4: 'Press the Calculate button to see the estimated trade-in range. You will get a low and high estimate.',
+                manualStep5Title: 'Compare on the market',
+                manualStep5: 'Use the market links (Mascus, TractorPool, Ritchie Bros) to compare with real listings.',
+                manualTipsTitle: 'Tips',
+                manualTips: 'The signal badge (GO/CAUTION/STOP) indicates how the hours relate to average usage. Your last 20 valuations are saved automatically and visible in the history section below.',
+                manualDisclaimer: 'Values are indicative and based on comparable market listings. No rights can be derived from this tool.'
             },
             nl: {
                 badge: 'EXCLUSIEF JOHN DEERE',
-                subtitle: 'AI-Powered Inruil Taxatie',
+                subtitle: 'Marktdata Taxatie Tool',
                 statToday: 'Vandaag',
                 statAvg: 'Gemiddeld',
                 models: 'Modellen:',
@@ -1075,8 +1211,8 @@
                 tip: 'Tip:',
                 tipText: 'Een taxatie duurt gemiddeld 30 seconden. Voeg alle opties toe voor een nauwkeurigere waardebepaling.',
                 whyTitle: 'Waarom TraxaTor?',
-                whyDesc: 'TraxaTor analyseert real-time marktdata van Mascus, TractorPool en Ritchie Bros om de meest accurate inruilwaarde te bepalen voor uw John Deere tractor.',
-                feat1: 'Real-time prijzen',
+                whyDesc: 'TraxaTor analyseert marktprijzen van Mascus, TractorPool en Ritchie Bros om een indicatieve inruilwaarde te bepalen voor uw John Deere tractor.',
+                feat1: 'Marktprijzen',
                 feat2: '60+ modellen',
                 feat3: 'B2B waardebepaling',
                 feat4: 'Seizoenscorrectie',
@@ -1101,11 +1237,27 @@
                 dealerLabel: 'Officiële dealer in Nederland',
                 dealerSlogan: 'Techniek van morgen, Service van vandaag',
                 dealerBtn: 'Bezoek Kraakman',
-                rotateHint: 'Draai je telefoon voor de beste ervaring'
+                rotateHint: 'Draai je telefoon voor de beste ervaring',
+                disclaimer: 'Indicatieve waarde op basis van vergelijkbare advertenties. Geen garantie.',
+                helpBtn: 'Handleiding',
+                manualTitle: 'Hoe gebruik je TraxaTor',
+                manualStep1Title: 'Kies een model',
+                manualStep1: 'Selecteer eerst een serie en daarna het specifieke John Deere model uit de dropdown menu\'s.',
+                manualStep2Title: 'Vul gegevens in',
+                manualStep2: 'Vul het bouwjaar en het aantal draaiuren in.',
+                manualStep3Title: 'Selecteer opties',
+                manualStep3: 'Klik op de fabrieksopties die van toepassing zijn op jouw tractor. Opties beïnvloeden de geschatte waarde.',
+                manualStep4Title: 'Bereken',
+                manualStep4: 'Druk op de Bereken-knop om het geschatte inruilbereik te zien. Je krijgt een lage en hoge schatting.',
+                manualStep5Title: 'Vergelijk op de markt',
+                manualStep5: 'Gebruik de marktlinks (Mascus, TractorPool, Ritchie Bros) om te vergelijken met echte advertenties.',
+                manualTipsTitle: 'Tips',
+                manualTips: 'Het signaal-badge (GO/CAUTION/STOP) geeft aan hoe de uren zich verhouden tot gemiddeld gebruik. Je laatste 20 taxaties worden automatisch opgeslagen en zijn zichtbaar in de geschiedenis hieronder.',
+                manualDisclaimer: 'Waarden zijn indicatief en gebaseerd op vergelijkbare marktadvertenties. Aan deze tool kunnen geen rechten worden ontleend.'
             },
             fy: {
                 badge: 'ALLINICH JOHN DEERE',
-                subtitle: 'AI-Oandreaune Ynruilwearde',
+                subtitle: 'Merktdata Taksaasje Ark',
                 statToday: 'Hjoed',
                 statAvg: 'Gemiddeld',
                 models: 'Modellen:',
@@ -1131,8 +1283,8 @@
                 tip: 'Tip:',
                 tipText: 'In taksaasje duorret sa\'n 30 sekonden. Foegje alle opsjes ta foar in sekuerder wearde.',
                 whyTitle: 'Wêrom TraxaTor?',
-                whyDesc: 'TraxaTor analysearret real-time merkdata fan Mascus, TractorPool en Ritchie Bros om de meast sekuere ynruilwearde te bepalen foar jo John Deere trekker.',
-                feat1: 'Real-time prizen',
+                whyDesc: 'TraxaTor analysearret merkprizen fan Mascus, TractorPool en Ritchie Bros om in yndikatyfe ynruilwearde te bepalen foar jo John Deere trekker.',
+                feat1: 'Merkprizen',
                 feat2: '60+ modellen',
                 feat3: 'B2B weardebepaling',
                 feat4: 'Seizoenskoreksje',
@@ -1157,11 +1309,27 @@
                 dealerLabel: 'Offisjele dealer yn Nederlân',
                 dealerSlogan: 'Technyk fan moarn, Tsjinst fan hjoed',
                 dealerBtn: 'Besykje Kraakman',
-                rotateHint: 'Draai jo tillefoan foar it bêste resultaat'
+                rotateHint: 'Draai jo tillefoan foar it bêste resultaat',
+                disclaimer: 'Yndikatyfe wearde op basis fan ferlykbere advertinsjes. Gjin garânsje.',
+                helpBtn: 'Hânlieding',
+                manualTitle: 'Hoe brûkst TraxaTor',
+                manualStep1Title: 'Kies in model',
+                manualStep1: 'Selektearje earst in searje en dêrnei it spesifike John Deere model út de dropdown menu\'s.',
+                manualStep2Title: 'Fol gegevens yn',
+                manualStep2: 'Fol it boujier en it oantal oeren yn.',
+                manualStep3Title: 'Selektearje opsjes',
+                manualStep3: 'Klik op de fabryksopsjes dy\'t fan tapassing binne op jo trekker. Opsjes beynfloedzje de skatte wearde.',
+                manualStep4Title: 'Berekkenje',
+                manualStep4: 'Druk op de Berekkenje-knop om it skatte ynruilberik te sjen. Jo krije in lege en hege skatting.',
+                manualStep5Title: 'Fergelykje op de merk',
+                manualStep5: 'Brûk de merklinks (Mascus, TractorPool, Ritchie Bros) om te fergelykjen mei echte advertinsjes.',
+                manualTipsTitle: 'Tips',
+                manualTips: 'It sinjaal-badge (GO/CAUTION/STOP) jout oan hoe\'t de oeren har ferhâlde ta trochsneed gebrûk. Jo lêste 20 taksaasjes wurde automatysk bewarre en binne sichtber yn de skiednis hjirûnder.',
+                manualDisclaimer: 'Weardes binne yndikatyf en basearre op ferlykbere merkadvertinsjes. Oan dit ark kinne gjin rjochten ûntliend wurde.'
             },
             br: {
                 badge: 'ALLÉÉN JOHN DEERE',
-                subtitle: 'AI-Powered Inruil Taxaosie',
+                subtitle: 'Merktdata Taxaosie Tool',
                 statToday: 'Vandaog',
                 statAvg: 'Gemiddeld',
                 models: 'Modellen:',
@@ -1187,8 +1355,8 @@
                 tip: 'Tip:',
                 tipText: 'Nen taxaosie duurt gemiddeld 30 seconden. Doet alle opties derbij vur een beter weerdering.',
                 whyTitle: 'Waorom TraxaTor?',
-                whyDesc: 'TraxaTor analyseert real-time merktdata van Mascus, TractorPool en Ritchie Bros om de beste inruilweerde te bepaolen vur oewen John Deere trekker.',
-                feat1: 'Real-time prijzen',
+                whyDesc: 'TraxaTor analyseert merktprijzen van Mascus, TractorPool en Ritchie Bros om een indicatieve inruilweerde te bepaolen vur oewen John Deere trekker.',
+                feat1: 'Marktprijzen',
                 feat2: '60+ modellen',
                 feat3: 'B2B weerdering',
                 feat4: 'Seizoenscorrectie',
@@ -1213,11 +1381,27 @@
                 dealerLabel: 'Officiële dealer in Nederland',
                 dealerSlogan: 'Techniek van morge, Service van vandaog',
                 dealerBtn: 'Bekiek Kraakman',
-                rotateHint: 'Draai oewen mobielke vur de beste ervaring'
+                rotateHint: 'Draai oewen mobielke vur de beste ervaring',
+                disclaimer: 'Indicatieve weerde op basis van vergelijkbare advertenties. Gin garantie.',
+                helpBtn: 'Handleiding',
+                manualTitle: 'Hoe gebruikte TraxaTor',
+                manualStep1Title: 'Kies een model',
+                manualStep1: 'Selekteer ierst een serie en daornao het specifieke John Deere model uit de dropdown menu\'s.',
+                manualStep2Title: 'Vul gegevens in',
+                manualStep2: 'Vul het bouwjaor en het aontal draaiuren in.',
+                manualStep3Title: 'Selekteer opties',
+                manualStep3: 'Klik op de fabrieksopties die van toepassing zien op oewen trekker. Opties beïnvloeden de geschatte weerde.',
+                manualStep4Title: 'Bereken',
+                manualStep4: 'Druk op de Bereken-knop om het geschatte inruilbereik te zien. Ge krijgt een lage en hoge schatting.',
+                manualStep5Title: 'Vergelijk op de merkt',
+                manualStep5: 'Gebruik de merktlinks (Mascus, TractorPool, Ritchie Bros) om te vergelijken mee echte advertenties.',
+                manualTipsTitle: 'Tips',
+                manualTips: 'Het signaal-badge (GO/CAUTION/STOP) geeft aon hoe de uren zich verhouden tot gemiddeld gebruik. Oewe leste 20 taxaosies worden automatisch opgeslaogen en zien zichtbaar in de geschiedenis hieronder.',
+                manualDisclaimer: 'Weerdes zien indicatief en gebaseerd op vergelijkbare merktadvertenties. Aon deze tool kunnen gin rechten worden ontleend.'
             },
             gr: {
                 badge: 'ALLENNEG JOHN DEERE',
-                subtitle: 'AI-Powered Inruul Taksaotsie',
+                subtitle: 'Merktdata Taksaotsie Tool',
                 statToday: 'Vandoag',
                 statAvg: 'Gemiddeld',
                 models: 'Modellen:',
@@ -1243,8 +1427,8 @@
                 tip: 'Tip:',
                 tipText: 'n Taksaotsie duurt zo n 30 seconden. Dou alle opties derbie veur n sekuurder weerde.',
                 whyTitle: 'Woarom TraxaTor?',
-                whyDesc: 'TraxaTor analyseert real-time marktdata van Mascus, TractorPool en Ritchie Bros om de beste inruilweerde te bepaolen veur joen John Deere trekker.',
-                feat1: 'Real-time priezen',
+                whyDesc: 'TraxaTor analyseert marktpriezen van Mascus, TractorPool en Ritchie Bros om een indicatieve inruilweerde te bepaolen veur joen John Deere trekker.',
+                feat1: 'Marktpriezen',
                 feat2: '60+ modellen',
                 feat3: 'B2B weerdebepaoling',
                 feat4: 'Seizoenscorreksie',
@@ -1269,7 +1453,23 @@
                 dealerLabel: 'Officiële dealer in Nederland',
                 dealerSlogan: 'Techniek van mörn, Service van vandoag',
                 dealerBtn: 'Bekiek Kraakman',
-                rotateHint: 'Draai joe tillefoon veur t beste resultaat'
+                rotateHint: 'Draai joe tillefoon veur t beste resultaat',
+                disclaimer: 'Indicatieve weerde op basis van vergeliekboare advertenties. Gain garantie.',
+                helpBtn: 'Handleiding',
+                manualTitle: 'Hoe gebruukst TraxaTor',
+                manualStep1Title: 'Kies n model',
+                manualStep1: 'Selekteer eerst n serie en doarnoa t specifieke John Deere model oet de dropdown menu\'s.',
+                manualStep2Title: 'Vul gegevens in',
+                manualStep2: 'Vul t baauwjoar en t aantol draaioeren in.',
+                manualStep3Title: 'Selekteer opties',
+                manualStep3: 'Klik op de fabrieksopties die van toepassing binnen op joen trekker. Opties beïnvloeden de geschatte weerde.',
+                manualStep4Title: 'Bereken',
+                manualStep4: 'Druk op de Bereken-knop om t geschatte inruilbereik te zain. Je kriegen n lage en hoge schatting.',
+                manualStep5Title: 'Vergeliek op de markt',
+                manualStep5: 'Gebruik de marktlinks (Mascus, TractorPool, Ritchie Bros) om te vergelieken mit echte advertenties.',
+                manualTipsTitle: 'Tips',
+                manualTips: 'T signaal-badge (GO/CAUTION/STOP) geft aan hoe de oeren zuk verhollen tot gemiddeld gebruik. Joen leste 20 taksaotsies worden automatisch opsloagen en binnen zichtboar in de geschiedenis hieronder.',
+                manualDisclaimer: 'Weerdes binnen indicatief en baseerd op vergeliekboare marktadvertenties. Aan dit tool kinnen gain rechten worden ontleend.'
             }
         };
 
@@ -1474,7 +1674,6 @@
                 results.unshift({
                     id: Date.now(), model: m.name, year, hours, low, high, sig,
                     opts: Array.from(selectedOpts),
-                    comps: Math.floor(Math.random() * 8) + 5,
                     time: new Date().toLocaleString()
                 });
 
@@ -1521,8 +1720,9 @@
                     </div>
                     <div class="result-label">${t('valLabel')}</div>
                     <div class="result-price">€ ${r.low.toLocaleString()} – € ${r.high.toLocaleString()}</div>
-                    <div class="result-meta">✓ ${t('basedOn')} ${r.comps} ${t('machines')} · <a href="${urls.mascus}" target="_blank" class="market-link">Mascus</a> · <a href="${urls.tractorpool}" target="_blank" class="market-link">TractorPool</a> · <a href="${urls.ritchiebros}" target="_blank" class="market-link">Ritchie Bros</a></div>
+                    <div class="result-meta">✓ Gebaseerd op recente marktadvertenties · <a href="${urls.mascus}" target="_blank" class="market-link">Mascus</a> · <a href="${urls.tractorpool}" target="_blank" class="market-link">TractorPool</a> · <a href="${urls.ritchiebros}" target="_blank" class="market-link">Ritchie Bros</a></div>
                     ${r.opts.length ? `<div class="result-options">${r.opts.map(o => `<span class="option-tag">${optNames[o] || o}</span>`).join('')}</div>` : ''}
+                    <div class="result-disclaimer">${t('disclaimer')}</div>
                     <div class="result-footer">
                         <span class="result-time">⏱ ${r.time}</span>
                         <button class="btn-delete" onclick="del(${r.id})">🗑️</button>
@@ -1555,6 +1755,17 @@
             localStorage.setItem('traxator-theme', newTheme);
             document.getElementById('themeBtn').textContent = newTheme === 'light' ? '☀️' : '🌙';
         }
+
+        // ==================== MANUAL MODAL ====================
+        function toggleManual() {
+            const modal = document.getElementById('manualModal');
+            modal.classList.toggle('active');
+        }
+        document.addEventListener('keydown', e => {
+            if (e.key === 'Escape') {
+                document.getElementById('manualModal').classList.remove('active');
+            }
+        });
     </script>
 </body>
 </html>
