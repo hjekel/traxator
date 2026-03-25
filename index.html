@@ -2349,6 +2349,7 @@
                 save(); render(); stats();
                 showListings(results[0]);
                 showUpgradeSuggestion(m.name, Math.round((low + high) / 2));
+                showPriceTrend(m.name);
                 btn.classList.remove('loading');
                 btn.innerHTML = `<span>⚡</span> <span data-i18n="calculate">${t('calculate')}</span>`;
             }, 700);
@@ -2357,13 +2358,35 @@
         // ==================== PRICE TREND ====================
         function getPriceTrend(modelName) {
             const trends = {
-                "6R 155": { direction: "down", percent: "-5%", period: "6 maanden" },
-                "6R 185": { direction: "stable", percent: "0%", period: "6 maanden" },
-                "6M 130": { direction: "down", percent: "-8%", period: "6 maanden" },
-                "7810":   { direction: "up", percent: "+3%", period: "6 maanden" },
-                "6155M":  { direction: "down", percent: "-12%", period: "6 maanden" }
+                "6R 155": { direction: "down", percent: -5, period: "6 maanden" },
+                "6R 185": { direction: "stable", percent: 0, period: "6 maanden" },
+                "6M 130": { direction: "down", percent: -8, period: "6 maanden" },
+                "7810":   { direction: "up", percent: 3, period: "6 maanden" },
+                "6155M":  { direction: "down", percent: -12, period: "6 maanden" },
+                "6R 175": { direction: "down", percent: -3, period: "6 maanden" },
+                "6R 130": { direction: "stable", percent: 1, period: "6 maanden" },
             };
-            return trends[modelName] || { direction: "stable", percent: "0%", period: "6 maanden" };
+            return trends[modelName] || null;
+        }
+
+        function showPriceTrend(modelName) {
+            const el = document.getElementById('priceTrend');
+            if (!el) return;
+            const trend = getPriceTrend(modelName);
+            if (!trend) {
+                el.innerHTML = '';
+                return;
+            }
+            const icon = trend.direction === 'up' ? '↑' : trend.direction === 'down' ? '↓' : '→';
+            const label = trend.direction === 'up' ? 'Stijgend' : trend.direction === 'down' ? 'Dalend' : 'Stabiel';
+            const pctStr = trend.percent > 0 ? '+' + trend.percent + '%' : trend.percent + '%';
+            el.innerHTML = `
+                <div class="price-trend ${trend.direction}" style="margin-top:0.75rem;">
+                    <span>${icon}</span>
+                    <span>Markttrend: ${label} (${pctStr} in ${trend.period})</span>
+                </div>
+                <p style="font-size:0.65rem;color:var(--text-muted);margin-top:0.25rem;">Inkoop-intelligence: trend gebaseerd op marktdata</p>
+            `;
         }
 
         // ==================== UPGRADE ADVISOR ====================
