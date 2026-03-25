@@ -1296,6 +1296,67 @@
             line-height: 1;
         }
         .close-btn:hover { color: var(--text-white); }
+
+        /* Dashboard Actions (CSV Import/Export) */
+        .dashboard-actions {
+            display: flex;
+            gap: 0.5rem;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+        .btn-import, .btn-export, .btn-add-machine, .btn-reset-demo {
+            padding: 0.4rem 0.75rem;
+            border-radius: 6px;
+            font-size: 0.7rem;
+            font-weight: 600;
+            cursor: pointer;
+            border: none;
+            transition: all 0.2s;
+            white-space: nowrap;
+        }
+        .btn-import {
+            background: var(--jd-green);
+            color: #fff;
+        }
+        .btn-import:hover { background: var(--jd-green-light); }
+        .btn-export {
+            background: transparent;
+            color: var(--jd-green-light);
+            border: 1px solid var(--jd-green-light);
+        }
+        .btn-export:hover { background: rgba(76, 175, 80, 0.1); }
+        .btn-add-machine {
+            background: var(--jd-yellow);
+            color: #1a1f2b;
+            font-weight: 700;
+        }
+        .btn-add-machine:hover { background: #ffe033; }
+        .btn-reset-demo {
+            background: transparent;
+            color: var(--text-muted);
+            border: 1px solid var(--border);
+            font-size: 0.65rem;
+        }
+        .btn-reset-demo:hover { color: var(--text-gray); border-color: var(--text-gray); }
+        .btn-delete-machine {
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 0.85rem;
+            padding: 0.2rem 0.4rem;
+            border-radius: 4px;
+            opacity: 0.5;
+            transition: opacity 0.2s;
+            flex-shrink: 0;
+        }
+        .btn-delete-machine:hover { opacity: 1; }
+        [data-theme="light"] .btn-import { background: var(--jd-green); color: #fff; }
+        [data-theme="light"] .btn-export { color: var(--jd-green); border-color: var(--jd-green); }
+        [data-theme="light"] .btn-export:hover { background: rgba(54, 124, 43, 0.08); }
+        [data-theme="light"] .btn-add-machine { color: #1a1f2b; }
+        [data-theme="light"] .btn-reset-demo { color: #6b7280; border-color: #d1d5db; }
+        [data-theme="light"] .btn-reset-demo:hover { color: #374151; border-color: #9ca3af; }
+
         @media (max-width: 600px) {
             .dashboard-summary { grid-template-columns: 1fr; }
             .inventory-item { flex-wrap: wrap; }
@@ -1640,7 +1701,13 @@
                     <span style="font-size:1.3rem;">📊</span>
                     <h2>Voorraad Dashboard</h2>
                 </div>
-                <button class="close-btn" onclick="closeInventoryDashboard()">✕</button>
+                <div class="dashboard-actions">
+                    <label class="btn-import">📥 Import CSV<input type="file" id="csvImport" accept=".csv" style="display:none" onchange="importCSV(this)"></label>
+                    <button onclick="exportCSV()" class="btn-export">📤 Export</button>
+                    <button onclick="openAddMachineModal()" class="btn-add-machine">+ Machine</button>
+                    <button onclick="resetDemoInventory()" class="btn-reset-demo">↺ Reset demo</button>
+                    <button class="close-btn" onclick="closeInventoryDashboard()">✕</button>
+                </div>
             </div>
             <div class="dashboard-summary" id="dashboardSummary"></div>
             <div style="padding:0 1.25rem;margin-bottom:1rem;">
@@ -2615,16 +2682,100 @@
 
 
         // ==================== INVENTORY DASHBOARD ====================
-        const DEMO_INVENTORY = [
-            { model: "6R 155", year: 2021, hours: 3200, location: "Steenbergen", price: 145000, status: "alert", days: 120, note: "Lang op voorraad" },
-            { model: "6M 130", year: 2019, hours: 5800, location: "Maasdam", price: 78000, status: "warning", days: 65, note: "Prijsdaling markt" },
-            { model: "7R 310", year: 2022, hours: 1800, location: "Oldehove", price: 285000, status: "ok", days: 14, note: "Nieuw binnen" },
-            { model: "8R 340", year: 2020, hours: 4500, location: "Dronten", price: 320000, status: "warning", days: 80, note: "Weinig vraag" },
-            { model: "5075M", year: 2018, hours: 6200, location: "Lieshout", price: 42000, status: "alert", days: 150, note: "Overstock" },
-            { model: "6R 185", year: 2023, hours: 800, location: "Reusel", price: 195000, status: "ok", days: 7, note: "Vers binnen" },
-            { model: "6M 155", year: 2020, hours: 4100, location: "Hillegom", price: 112000, status: "warning", days: 55, note: "Seizoensdruk laag" },
-            { model: "7R 270", year: 2021, hours: 3600, location: "Koudekerk", price: 245000, status: "alert", days: 110, note: "Moet weg" }
+        const DEMO_INVENTORY_BACKUP = [
+            { id: 1, model: "6R 155", year: 2021, hours: 3200, location: "Steenbergen", price: 145000, status: "alert", days: 120, note: "Lang op voorraad" },
+            { id: 2, model: "6M 130", year: 2019, hours: 5800, location: "Maasdam", price: 78000, status: "warning", days: 65, note: "Prijsdaling markt" },
+            { id: 3, model: "7R 310", year: 2022, hours: 1800, location: "Oldehove", price: 285000, status: "ok", days: 14, note: "Nieuw binnen" },
+            { id: 4, model: "8R 340", year: 2020, hours: 4500, location: "Dronten", price: 320000, status: "warning", days: 80, note: "Weinig vraag" },
+            { id: 5, model: "5075M", year: 2018, hours: 6200, location: "Lieshout", price: 42000, status: "alert", days: 150, note: "Overstock" },
+            { id: 6, model: "6R 185", year: 2023, hours: 800, location: "Reusel", price: 195000, status: "ok", days: 7, note: "Vers binnen" },
+            { id: 7, model: "6M 155", year: 2020, hours: 4100, location: "Hillegom", price: 112000, status: "warning", days: 55, note: "Seizoensdruk laag" },
+            { id: 8, model: "7R 270", year: 2021, hours: 3600, location: "Koudekerk", price: 245000, status: "alert", days: 110, note: "Moet weg" }
         ];
+
+        let INVENTORY_DATA = loadInventoryFromStorage() || JSON.parse(JSON.stringify(DEMO_INVENTORY_BACKUP));
+
+        function saveInventoryToStorage() {
+            try { localStorage.setItem('traxator-inventory', JSON.stringify(INVENTORY_DATA)); } catch(e) { console.warn('Storage save failed:', e); }
+        }
+        function loadInventoryFromStorage() {
+            try {
+                const d = localStorage.getItem('traxator-inventory');
+                return d ? JSON.parse(d) : null;
+            } catch(e) { return null; }
+        }
+        function getNextId() {
+            return INVENTORY_DATA.length > 0 ? Math.max(...INVENTORY_DATA.map(i => i.id || 0)) + 1 : 1;
+        }
+
+        function importCSV(input) {
+            const file = input.files[0];
+            if (!file) return;
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const lines = e.target.result.trim().split('
+');
+                if (lines.length < 2) { alert('CSV is leeg of ongeldig.'); return; }
+                const headers = lines[0].toLowerCase().split(',').map(h => h.trim());
+                const modelIdx = headers.indexOf('model');
+                const yearIdx = headers.indexOf('year');
+                const hoursIdx = headers.indexOf('hours');
+                const priceIdx = headers.indexOf('price');
+                const locationIdx = headers.indexOf('location');
+                const daysIdx = headers.indexOf('days_in_stock');
+                if (modelIdx < 0 || yearIdx < 0) { alert('CSV moet minimaal kolommen model en year bevatten.'); return; }
+                let added = 0;
+                for (let i = 1; i < lines.length; i++) {
+                    const cols = lines[i].split(',').map(c => c.trim().replace(/^"|"$/g, ''));
+                    if (!cols[modelIdx]) continue;
+                    INVENTORY_DATA.push({
+                        id: getNextId(),
+                        model: cols[modelIdx],
+                        year: parseInt(cols[yearIdx]) || 2020,
+                        hours: parseInt(cols[hoursIdx]) || 0,
+                        price: parseInt(cols[priceIdx]) || 0,
+                        location: cols[locationIdx] || 'Onbekend',
+                        days: parseInt(cols[daysIdx]) || 0,
+                        note: 'CSV import',
+                        status: 'ok'
+                    });
+                    added++;
+                }
+                saveInventoryToStorage();
+                renderInventory(document.getElementById('locationFilter').value || 'all');
+                alert(added + ' machine(s) geimporteerd.');
+                input.value = '';
+            };
+            reader.readAsText(file);
+        }
+
+        function exportCSV() {
+            const headers = ['model','year','hours','price','location','days_in_stock'];
+            const rows = INVENTORY_DATA.map(i => [i.model, i.year, i.hours, i.price, i.location, i.days].join(','));
+            const csv = [headers.join(','), ...rows].join('
+');
+            const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'traxator_voorraad_' + new Date().toISOString().slice(0,10) + '.csv';
+            a.click();
+            URL.revokeObjectURL(url);
+        }
+
+        function resetDemoInventory() {
+            if (!confirm('Weet je zeker dat je de demo-data wilt herstellen? Alle wijzigingen gaan verloren.')) return;
+            INVENTORY_DATA = JSON.parse(JSON.stringify(DEMO_INVENTORY_BACKUP));
+            saveInventoryToStorage();
+            renderInventory(document.getElementById('locationFilter').value || 'all');
+        }
+
+        function deleteMachine(id) {
+            if (!confirm('Machine verwijderen uit voorraad?')) return;
+            INVENTORY_DATA = INVENTORY_DATA.filter(i => i.id !== id);
+            saveInventoryToStorage();
+            renderInventory(document.getElementById('locationFilter').value || 'all');
+        }
 
         function openInventoryDashboard() {
             document.getElementById('inventoryDashboard').classList.add('active');
@@ -2636,7 +2787,7 @@
         }
 
         function renderInventory(locationFilter) {
-            const items = locationFilter === 'all' ? DEMO_INVENTORY : DEMO_INVENTORY.filter(i => i.location.toLowerCase() === locationFilter.toLowerCase());
+            const items = locationFilter === 'all' ? INVENTORY_DATA : INVENTORY_DATA.filter(i => i.location.toLowerCase() === locationFilter.toLowerCase());
             const getStatus = (days) => days > 90 ? 'alert' : days > 60 ? 'warning' : 'ok';
             const alertCount = items.filter(i => getStatus(i.days) === 'alert').length;
             const warningCount = items.filter(i => getStatus(i.days) === 'warning').length;
@@ -2669,6 +2820,7 @@
                         <div class="inv-meta">${i.year} \u00B7 ${i.hours.toLocaleString()} uur \u00B7 ${i.location} \u00B7 ${i.days} dagen</div>
                     </div>
                     <span class="inventory-price">\u20AC ${i.price.toLocaleString()}</span>
+                    <button class="btn-delete-machine" onclick="deleteMachine(${i.id})" title="Verwijderen">🗑️</button>
                 </div>`;
             }).join('');
 
