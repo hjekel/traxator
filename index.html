@@ -1297,6 +1297,107 @@
         }
         .close-btn:hover { color: var(--text-white); }
 
+
+        /* Add Machine Modal */
+        .add-machine-modal {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.6);
+            z-index: 10001;
+            justify-content: center;
+            align-items: center;
+            backdrop-filter: blur(4px);
+        }
+        .add-machine-modal.active { display: flex; }
+        .add-machine-box {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            max-width: 500px;
+            width: 95%;
+            max-height: 90vh;
+            overflow-y: auto;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.4);
+            padding: 1.5rem;
+        }
+        .add-machine-box h2 {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--text-white);
+            margin-bottom: 1rem;
+        }
+        .add-machine-box .form-group {
+            margin-bottom: 0.75rem;
+        }
+        .add-machine-box .form-group label {
+            display: block;
+            font-size: 0.7rem;
+            font-weight: 600;
+            color: var(--text-gray);
+            margin-bottom: 0.25rem;
+        }
+        .add-machine-box .form-group input,
+        .add-machine-box .form-group select {
+            width: 100%;
+            padding: 0.5rem 0.75rem;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            background: var(--bg-input);
+            color: var(--text-white);
+            font-size: 0.85rem;
+        }
+        .add-machine-box .form-group input:focus,
+        .add-machine-box .form-group select:focus {
+            outline: none;
+            border-color: var(--jd-green);
+        }
+        .add-machine-box .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0.75rem;
+        }
+        .add-machine-box .btn-row {
+            display: flex;
+            gap: 0.5rem;
+            margin-top: 1rem;
+            justify-content: flex-end;
+        }
+        .btn-cancel {
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            cursor: pointer;
+            background: transparent;
+            color: var(--text-gray);
+            border: 1px solid var(--border);
+        }
+        .btn-cancel:hover { color: var(--text-white); border-color: var(--text-gray); }
+        .btn-save-machine {
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            font-size: 0.8rem;
+            font-weight: 700;
+            cursor: pointer;
+            background: var(--jd-green);
+            color: #fff;
+            border: none;
+        }
+        .btn-save-machine:hover { background: var(--jd-green-light); }
+        [data-theme="light"] .add-machine-box {
+            background: #fff;
+            border-color: #d1d5db;
+        }
+        [data-theme="light"] .add-machine-box .form-group input,
+        [data-theme="light"] .add-machine-box .form-group select {
+            background: #fff;
+            border-color: #d1d5db;
+            color: #111827;
+        }
+        [data-theme="light"] .btn-cancel { color: #6b7280; border-color: #d1d5db; }
+        [data-theme="light"] .btn-cancel:hover { color: #374151; border-color: #9ca3af; }
+
         /* Dashboard Actions (CSV Import/Export) */
         .dashboard-actions {
             display: flex;
@@ -1690,6 +1791,57 @@
             <p data-i18n="manualTips">The signal badge (GO/CAUTION/STOP) indicates how the hours relate to average usage. Your last 20 valuations are saved automatically and visible in the history section below.</p>
 
             <div class="modal-version" data-i18n="manualDisclaimer">Values are indicative and based on comparable market listings. No rights can be derived from this tool.</div>
+        </div>
+    </div>
+
+
+    <!-- Add Machine Modal -->
+    <div class="add-machine-modal" id="addMachineModal" onclick="if(event.target===this)closeAddMachineModal()">
+        <div class="add-machine-box">
+            <h2>🚜 Machine toevoegen</h2>
+            <form onsubmit="addMachine(event)">
+                <div class="form-group">
+                    <label>Model *</label>
+                    <input type="text" id="newModel" placeholder="bijv. 6R 155" required>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Bouwjaar *</label>
+                        <input type="number" id="newYear" min="2000" max="2026" placeholder="2022" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Draaiuren</label>
+                        <input type="number" id="newHours" min="0" max="50000" placeholder="3000">
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Vraagprijs (€)</label>
+                        <input type="number" id="newPrice" min="0" placeholder="125000">
+                    </div>
+                    <div class="form-group">
+                        <label>Dagen in voorraad</label>
+                        <input type="number" id="newDays" min="0" placeholder="0" value="0">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Vestiging</label>
+                    <select id="newLocation">
+                        <option value="Steenbergen">Steenbergen</option>
+                        <option value="Maasdam">Maasdam</option>
+                        <option value="Dronten">Dronten</option>
+                        <option value="Oldehove">Oldehove</option>
+                        <option value="Lieshout">Lieshout</option>
+                        <option value="Reusel">Reusel</option>
+                        <option value="Hillegom">Hillegom</option>
+                        <option value="Koudekerk">Koudekerk a/d Rijn</option>
+                    </select>
+                </div>
+                <div class="btn-row">
+                    <button type="button" class="btn-cancel" onclick="closeAddMachineModal()">Annuleren</button>
+                    <button type="submit" class="btn-save-machine">✓ Opslaan</button>
+                </div>
+            </form>
         </div>
     </div>
 
@@ -2777,6 +2929,43 @@
             renderInventory(document.getElementById('locationFilter').value || 'all');
         }
 
+
+        function openAddMachineModal() {
+            document.getElementById('addMachineModal').classList.add('active');
+        }
+        function closeAddMachineModal() {
+            document.getElementById('addMachineModal').classList.remove('active');
+        }
+        function addMachine(event) {
+            event.preventDefault();
+            const model = document.getElementById('newModel').value.trim();
+            const year = parseInt(document.getElementById('newYear').value) || 2022;
+            const hours = parseInt(document.getElementById('newHours').value) || 0;
+            const price = parseInt(document.getElementById('newPrice').value) || 0;
+            const days = parseInt(document.getElementById('newDays').value) || 0;
+            const location = document.getElementById('newLocation').value;
+            if (!model) { alert('Vul een modelnaam in.'); return; }
+            INVENTORY_DATA.push({
+                id: getNextId(),
+                model: model,
+                year: year,
+                hours: hours,
+                price: price,
+                location: location,
+                days: days,
+                note: 'Handmatig toegevoegd',
+                status: 'ok'
+            });
+            saveInventoryToStorage();
+            renderInventory(document.getElementById('locationFilter').value || 'all');
+            closeAddMachineModal();
+            document.getElementById('newModel').value = '';
+            document.getElementById('newYear').value = '';
+            document.getElementById('newHours').value = '';
+            document.getElementById('newPrice').value = '';
+            document.getElementById('newDays').value = '0';
+        }
+
         function openInventoryDashboard() {
             document.getElementById('inventoryDashboard').classList.add('active');
             renderInventory('all');
@@ -2847,6 +3036,7 @@
             if (e.key === 'Escape') {
                 document.getElementById('manualModal').classList.remove('active');
                 closeInventoryDashboard();
+                closeAddMachineModal();
             }
         });
 
