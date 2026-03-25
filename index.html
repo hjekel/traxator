@@ -9,12 +9,12 @@
     - Task 6: Customer/client mode with Kraakman branding
     - Task 7: Version update to v14
 
-    TraxaTor v15 Changelog (2026-03-25)
+    TraxaTor v15.1 Changelog (2026-03-25)
     ====================================
-    - Task 1: Upgrade Advisor with upgrade matrix
-    - Task 2: Inventory Alert Dashboard (Voorraad)
-    - Task 3: Price trend indicator
-    - Task 4: Version update to v15
+    - Task 1: Upgrade Advisor upsell machine (green gradient, dark theme, connected to calc)
+    - Task 2: Voorraad Dashboard (zichtbaarheid, updated inventory data)
+    - Task 3: Prijstrend indicator (inkoop-intelligence, 7 models)
+    - Task 4: Version update to v15.1
 -->
 <!DOCTYPE html>
 <html lang="nl">
@@ -1661,7 +1661,7 @@
     </div>
 
     <footer class="footer">
-        TraxaTor © 2026 · <a href="https://github.com/hjekel/traxator" target="_blank">GitHub</a> · <span data-i18n="demo">Demo - Prices are indicative</span> · <span style="opacity:0.5" id="versionTag">v15 · 2026-03-25</span>
+        TraxaTor © 2026 · <a href="https://github.com/hjekel/traxator" target="_blank">GitHub</a> · <span data-i18n="demo">Demo - Prices are indicative</span> · <span style="opacity:0.5" id="versionTag">v15.1 · 2026-03-25</span>
     </footer>
 
     <script>
@@ -2588,7 +2588,7 @@
             doc.setFontSize(8);
             doc.setTextColor(128, 128, 128);
             doc.text('Indicatieve waarde. Geen garantie.', 10, yPos);
-            doc.text('Gegenereerd door TraxaTor v15', 10, yPos + 6);
+            doc.text('Gegenereerd door TraxaTor v15.1', 10, yPos + 6);
 
             // Save
             const modelClean = r.model.replace(/\s+/g, '_');
