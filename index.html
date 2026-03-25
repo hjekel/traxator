@@ -1083,9 +1083,9 @@
 
         /* Upgrade Suggestion */
         .upgrade-suggestion {
-            background: linear-gradient(135deg, rgba(54, 124, 43, 0.15) 0%, rgba(54, 124, 43, 0.05) 100%);
-            border: 1px solid rgba(54, 124, 43, 0.4);
-            border-radius: 10px;
+            background: linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%);
+            border: 2px solid #367C2B;
+            border-radius: 12px;
             padding: 1rem;
             margin-top: 1rem;
             display: none;
@@ -1097,60 +1097,65 @@
             gap: 0.5rem;
             margin-bottom: 0.75rem;
         }
-        .upgrade-icon {
-            font-size: 1.3rem;
-        }
+        .upgrade-icon { font-size: 1.5rem; }
         .upgrade-title {
-            font-size: 0.9rem;
             font-weight: 700;
-            color: var(--jd-green-light);
+            color: #367C2B;
+            font-size: 1.1rem;
         }
         .upgrade-target {
-            background: var(--bg-input);
-            border: 1px solid var(--border);
+            background: white;
             border-radius: 8px;
-            padding: 0.75rem;
-            margin-bottom: 0.75rem;
+            padding: 1rem;
+            margin: 0.75rem 0;
         }
+        .upgrade-target h4 { color: #367C2B; margin: 0 0 0.25rem 0; }
+        .upgrade-target p { color: #666; margin: 0; font-size: 0.9rem; }
         .upgrade-target .target-model {
             font-size: 1rem;
             font-weight: 700;
-            color: var(--text-white);
+            color: #367C2B;
             margin-bottom: 0.25rem;
         }
         .upgrade-target .target-benefits {
             font-size: 0.75rem;
-            color: var(--jd-green-light);
+            color: #367C2B;
             margin-bottom: 0.25rem;
         }
         .upgrade-target .target-cost {
             font-size: 0.8rem;
-            color: var(--text-gray);
+            color: #666;
         }
         .btn-upgrade {
-            display: inline-flex;
-            align-items: center;
-            gap: 0.3rem;
-            padding: 0.45rem 1rem;
-            background: var(--jd-green);
+            display: inline-block;
+            background: #367C2B;
+            color: white;
+            padding: 0.5rem 1rem;
             border: none;
             border-radius: 6px;
-            color: white;
-            font-size: 0.8rem;
+            text-decoration: none;
             font-weight: 600;
+            font-size: 0.9rem;
             cursor: pointer;
             transition: background 0.2s;
         }
-        .btn-upgrade:hover { background: var(--jd-green-light); }
-
+        .btn-upgrade:hover { background: #2d6a24; }
+        /* Dark theme upgrade */
+        :root:not([data-theme="light"]) .upgrade-suggestion {
+            background: linear-gradient(135deg, rgba(54,124,43,0.2) 0%, rgba(54,124,43,0.08) 100%);
+            border: 2px solid #367C2B;
+        }
+        :root:not([data-theme="light"]) .upgrade-title { color: var(--jd-green-light); }
+        :root:not([data-theme="light"]) .upgrade-target { background: var(--bg-input); }
+        :root:not([data-theme="light"]) .upgrade-target .target-model { color: var(--text-white); }
+        :root:not([data-theme="light"]) .upgrade-target .target-benefits { color: var(--jd-green-light); }
+        :root:not([data-theme="light"]) .upgrade-target .target-cost,
+        :root:not([data-theme="light"]) .upgrade-target p { color: var(--text-gray); }
         [data-theme="light"] .upgrade-suggestion {
-            background: linear-gradient(135deg, rgba(54, 124, 43, 0.08) 0%, rgba(54, 124, 43, 0.03) 100%);
-            border-color: rgba(54, 124, 43, 0.25);
+            background: linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%);
+            border: 2px solid #367C2B;
         }
-        [data-theme="light"] .upgrade-target {
-            background: #f9fafb;
-            border-color: #d1d5db;
-        }
+        [data-theme="light"] .upgrade-target { background: white; }
 
         /* Inventory Dashboard */
         .dashboard-modal {
@@ -1529,6 +1534,9 @@
                     <p class="tip-text"><strong data-i18n="tip">Tip:</strong> <span data-i18n="tipText">A valuation takes about 30 seconds. Add all options for a more accurate estimate.</span></p>
                 </div>
 
+                <div id="upgradeSuggestion" class="upgrade-suggestion"></div>
+                <div id="priceTrend"></div>
+
                 <div class="hero-section">
                     <img class="hero-image" src="https://www.deere.nl/assets/images/region-2/products/tractors/mid/6m-series/6m-series-r2g077597.jpg" alt="John Deere" onerror="this.src='https://images.unsplash.com/photo-1544197150-b99a580bb7a8?w=400&h=250&fit=crop'">
                     <div class="hero-content">
@@ -1570,8 +1578,6 @@
                 </div>
             </div>
         </div>
-
-        <div id="upgradeSuggestion" class="upgrade-suggestion"></div>
 
         <div id="listingsSection" class="listings-card"></div>
 
@@ -2343,6 +2349,7 @@
 
                 save(); render(); stats();
                 showListings(results[0]);
+                showUpgradeSuggestion(m.name, Math.round((low + high) / 2));
                 btn.classList.remove('loading');
                 btn.innerHTML = `<span>⚡</span> <span data-i18n="calculate">${t('calculate')}</span>`;
             }, 700);
