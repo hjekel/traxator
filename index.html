@@ -1637,7 +1637,7 @@
             <div class="dashboard-header">
                 <div style="display:flex;align-items:center;gap:0.5rem;">
                     <span style="font-size:1.3rem;">📊</span>
-                    <h2>Voorraad Alert Dashboard</h2>
+                    <h2>Voorraad Dashboard</h2>
                 </div>
                 <button class="close-btn" onclick="closeInventoryDashboard()">✕</button>
             </div>
@@ -1646,14 +1646,13 @@
                 <label style="font-size:0.75rem;color:var(--text-gray);margin-right:0.5rem;">Locatie:</label>
                 <select id="locationFilter" class="form-control" style="display:inline-block;width:auto;min-width:180px;">
                     <option value="all">Alle locaties</option>
-                    <option value="Steenbergen">Steenbergen</option>
-                    <option value="Maasdam">Maasdam</option>
-                    <option value="Oldehove">Oldehove</option>
-                    <option value="Dronten">Dronten</option>
-                    <option value="Lieshout">Lieshout</option>
-                    <option value="Reusel">Reusel</option>
-                    <option value="Hillegom">Hillegom</option>
-                    <option value="Koudekerk">Koudekerk</option>
+                    <option value="steenbergen">Steenbergen</option>
+                    <option value="maasdam">Maasdam</option>
+                    <option value="dronten">Dronten</option>
+                    <option value="oldehove">Oldehove</option>
+                    <option value="lieshout">Lieshout</option>
+                    <option value="reusel">Reusel</option>
+                    <option value="hillegom">Hillegom</option>
                 </select>
             </div>
             <div class="inventory-list" id="inventoryList"></div>
@@ -2613,44 +2612,47 @@
         }
 
         function renderInventory(locationFilter) {
-            const items = locationFilter === 'all' ? DEMO_INVENTORY : DEMO_INVENTORY.filter(i => i.location === locationFilter);
-            const alertCount = items.filter(i => i.status === 'alert').length;
-            const warningCount = items.filter(i => i.status === 'warning').length;
-            const okCount = items.filter(i => i.status === 'ok').length;
+            const items = locationFilter === 'all' ? DEMO_INVENTORY : DEMO_INVENTORY.filter(i => i.location.toLowerCase() === locationFilter.toLowerCase());
+            const getStatus = (days) => days > 90 ? 'alert' : days > 60 ? 'warning' : 'ok';
+            const alertCount = items.filter(i => getStatus(i.days) === 'alert').length;
+            const warningCount = items.filter(i => getStatus(i.days) === 'warning').length;
+            const okCount = items.filter(i => getStatus(i.days) === 'ok').length;
             const totalValue = items.reduce((s, i) => s + i.price, 0);
 
             document.getElementById('dashboardSummary').innerHTML = `
-                <div class="summary-card alert">
-                    <div class="summary-count">${alertCount}</div>
-                    <div class="summary-label">🚨 Alert</div>
+                <div class="summary-card ok">
+                    <div class="summary-count">${items.length}</div>
+                    <div class="summary-label">Totaal machines</div>
                 </div>
                 <div class="summary-card warning">
-                    <div class="summary-count">${warningCount}</div>
-                    <div class="summary-label">⚠️ Waarschuwing</div>
+                    <div class="summary-count">\u20AC ${totalValue.toLocaleString()}</div>
+                    <div class="summary-label">Totale waarde</div>
                 </div>
-                <div class="summary-card ok">
-                    <div class="summary-count">${okCount}</div>
-                    <div class="summary-label">✅ OK</div>
+                <div class="summary-card alert">
+                    <div class="summary-count">${alertCount}</div>
+                    <div class="summary-label">\ud83d\udea8 >90 dagen</div>
                 </div>
             `;
 
-            document.getElementById('inventoryList').innerHTML = items.map(i => `
-                <div class="inventory-item">
-                    <span class="inventory-status ${i.status}">${i.status === 'alert' ? '🚨 Alert' : i.status === 'warning' ? '⚠️ Let op' : '✅ OK'}</span>
+            document.getElementById('inventoryList').innerHTML = items.map(i => {
+                const status = getStatus(i.days);
+                const statusLabel = status === 'alert' ? '\ud83d\udea8 >90d' : status === 'warning' ? '\u26A0\uFE0F 60-90d' : '\u2705 <60d';
+                return `
+                <div class="inventory-item" style="border-left: 3px solid ${status === 'alert' ? '#ef4444' : status === 'warning' ? '#f59e0b' : '#22c55e'};">
+                    <span class="inventory-status ${status}">${statusLabel}</span>
                     <div class="inventory-details">
                         <div class="inv-model">John Deere ${i.model}</div>
-                        <div class="inv-meta">${i.year} · ${i.hours.toLocaleString()} uur · ${i.location} · ${i.days} dagen · ${i.note}</div>
+                        <div class="inv-meta">${i.year} \u00B7 ${i.hours.toLocaleString()} uur \u00B7 ${i.location} \u00B7 ${i.days} dagen</div>
                     </div>
-                    <span class="inventory-price">€ ${i.price.toLocaleString()}</span>
-                </div>
-            `).join('');
+                    <span class="inventory-price">\u20AC ${i.price.toLocaleString()}</span>
+                </div>`;
+            }).join('');
 
             document.getElementById('dashboardFooter').innerHTML = `
                 <span>Totaal: ${items.length} machines</span>
-                <span>Waarde: € ${totalValue.toLocaleString()}</span>
+                <span>Waarde: \u20AC ${totalValue.toLocaleString()}</span>
             `;
         }
-
         // ==================== THEME ====================
         function toggleTheme() {
             const html = document.documentElement;
